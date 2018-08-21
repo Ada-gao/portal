@@ -1,20 +1,3 @@
-<!--
-  -    Copyright (c) 2018-2025, lengleng All rights reserved.
-  -
-  - Redistribution and use in source and binary forms, with or without
-  - modification, are permitted provided that the following conditions are met:
-  -
-  - Redistributions of source code must retain the above copyright notice,
-  - this list of conditions and the following disclaimer.
-  - Redistributions in binary form must reproduce the above copyright
-  - notice, this list of conditions and the following disclaimer in the
-  - documentation and/or other materials provided with the distribution.
-  - Neither the name of the pig4cloud.com developer nor the names of its
-  - contributors may be used to endorse or promote products derived from
-  - this software without specific prior written permission.
-  - Author: lengleng (wangiegie@gmail.com)
-  -->
-
 <template>
   <div class="top">
     <div class="top-button is-left">
@@ -49,7 +32,7 @@
           {{userInfo.username}}
           <i class="el-icon-arrow-down el-icon--right"></i>
         </span>
-        <el-dropdown-menu slot="dropdown">
+        <el-dropdown-menu slot="dropdown" style="white-space: nowrap;">
           <el-dropdown-item>
             <router-link to="/">首页</router-link>
           </el-dropdown-item>
@@ -57,11 +40,14 @@
             <router-link to="/info/index">修改信息</router-link>
           </el-dropdown-item>
           <el-dropdown-item>
+            <router-link to="/change_password/index">修改密码</router-link>
+          </el-dropdown-item>
+<!--           <el-dropdown-item>
             <a href="https://gitee.com/log4j/pig" target="_blank">pig地址</a>
           </el-dropdown-item>
           <el-dropdown-item>
             <a href="https://gitee.com/smallweigit/avue" target="_blank">avue地址</a>
-          </el-dropdown-item>
+          </el-dropdown-item> -->
           <el-dropdown-item @click.native="logout" divided>退出系统</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>

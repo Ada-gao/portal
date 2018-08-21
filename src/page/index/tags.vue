@@ -1,20 +1,3 @@
-<!--
-  -    Copyright (c) 2018-2025, lengleng All rights reserved.
-  -
-  - Redistribution and use in source and binary forms, with or without
-  - modification, are permitted provided that the following conditions are met:
-  -
-  - Redistributions of source code must retain the above copyright notice,
-  - this list of conditions and the following disclaimer.
-  - Redistributions in binary form must reproduce the above copyright
-  - notice, this list of conditions and the following disclaimer in the
-  - documentation and/or other materials provided with the distribution.
-  - Neither the name of the pig4cloud.com developer nor the names of its
-  - contributors may be used to endorse or promote products derived from
-  - this software without specific prior written permission.
-  - Author: lengleng (wangiegie@gmail.com)
-  -->
-
 <template>
   <div class="tags-container">
     <!-- tag盒子 -->
@@ -31,17 +14,12 @@
           更多
           <i class="el-icon-arrow-down el-icon--right"></i>
         </el-button>
-        <el-dropdown-menu slot="dropdown">
+        <el-dropdown-menu slot="dropdown" style="white-space: nowrap;">
           <el-dropdown-item @click.native="closeOthersTags">关闭其他</el-dropdown-item>
           <el-dropdown-item @click.native="closeAllTags">关闭全部</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
-    <!-- <ul class='contextmenu' v-show="visible" :style="{left:left+'px',top:top+'px'}">
-          <li @click="closeTag(selectedTag)">关闭</li>
-          <li @click="closeOthersTags">关闭其他</li>
-          <li @click="closeAllTags">关闭全部</li>
-        </ul> -->
   </div>
 </template>
 <script>

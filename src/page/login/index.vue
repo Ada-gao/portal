@@ -1,33 +1,8 @@
-<!--
-  -    Copyright (c) 2018-2025, lengleng All rights reserved.
-  -
-  - Redistribution and use in source and binary forms, with or without
-  - modification, are permitted provided that the following conditions are met:
-  -
-  - Redistributions of source code must retain the above copyright notice,
-  - this list of conditions and the following disclaimer.
-  - Redistributions in binary form must reproduce the above copyright
-  - notice, this list of conditions and the following disclaimer in the
-  - documentation and/or other materials provided with the distribution.
-  - Neither the name of the pig4cloud.com developer nor the names of its
-  - contributors may be used to endorse or promote products derived from
-  - this software without specific prior written permission.
-  - Author: lengleng (wangiegie@gmail.com)
-  -->
-
 <template>
   <div class="login-container pull-height" @keyup.enter.native="handleLogin">
-    <div class="login-info text-white animated fadeInLeft">
-      <h2 class="login-info-title">{{website.info.title}}</h2>
-      <ul class="login-info-list">
-        <li class="login-info-item" v-for="(item,index) in website.info.list" :key="index">
-          <i class="el-icon-check"></i>&nbsp;{{item}}
-        </li>
-      </ul>
-    </div>
-    <div class="login-border  animated fadeInRight">
+    <div class="login-border">
       <div class="login-main">
-        <h4 class="login-title"> Pig 微服务快速开发框架
+        <h4 class="login-title"> Portal
           <top-theme></top-theme>
         </h4>
         <el-tabs v-model="activeName">
@@ -37,9 +12,6 @@
           <el-tab-pane label="短信验证码" name="code">
             <codeLogin></codeLogin>
           </el-tab-pane>
-          <!-- <el-tab-pane label="第三方授权登录" name="third">
-            <thirdLogin></thirdLogin>
-          </el-tab-pane> -->
         </el-tabs>
       </div>
     </div>
@@ -94,7 +66,7 @@ export default {
   width: 100%;
   height: 100%;
   background-image: url("../../assets/img/login.png");
-  background-size: cover;
+  background-size: 100% 100%;
 }
 .login-info {
   padding-left: 60px;
