@@ -25,7 +25,8 @@
         </span>
       </el-tooltip>
       <el-tooltip class="item" effect="dark" content="用户头像" placement="bottom">
-        <img class="top-userImg" :src="userInfo.avatar">
+        <img class="top-userImg" v-if="userInfo.avatar" :src="userInfo.avatar ? serInfo.avatar : '../../../assets/img/user.png'">
+        <img class="top-userImg" v-if="!userInfo.avatar" src="../../../assets/img/user.png">
       </el-tooltip>
       <el-dropdown>
         <span class="el-dropdown-link">
