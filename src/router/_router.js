@@ -46,7 +46,7 @@ export default [{
 },{
   path: '/change_password',
   component: Layout,
-  redirect: '/change_password/index',
+  redirect: '/change_password',
   children: [{
     path: 'index',
     name: '修改密码',

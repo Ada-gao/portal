@@ -21,10 +21,19 @@ import {
 import * as filters from './filters' // 全局filter
 import './styles/common.scss'
 
+//引入自定义图标 初始样式
+import './styles/basic.css'
+import './styles/iconfont.css'
+//全局过滤器
+import '@/util/filter'
+//引入公共组件
+import v_no_data from 'components/no_data/no_data.js'
+
 Vue.config.productionTip = false
 Vue.use(ElementUI)
 Vue.use(VueMoment)
 Vue.use(VueAxios, axios)
+Vue.use(v_no_data)
 
 Object.keys(urls).forEach(key => {
   Vue.prototype[key] = urls[key]
