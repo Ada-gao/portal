@@ -2,14 +2,15 @@
   <div class="top">
     <div class="top-button is-left">
       <div class="tags-breadcrumb">
-        <i class="icon-navicon tag-collapse" :class="[{ 'tag-collapse_right': isCollapse }]" @click="showCollapse"></i>
+        <i class="iconfont" :class="[{ 'icon-zhankaicaidan': isCollapse, 'icon-shouqicaidan': !isCollapse }]" @click="showCollapse"></i>
       </div>
     </div>
-    <h1 class="top-title">
-      <topMenu></topMenu>
+    <h1 class="top-title" >
+      <em>你好，{{userInfo.username}}</em>
+      <topMenu class="none"></topMenu>
     </h1>
     <div class="top-button is-right">
-      <el-tooltip class="item" effect="dark" content="主题色" placement="bottom">
+      <el-tooltip class="item none" effect="dark" content="主题色" placement="bottom">
         <span class="top-item">
           <top-theme></top-theme>
         </span>
@@ -39,9 +40,6 @@
           </el-dropdown-item>
           <el-dropdown-item>
             <router-link to="/info/index">修改信息</router-link>
-          </el-dropdown-item>
-          <el-dropdown-item>
-            <router-link to="/change_password/index">修改密码</router-link>
           </el-dropdown-item>
 <!--           <el-dropdown-item>
             <a href="https://gitee.com/log4j/pig" target="_blank">pig地址</a>
@@ -104,6 +102,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.tags-breadcrumb i{ font-size: 24px;}
+.top-title{ font-size: 14px; color: #333;}
 </style>
 

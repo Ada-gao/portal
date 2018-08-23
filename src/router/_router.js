@@ -53,15 +53,6 @@ export default [{
     name: '修改信息',
     component: _import('admin/user/info', 'views')
   }]
-},{
-  path: '/change_password',
-  component: Layout,
-  redirect: '/change_password',
-  children: [{
-    path: 'index',
-    name: '修改密码',
-    component: _import('admin/user/change_password', 'views')
-  }]
 }, {
   path: '/404',
   component: _import('error-page/404', 'components'),
