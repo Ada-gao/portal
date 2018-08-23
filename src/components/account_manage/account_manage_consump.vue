@@ -73,7 +73,7 @@
 </template>
 
 <script>
-//import { getExcel } from '@/common/js/auth'
+import { getExcel } from '@/util/auth'
 export default {
     data () {
         return {
@@ -109,16 +109,6 @@ export default {
     methods: {
         //导出
         get_excel(){
-            // var wb = this.XLSX.utils.table_to_book(document.querySelector('#out-table'))
-            // var wbout = this.XLSX.write(wb, { bookType: 'xlsx', bookSST: true, type: 'array' })
-            // try {
-            //     this.FileSaver.saveAs(new Blob([wbout], { type: 'application/octet-stream' }), '消费记录.xlsx')
-            // } catch (e) {
-            //     if (typeof console !== 'undefined'){
-            //        console.log(e, wbout) 
-            //     }
-            // }
-            //  return wbout
             getExcel('out-table','消费记录.xlsx');
         },
         //当前页码

@@ -10,12 +10,10 @@
         <template slot="append">
           <span @click="handleSend" class="msg-text" :class="[{display:msgKey}]">{{msgText}}</span>
         </template>
-        <i slot="prefix" class="icon-yanzhengma" style="margin-top:10px;"></i>
+        <i slot="prefix" class="icon-yanzhengma" style="margin-top:7px;"></i>
       </el-input>
     </el-form-item>
-    <el-form-item>
-      <el-button type="primary" size="small" @click.native.prevent="handleLogin" class="login-submit">登录</el-button>
-    </el-form-item>
+    <el-button type="primary" size="small" @click.native.prevent="handleLogin" class="login-submit">登录</el-button>
   </el-form>
 </template>
 

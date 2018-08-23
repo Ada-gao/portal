@@ -2,9 +2,9 @@
   <div class="login-container pull-height" @keyup.enter.native="handleLogin">
     <div class="login-border">
       <div class="login-main">
-        <h4 class="login-title"> Portal
-          <top-theme></top-theme>
-        </h4>
+        <h4 class="login-title">登录</h4>
+          <!--全局换色-->
+          <!-- <top-theme></top-theme> -->
         <el-tabs v-model="activeName">
           <el-tab-pane label="用户密码" name="user">
             <userLogin></userLogin>
@@ -12,6 +12,7 @@
           <el-tab-pane label="短信验证码" name="code">
             <codeLogin></codeLogin>
           </el-tab-pane>
+          <div class="forget_btn font14 cursor tr mt10 none">忘记密码</div>
         </el-tabs>
       </div>
     </div>
@@ -100,8 +101,9 @@ export default {
 .login-title {
   margin: 0 0 20px;
   text-align: center;
-  color: #409eff;
+  color: #1A8CE1;
   letter-spacing: 3px;
+  font-size: 24px;
 }
 .login-submit {
   margin-top: 20px;
@@ -110,7 +112,6 @@ export default {
   border-radius: 28px;
 }
 .login-form {
-  margin: 10px 0;
   .el-form-item__content {
     width: 270px;
   }
@@ -150,4 +151,5 @@ export default {
   text-indent: 5px;
   text-align: center;
 }
+.forget_btn:hover{ color: #409EFF;}
 </style>

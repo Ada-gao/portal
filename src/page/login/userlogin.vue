@@ -1,13 +1,13 @@
 <template>
   <el-form class="login-form" status-icon :rules="loginRules" ref="loginForm" :model="loginForm" label-width="0">
     <el-form-item prop="username">
-      <el-input size="small" @keyup.enter.native="handleLogin" v-model="loginForm.username" auto-complete="off" placeholder="请输入用户名">
+      <el-input size="small" @keyup.enter.native="handleLogin" v-model="loginForm.username" auto-complete="off" placeholder="请输入用户名" maxlength="50">
         <i slot="prefix" class="icon-yonghu"></i>
       </el-input>
     </el-form-item>
     <el-form-item prop="password">
       <el-input size="small" @keyup.enter.native="handleLogin" :type="passwordType" v-model="loginForm.password" auto-complete="off" placeholder="请输入密码">
-        <i class="el-icon-view el-input__icon" slot="suffix" @click="showPassword"></i>
+        <i slot="suffix" class="iconfont  el-input__icon" v-if="loginForm.password" :class="passwordType == 'password' ? 'icon-yanjing_yincang_o' : 'icon-yanjing_xianshi_o'" style="font-size: 24px;"  @click="showPassword"></i>
         <i slot="prefix" class="icon-mima"></i>
       </el-input>
     </el-form-item>
@@ -27,9 +27,7 @@
         </el-col>
       </el-row>
     </el-form-item>
-    <el-form-item>
-      <el-button type="primary" size="small" @click.native.prevent="handleLogin" class="login-submit">登录</el-button>
-    </el-form-item>
+    <el-button type="primary" size="small" @click.native.prevent="handleLogin" class="login-submit">登录</el-button>
   </el-form>
 </template>
 
@@ -39,15 +37,6 @@ import { mapGetters } from "vuex";
 export default {
   name: "userlogin",
   data() {
-    const validateCode = (rule, value, callback) => {
-      if (this.code.value != value) {
-        this.loginForm.code = "";
-        this.refreshCode();
-        callback(new Error("请输入正确的验证码"));
-      } else {
-        callback();
-      }
-    };
     return {
       loginForm: {
         username: "admin",
@@ -62,6 +51,9 @@ export default {
         type: "image"
       },
       loginRules: {
+        username: [
+          { required: true, message: "请输入用户名", trigger: "blur" }
+        ],
         password: [
           { required: true, message: "请输入密码", trigger: "blur" },
           { min: 6, message: "密码长度最少为6位", trigger: "blur" }
@@ -91,15 +83,12 @@ export default {
         : (this.code.src = `${this.codeUrl}/${this.loginForm.randomStr}`);
     },
     showPassword() {
-      this.passwordType == ""
-        ? (this.passwordType = "password")
-        : (this.passwordType = "");
+      this.passwordType == "" ? (this.passwordType = "password") : (this.passwordType = "");
     },
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
-          this.$store.dispatch("LoginByUsername", this.loginForm).then(
-            res => {
+          this.$store.dispatch("LoginByUsername", this.loginForm).then(res => {
               this.$store.commit("ADD_TAG", this.tagWel);
               this.$router.push({ path: this.tagWel.value });
             },

@@ -17,3 +17,7 @@
 }
 .el-tooltip__popper.is-dark{ white-space: nowrap;}
 .pagination-container{ margin-top: 20px;}
+.login-main .el-form-item__error{ padding-top: 0;}
+//去除输入框后面的错误icon
+.el-form-item.is-error .el-input__validateIcon{ display: none;}
+.el-form-item.is-success .el-input__validateIcon{ display: none;}
