@@ -15,7 +15,8 @@ import * as urls from '@/config/env'
 import { iconfontUrl, iconfontVersion } from '@/config/env'
 import * as filters from './filters' // 全局filter
 import './styles/common.scss'
-
+//alert
+import Toast from 'components/alert/alert.js'
 //引入自定义图标 初始样式
 import './styles/basic.css'
 import './styles/iconfont.css'
@@ -29,6 +30,7 @@ Vue.use(ElementUI)
 Vue.use(VueMoment)
 Vue.use(VueAxios, axios)
 Vue.use(v_no_data)
+Vue.use(Toast)
 
 Object.keys(urls).forEach(key => {
   Vue.prototype[key] = urls[key]
