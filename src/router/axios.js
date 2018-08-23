@@ -36,6 +36,7 @@ axios.interceptors.response.use(data => {
   NProgress.done()
   let errMsg = error.toString()
   let code = errMsg.substr(errMsg.indexOf('code') + 5)
+  
   Message({
     message: errorCode[code] || errorCode['default'],
     type: 'error'

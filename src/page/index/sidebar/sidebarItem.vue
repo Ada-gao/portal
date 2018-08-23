@@ -1,7 +1,7 @@
 <template>
   <div class="menu-wrapper">
     <template v-for="(item,index) in menu">
-      <el-menu-item v-if="item.children.length===0 " :index="filterPath(item.path,index)" @click="open(item)" :key="item.label">
+      <el-menu-item v-if="item.children.length===0 " :index="filterPath(item.path,index)" @click="open(item)" :key="item.label" :class="$route.path.match(item.path) ? 'is-active' : ''">
         <i :class="item.icon"></i>
         <span slot="title">{{item.label}}</span>
       </el-menu-item>

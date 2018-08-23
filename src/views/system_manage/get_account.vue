@@ -1,5 +1,4 @@
 <template>
-    
     <div class="pull-height animated" :class="{'zoomOutUp': isLock}">
         <div class="index">
             <sidebar class="left"></sidebar>
@@ -10,17 +9,10 @@
                 </div>
                 <div class="main">
                     <div class="router">
-                        <div class="article">
-                            <!--我的信息-->
-                            <account_manage_our></account_manage_our>
-                            <!--基本信息-->
-                            <account_manage_basic_infor></account_manage_basic_infor>
-                            <!--消费记录-->
-                            <account_manage_consump></account_manage_consump>
-                            <!--充值记录-->
-                            <account_manage_recharge></account_manage_recharge>
-                            <!--登录记录-->
-                            <account_manage_login></account_manage_login>
+                        <div class="get_account">
+                            <get_account_handle></get_account_handle>
+                            <account_list></account_list>
+                            <recharge_list></recharge_list>
                         </div>
                     </div>
                 </div>
@@ -35,24 +27,20 @@ import tags from "@/page/index/tags";
 import top from "@/page/index/top/";
 import sidebar from "@/page/index/sidebar/";
 
-import account_manage_our from 'components/account_manage/account_manage_our'
-import account_manage_basic_infor from 'components/account_manage/account_manage_basic_infor'
-import account_manage_consump from 'components/account_manage/account_manage_consump'
-import account_manage_recharge from 'components/account_manage/account_manage_recharge'
-import account_manage_login from 'components/account_manage/account_manage_login'
+import get_account_handle from 'components/get_account/get_account_handle'
+import account_list from 'components/get_account/account_list'
+import recharge_list from 'components/get_account/recharge_list'
 export default {
-    components: { account_manage_our, account_manage_basic_infor, account_manage_consump, account_manage_recharge, account_manage_login,top,tags,sidebar },
+	components: { get_account_handle, account_list, recharge_list,top,tags,sidebar },
     data () {
-        return {
-        
+        return {          
+           
         }
     },
-    methods: {
-    
-    },
-    computed: mapGetters(["isLock"])
+    computed: mapGetters(["isLock"]),
 }
 </script>
+
 <style lang="scss" scoped>
 .index {
   display: flex;

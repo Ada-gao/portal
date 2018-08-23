@@ -19,6 +19,7 @@
     "axios": "^0.16.2",
     "babel-polyfill": "^6.26.0",
     "compression": "^1.6.2",
+    "element-china-area-data": "^4.1.1",
     "element-ui": "^2.3.6",
     "es6-promise": "^4.1.1",
     "express": "^4.14.1",
