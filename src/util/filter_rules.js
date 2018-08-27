@@ -28,9 +28,21 @@ const numberPass = (rule, value, callback) => {
         callback()
     }
 }
+//验证邮箱
+const validEmail = (rule, value, callback) => {
+    var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/
+    if (!value) {
+        callback(new Error('请输入邮箱'))
+    } else if (!reg.test(value)) {
+        callback(new Error('请您输入正确的邮箱'))
+    } else {
+        callback()
+    }
+}
 //调用
 module.exports = {
   isvalidateMobile: isvalidateMobile,
   validatePass: validatePass,
-  numberPass: numberPass
+  numberPass: numberPass,
+  validEmail:validEmail
 }

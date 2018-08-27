@@ -36,6 +36,22 @@ axios.interceptors.response.use(data => {
   NProgress.done()
   let errMsg = error.toString()
   let code = errMsg.substr(errMsg.indexOf('code') + 5)
+
+  //错误处理
+    if (code === 400) {
+        message(res.data.message || res.data.error, 'error')
+    } else if (code === 401) {
+        message('登录时间过期，请重新登录', 'error')
+        removeToken()
+        router.replace({ path: '/login' })
+    } else if (code === 403) {
+        message('管理权限不足，请联系管理员')
+        router.replace({path: '/login'})
+    } else if (code === 500) {
+        message(res.data.message || res.data.error, 'error')
+    } else {
+        message('服务器被吃了⊙﹏⊙∥', 'error')
+    }
   
   Message({
     message: errorCode[code] || errorCode['default'],

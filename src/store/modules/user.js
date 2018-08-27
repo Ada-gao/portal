@@ -222,6 +222,10 @@ const user = {
         type: 'session'
       })
     },
+    //设置头像
+    // SET_AVATAR:(state,img)=>{
+    //   state.userInfo.avatar = img;
+    // },
     SET_PERMISSIONS: (state, permissions) => {
       const list = {}
       for (let i = 0; i < permissions.length; i++) {

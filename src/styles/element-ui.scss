@@ -21,3 +21,5 @@
 //去除输入框后面的错误icon
 .el-form-item.is-error .el-input__validateIcon{ display: none;}
 .el-form-item.is-success .el-input__validateIcon{ display: none;}
+
+.el-loading-spinner .el-loading-text{ text-align: center;}

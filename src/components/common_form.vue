@@ -2,7 +2,7 @@
     <div>
 		<el-form :model="form" :rules="rules" ref="form" class="pt20" label-width="100px">
 
-            <el-row :gutter="20">
+            <!-- <el-row :gutter="20">
                 <el-col :span="12">
                     <el-form-item label="账号ID" prop="account">
                         <el-input v-model="form.account" placeholder="请输入账号id"></el-input>
@@ -13,12 +13,12 @@
                         <el-input v-model="form.password" placeholder="请输入登录密码" maxlength="12"></el-input>
                     </el-form-item>
                 </el-col>
-            </el-row>
+            </el-row> -->
 
             <el-row :gutter="20">
                 <el-col :span="12">
-                    <el-form-item label="公司名称" prop="name">
-                        <el-input v-model="form.name" placeholder="请输入公司名称"></el-input>
+                    <el-form-item label="公司名称" prop="companyName">
+                        <el-input v-model="form.companyName" placeholder="请输入公司名称"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
@@ -37,8 +37,8 @@
 
             <el-row :gutter="20">
                 <el-col :span="12">
-                    <el-form-item label="公司地址" prop="company_address">
-                        <el-input v-model="form.company_address" placeholder="请输入公司地址"></el-input>
+                    <el-form-item label="公司地址" prop="companyAddress">
+                        <el-input v-model="form.companyAddress" placeholder="请输入公司地址"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
@@ -60,18 +60,13 @@
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item label="职位" prop="occupation">
-                        <el-input v-model="form.occupation" placeholder="请输入职位"></el-input>
+                    <el-form-item label="联系手机" prop="contactMobile">
+                        <el-input v-model="form.contactMobile" placeholder="请输入联系手机" maxlength="11"></el-input>
                     </el-form-item>
                 </el-col>
             </el-row>
 
             <el-row :gutter="20">
-                <el-col :span="12">
-                    <el-form-item label="联系手机" prop="contactMobile">
-                        <el-input v-model="form.contactMobile" placeholder="请输入联系手机" maxlength="11"></el-input>
-                    </el-form-item>
-                </el-col>
                 <el-col :span="12">
                     <el-form-item label="公司邮箱" prop="companyMail">
                         <el-input v-model="form.companyMail" placeholder="请输入公司邮箱"></el-input>
@@ -82,13 +77,13 @@
             <el-row :gutter="20">
                 <el-col :span="24">
                     <el-form-item label="公司资质" class="clearfix">
-                        <ul class="img_list fl clearfix">
-                            <li class="pr fl"><img src="/static/img/bg/bg1.jpg"><span @click="delete_img" class="pa in_b none">删除</span></li>
+                        <ul class="img_list fl clearfix" v-if="img_list.length">
+                            <li class="pr fl" v-for="(img,index) in img_list"><img :src="img"><span @click="delete_img(index)" class="pa in_b none">删除</span></li>
                         </ul>
-                        <div class="upload tc fl">
+                        <div class="upload tc fl" v-if="img_list.length < 5">
                             <em class="block">+</em>
-                            <span>点击添加图片<i class="block">支持JPG、文件10M</i></span>
-                            <input @change="handleChange" type="file" class="cursor" ref='img'/>
+                            <span>点击添加图片<i class="block">支持JPG、PNG 文件10M</i></span>
+                            <input @change="upload_img"  multiple="multiple" type="file" class="cursor" ref='img'/>
                         </div>
                     </el-form-item>
                 </el-col>
@@ -97,14 +92,14 @@
             <el-row>
                 <el-col :span="24">
                     <el-form-item label="备注">
-                        <el-input rows="3" type="textarea" v-model="form.text" placeholder="请输入备注" maxlength="12"></el-input>
+                        <el-input rows="3" type="textarea" v-model="form.remark" placeholder="请输入备注" maxlength="12"></el-input>
                     </el-form-item>
                 </el-col>
             </el-row>
 
-            <div class="product_set" v-if="type != 'change'">产品设定</div>
+            <div class="product_set none" v-if="type == 'change1'">产品设定</div>
 
-            <el-row v-if="type != 'change'">
+            <el-row v-if="type == 'change1'">
                 <el-col :span="24">
                     <el-form-item label="产品类型" label-width="80px" prop="product_type">
                         <el-select style="width:100%" v-model="form.select_data" multiple filterable allow-create default-first-option placeholder="请选择产品类型" size="medium">
@@ -115,7 +110,7 @@
             </el-row>
 
         </el-form>
-        <div class="select_con" v-if="type != 'change'">
+        <div class="select_con none" v-if="type == 'change1'">
                 <p>身份信息核验</p>
                 <el-form class="form-border style"> <!--数据  :model="list"-->
                     <el-row>
@@ -154,6 +149,7 @@
 
 <script>
 import Validate from '@/util/filter_rules'
+import request from "@/router/axios";
 import { provinceAndCityData } from 'element-china-area-data' // 省市区数据
 // import { getAuthDustryByType, getAuthDustries, uploadLogo } from '@/api/api'
 export default {
@@ -168,34 +164,29 @@ export default {
                 industryType:[],        //行业大类
                 industry:[]             //行业小类
             },
+            img_list:[],            //上传图片列表
             form:{
-                name:'',                    //姓名
-                account:'',                 //账号
-                password:'',                //登录密码
-                companyProvince:"河南省",         //省
-                companyCity:'',             //市
-                company_address:'',         //公司地址
-                industryType:'',            //行业大类
-                industry:'',                //行业小类
-                contact:'',                 //联系人姓名
-                occupation:'',              //职位
-                contactMobile:'',           //联系电话
-                companyMail:''              //公司邮箱
+                companyName:'',                      //公司名称
+                companyProvince:"河南省",            //省
+                companyCity:'',                     //市
+                companyAddress:'',                  //公司地址
+                companyQualification:'11',            //公司资质
+                industryType:'11',                  //行业大类
+                industry:'22',                      //行业小类
+                remark:'',                          //备注
+                deptId:'33',
+                contact:'',                         //联系人姓名
+                contactMobile:'',                   //联系电话
+                companyMail:''                      //公司邮箱
             },
             rules: {    //表单验证
-                name: [
+                companyName: [
                     {required: true, trigger: 'blur', message: '请输入公司名称'}
-                ],
-                account: [
-                    {required: true, trigger: 'blur', message: '请输入账号id'}
-                ],
-                password: [
-                    {required: true, trigger: 'blur', message: '请输入登录密码'}
                 ],
                 companyCity: [
                      {required: true, trigger: 'blur', message: '请输入公司所在地'}
                 ],
-                company_address: [
+                companyAddress: [
                      {required: true, trigger: 'blur', message: '请输入公司地址'}
                 ],
                 industry: [
@@ -204,14 +195,11 @@ export default {
                 contact: [
                      {required: true, trigger: 'blur', message: '请输入联系人姓名'}
                 ],
-                occupation: [
-                     {required: true, trigger: 'blur', message: '请输入职位'}
-                ],
                 contactMobile: [
                      {required: true, trigger: 'blur', validator: Validate.isvalidateMobile}
                 ],
                 companyMail: [
-                     {required: true, trigger: 'blur', message: '请输入公司邮箱'}
+                     {required: true, trigger: 'blur', validator: Validate.validEmail}
                 ],
                 product_type: [
                      {required: true, trigger: 'blur', message: '请选择产品类型'}
@@ -222,21 +210,32 @@ export default {
     created(){
         //this.get_industry_data();
         if(this.$route.query.type){
-            console.log(this.$route.query.type)
             this.type = this.$route.query.type;
         }
         this.changeProvince(this.form.companyProvince)
     },
     methods: {
         //上传图片
-        handleChange(){
-            var file_obj = this.$refs['img'].files[0];
-            console.log(file_obj)
+        upload_img(){
+            //var file_obj = this.$refs['img'].files[0];
+            var file_obj = this.$refs['img'].files[0]
+            //this.arr = [];
             let formData = new FormData()
+            // for(var i in file_obj){
+            //     this.$set(this.arr, i, file_obj[i]);
+            // }
             formData.append('file', file_obj)
-            uploadLogo(formData).then(res => {
-                console.log(res.data,'111')
-            })
+            request({
+                url: "/admin/company/upload",
+                method: "post",
+                data: formData,
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }).then(response => {
+                this.img_list.push(response.data)
+            }).catch(() => {})
+            
         },
         //选择省份
     	changeProvince (val) {
@@ -271,14 +270,27 @@ export default {
         },
 
         //删除图片
-        delete_img(){
-
+        delete_img(index){
+            this.img_list.splice(index,1);
         },
 
         //提交
         submit(){
             this.$refs['form'].validate(valid => {
-                console.log(valid,'111')
+                if(valid){
+                    request({
+                        url: "/admin/company/add",
+                        method: "post",
+                        data: this.form,
+                    }).then(response => {
+                        if (response.data.code == 0) {
+                            this.$message.error('新建公司账号成功')
+                            this.$router.back()
+                        } else {
+                            this.$message.error(response.data.msg);
+                        }
+                    }).catch(() => {})
+                }
             })
         }
     }
