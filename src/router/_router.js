@@ -50,9 +50,17 @@ export default [{
   redirect: '/info/index',
   children: [{
     path: 'index',
-    name: '修改信息',
+    name: '修改密码',
     component: _import('admin/user/info', 'views')
   }]
+}, {
+  path: '/admin/company',
+  component: Layout,
+  children: [
+    { path: 'detail', name: '公司详情', component: _import('admin/company/detail', 'views')},
+    { path: 'create', name: '公司账号创建', component: _import('admin/company/create', 'views')},
+    { path: 'change', name: '公司详情修改', component: _import('admin/company/change', 'views')}
+  ]
 }, {
   path: '/404',
   component: _import('error-page/404', 'components'),

@@ -1,6 +1,6 @@
 <template>
   <div class="login-container pull-height" @keyup.enter.native="handleLogin">
-    <div class="login-border">
+    <div class="login-border" v-if="login_status == 1">
       <div class="login-main">
         <h4 class="login-title">登录</h4>
           <!--全局换色-->
@@ -12,14 +12,15 @@
           <el-tab-pane label="短信验证码" name="code">
             <codeLogin></codeLogin>
           </el-tab-pane>
-          <div class="forget_btn font14 cursor tr mt10 none">忘记密码</div>
         </el-tabs>
+        <div class="forget_btn font14 cursor tr mt10" @click="login_status = 2">忘记密码</div>
       </div>
     </div>
-
+    <get_password v-if="login_status == 2"  @go_login="change_login_status"></get_password>
   </div>
 </template>
 <script>
+import get_password from "./get_password";
 import userLogin from "./userlogin";
 import codeLogin from "./codelogin";
 import thirdLogin from "./thirdlogin";
@@ -33,11 +34,13 @@ export default {
     topTheme,
     userLogin,
     codeLogin,
-    thirdLogin
+    thirdLogin,
+    get_password
   },
   data() {
     return {
-      activeName: "user"
+      activeName: "user",
+      login_status:1,     //默认为登录状态  2为忘记密码
     };
   },
   created() {},
@@ -46,7 +49,11 @@ export default {
     ...mapGetters(["website"])
   },
   props: [],
-  methods: {}
+  methods: {
+    change_login_status(){
+      this.login_status = 1;
+    }
+  }
 };
 </script>
 
@@ -151,5 +158,16 @@ export default {
   text-indent: 5px;
   text-align: center;
 }
-.forget_btn:hover{ color: #409EFF;}
+
+.forget_btn{ color: #9B9B9B;}
+.login-border .el-form-item__error{ padding-top: 0;}
+.login-border .el-step__main .el-step__title{ font-size: 12px; color: #9B9B9B;} 
+.login-border .el-step__main .is-process,.login-border .el-step__main .is-finish{ color: #1A8CE1; font-weight: 500;}
+.login-border .el-step__icon.is-text{ border:2px solid #D8D8D8; background-color:#D8D8D8; }
+.login-border .el-step__icon-inner{ color: #fff; font-weight: 500;}
+.login-border .is-process .el-step__icon.is-text,.login-border .is-finish .el-step__icon.is-text{ border:2px solid #1A8CE1; background-color:#1A8CE1;}
+.login-border .el-step__icon{ width: 20px; height: 20px;}
+.login-border .el-step.is-horizontal .el-step__line{ top: 9px;}
+.login-border .is-finish .el-step__line{ background-color: #1A8CE1;}
+.login-border .el-form-item__content{ background-color: #fff;}
 </style>

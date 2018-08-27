@@ -83,7 +83,7 @@
                 <el-col :span="24">
                     <el-form-item label="公司资质" class="clearfix">
                         <ul class="img_list fl clearfix">
-                            <li class="pr fl"><img src="/static/img/bg.jpg"><span @click="delete_img" class="pa in_b none">删除</span></li>
+                            <li class="pr fl"><img src="/static/img/bg/bg1.jpg"><span @click="delete_img" class="pa in_b none">删除</span></li>
                         </ul>
                         <div class="upload tc fl">
                             <em class="block">+</em>
@@ -220,8 +220,9 @@ export default {
         }
     },
     created(){
-        this.get_industry_data();
+        //this.get_industry_data();
         if(this.$route.query.type){
+            console.log(this.$route.query.type)
             this.type = this.$route.query.type;
         }
         this.changeProvince(this.form.companyProvince)

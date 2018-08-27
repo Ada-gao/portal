@@ -39,7 +39,7 @@
             <router-link to="/">首页</router-link>
           </el-dropdown-item>
           <el-dropdown-item>
-            <router-link to="/info/index">修改信息</router-link>
+            <router-link to="/info/index">修改密码</router-link>
           </el-dropdown-item>
 <!--           <el-dropdown-item>
             <a href="https://gitee.com/log4j/pig" target="_blank">pig地址</a>

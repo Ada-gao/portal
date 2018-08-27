@@ -1,7 +1,7 @@
 <template>
     <div class="no_data tc">
         <i class="iconfont icon-comiiszanwushuju"></i>
-        <p :style="{'font-size':size}">{{text}}</p>
+        <p class="tc" :style="{'font-size':size}">{{text}}</p>
     </div>
 </template>
 <script>

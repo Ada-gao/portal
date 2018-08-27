@@ -11,7 +11,7 @@
           <span slot="title" :class="{'el-menu--display':isCollapse}">{{item.label}}</span>
         </template>
         <template v-for="(child,cindex) in item.children">
-          <el-menu-item :index="filterPath(child.path,cindex)" @click="open(child)" v-if="child.children.length==0" :key="cindex">
+          <el-menu-item :index="filterPath(child.path,cindex)" @click="open(child)" v-if="child.children.length==0" :key="cindex" :class="$route.path.match(child.path) ? 'is-active' : ''">
             <i :class="child.icon"></i>
             <span slot="title">{{child.label}}</span>
           </el-menu-item>

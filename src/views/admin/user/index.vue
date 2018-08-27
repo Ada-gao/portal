@@ -84,7 +84,7 @@
           <el-input type="password" v-model="form.newpassword1"></el-input>
         </el-form-item>
 
-        <el-form-item label="所属部门" prop="deptName">
+        <el-form-item label="所属公司" prop="deptName">
           <el-input v-model="form.deptName" placeholder="选择部门" @focus="handleDept()" readonly></el-input>
           <input type="hidden" v-model="form.deptId" />
         </el-form-item>
@@ -96,6 +96,19 @@
               <span style="float: right; color: #8492a6; font-size: 13px">{{ item.roleCode }}</span>
             </el-option>
           </el-select>
+        </el-form-item>
+
+        <el-form-item label="账户类型" prop="role">
+          <el-select class="filter-item" v-model="role" placeholder="请账户类型" multiple>
+            <el-option v-for="item in rolesOptions" :key="item.roleId" :label="item.roleDesc" :value="item.roleId" :disabled="isDisabled[item.delFlag]">
+              <span style="float: left">{{ item.roleDesc }}</span>
+              <span style="float: right; color: #8492a6; font-size: 13px">{{ item.roleCode }}</span>
+            </el-option>
+          </el-select>
+        </el-form-item>
+
+        <el-form-item label="到期时间" prop="phone">
+          <el-input v-model="form.phone" placeholder="请输入到期时间"></el-input>
         </el-form-item>
 
         <el-form-item label="手机号" prop="phone">

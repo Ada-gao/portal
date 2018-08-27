@@ -14,7 +14,7 @@
                         <span>shuyunxinxikeji1002</span>
                         <em class="ml15 cursor" @click="check_key"><i class="iconfont icon-zhongzhi mr5"></i>重置key</em>
                         <div class="fr">
-                            <router-link :to="{path:'/system/company_details_change', query:{type:'change'}}" tag="span" class="mr20 cursor"><i class="iconfont icon-zhongzhi mr5"></i><em>修改</em></router-link>
+                            <router-link :to="{path:'/admin/company/update', query:{type:'change'}}" tag="span" class="mr20 cursor"><i class="iconfont icon-zhongzhi mr5"></i><em>修改</em></router-link>
                             <el-switch @change="check_restart" v-model="restart" active-color="#1A8CE1" active-text="启用"></el-switch>
                         </div>
                     </el-form-item>
@@ -99,7 +99,7 @@
                 <el-col :span="24">
                     <el-form-item label="公司资质：" style="margin-bottom: 0;">
                         <ul class="img_list in_b clearfix">
-                            <li class="pr fl" @click="swiper_img = true"><img src="/static/img/bg.jpg"><span class="pa in_b none">查看图片</span></li>
+                            <li class="pr fl" @click="swiper_img = true"><img src="/static/img/bg/bg1.jpg"><span class="pa in_b none">查看图片</span></li>
                         </ul>
                     </el-form-item>
                 </el-col>
@@ -118,10 +118,10 @@
             <div class="swiper">
                 <el-carousel arrow='never' :initial-index="index" :autoplay="autoplay" ref="carousel" indicator-position="none" width="560px">
                     <el-carousel-item name="index">
-                        <h3><img class="block" src="/static/img/bg.jpg"></h3>
+                        <h3><img class="block" src="/static/img/bg/bg1.jpg"></h3>
                     </el-carousel-item>
                     <el-carousel-item name="index">
-                        <h3><img class="block" src="/static/img/bg.jpg"></h3>
+                        <h3><img class="block" src="/static/img/bg/bg1.jpg"></h3>
                     </el-carousel-item>
                 </el-carousel>
                 <a @click="swiper_img = false,index = 0" class="closed" href="javascript:void(0);"><i class="el-icon-close"></i></a>
