@@ -12,7 +12,7 @@
             <div class="table_style" v-if="list.length">
                 <el-table id="out-table" :data="list" :key='0' element-loading-text="给我一点时间" fit highlight-current-row style="width: 100%">
 
-                    <el-table-column align="center" label="消费批次号">
+                    <el-table-column align="center" label="消费流水号">
                         <template slot-scope="scope"><span>{{scope.row.label}}</span></template>
                     </el-table-column>
 
@@ -20,7 +20,7 @@
                         <template slot-scope="scope"><span>11</span></template>
                     </el-table-column>
 
-                    <el-table-column align="center" label="核验类型">
+                    <el-table-column align="center" label="产品详情">
                         <template slot-scope="scope"><span>11</span></template>
                     </el-table-column>
 
@@ -30,10 +30,6 @@
 
                     <el-table-column align="center" label="消费金额/元">
                         <template slot-scope="scope"><span class="table_primary">11</span></template>
-                    </el-table-column>
-
-                    <el-table-column align="center" label="消费类型">
-                        <template slot-scope="scope"><span>11</span></template>
                     </el-table-column>
 
                     <el-table-column align="center" label="消费时间">

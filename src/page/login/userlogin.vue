@@ -27,7 +27,8 @@
         </el-col>
       </el-row>
     </el-form-item>
-    <el-button type="primary" size="small" @click.native.prevent="handleLogin" class="login-submit">登录</el-button>
+    <el-button type="primary" style="width: 100%;" @click.native.prevent="handleLogin">登录</el-button>
+
   </el-form>
 </template>
 

@@ -32,7 +32,7 @@
         </el-form>
         <div class="common_btn tc">
         	<button @click="reset"><i class="iconfont icon-zhongzhi"></i>重置</button>
-        	<button @click="verif"><i class="iconfont icon-xiazai"></i>查询</button>
+        	<button @click="verif"><i class="iconfont el-icon-search"></i>查询</button>
         </div>
         <!--table 列表-->
         <div class="mt20" v-if="list.length">

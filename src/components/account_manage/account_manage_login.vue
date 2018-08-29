@@ -2,7 +2,7 @@
     <div>
         <div class="consump common_style mt20 box_adorn">
             <div class="common_head omit1">
-                <i class="iconfont icon-deposit"></i>
+                <i class="iconfont icon-lituizhi-"></i>
                 <em class="font16">登录记录</em>
             </div>
             <!--一键导出-->
@@ -16,16 +16,12 @@
                         <template slot-scope="scope"><span>11</span></template>
                     </el-table-column>
 
-                    <el-table-column align="center" label="登录时间" class-name="left">
+                    <el-table-column align="center" label="登录时间">
                         <template slot-scope="scope"><span>22</span></template>
                     </el-table-column>
 
                     <el-table-column align="center" label="登录IP地址">
                         <template slot-scope="scope"><span>33</span></template>
-                    </el-table-column>
-
-                    <el-table-column align="center" label="登录所在地">
-                        <template slot-scope="scope"><span>44</span></template>
                     </el-table-column>
 
                 </el-table>

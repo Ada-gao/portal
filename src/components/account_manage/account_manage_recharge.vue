@@ -2,7 +2,7 @@
     <div>
         <div class="consump common_style mt20 box_adorn">
             <div class="common_head omit1">
-                <i class="iconfont icon-deposit"></i>
+                <i class="iconfont icon-chongzhi1"></i>
                 <em class="font16">充值记录</em>
             </div>
             <!--一键导出-->
@@ -12,28 +12,24 @@
             <div class="table_style">
                 <el-table :data="list" :key='0' element-loading-text="给我一点时间" fit highlight-current-row style="width: 100%">
 
-                    <el-table-column align="center" label="充值编号">
+                    <el-table-column align="center" label="充值流水号">
                         <template slot-scope="scope"><span>11</span></template>
                     </el-table-column>
 
-                    <el-table-column align="center" label="充值类型">
-                        <template slot-scope="scope"><span>22</span></template>
-                    </el-table-column>
-
-                    <el-table-column align="center" label="充值金额">
-                        <template slot-scope="scope"><span>33</span></template>
+                    <el-table-column align="center" label="充值金额(元)">
+                        <template slot-scope="scope"><span class="table_primary">22</span></template>
                     </el-table-column>
 
                     <el-table-column align="center" label="充值时间">
-                        <template slot-scope="scope"><span>44</span></template>
+                        <template slot-scope="scope"><span>2018-08-29 14:50:24</span></template>
                     </el-table-column>
 
                     <el-table-column align="center" label="充值状态" show-overflow-tooltip>
-                        <template slot-scope="scope"><span>55</span></template>
+                        <template slot-scope="scope"><span:class="{'table_success':scope.row.sort == 1,'table_fail':scope.row.sort == 0}">充值成功</span></template>
                     </el-table-column>
 
                     <el-table-column align="center" label="操作人">
-                        <template slot-scope="scope"><span>66</span></template>
+                        <template slot-scope="scope"><span>王秀明</span></template>
                     </el-table-column>
 
                 </el-table>

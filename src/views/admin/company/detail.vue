@@ -1,102 +1,52 @@
 <template>
     <div class="basic_info common_style box_adorn">
         <div class="spec_head">
-            <em class="in_b"></em><span>公司详情</span>
+            <em class="in_b"></em><span>公司信息</span>
+            <div class="fr">
+                <span class="cursor" @click="for_company_change"><i class="iconfont icon-xiugai mr5"></i><em>修改</em></span>
+            </div>
         </div>
         <!--公司详情-->
         <div>
             <el-form class="company_details pt20" label-width="100px">
 
                 <el-row :gutter="20">
-                    <el-col :span="12">
-                        <el-form-item label="账号ID：" class="omit1">
-                            <span>shuyunxinxikeji1001</span>
-                            <em class="ml15 cursor" @click="checkPass = true"><i class="iconfont icon-zhongzhi mr5"></i>修改密码</em>
+                    <el-col :span="8">
+                        <el-form-item label="公司名称：" class="omit1"><span>{{details_data.companyName}}</span></el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                        <el-form-item label="所在地：" class="omit1">
+                            <span>{{details_data.companyProvince}}-{{details_data.companyCity}}</span>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="12">
-                        <el-form-item label="Account Id：" class="omit1">
-                            <span>shuyunxinxikeji1002</span>
-                            <em class="ml15 cursor" @click="check_key"><i class="iconfont icon-zhongzhi mr5"></i>重置key</em>
-                            <div class="fr">
-                                <router-link v-if="sys_company_upd" :to="{path:'/admin/company/change', query:{type:'change'}}" tag="span" class="mr20 cursor"><i class="iconfont icon-zhongzhi mr5"></i><em>修改</em></router-link>
-                                <el-switch @change="check_restart" v-model="restart" active-color="#1A8CE1" active-text="启用"></el-switch>
-                            </div>
+                    <el-col :span="8">
+                        <el-form-item label="所在地：" class="omit1">
+                            <span>{{details_data.companyAddress}}</span>
                         </el-form-item>
                     </el-col>
                 </el-row>
 
                 <el-row :gutter="20">
-                    <el-col :span="12">
-                        <el-form-item label="公司名称：">
-                            <span>数赟信息科技有限公司</span>
-                        </el-form-item>
+                    <el-col :span="8">
+                        <el-form-item label="所属行业："><span>{{details_data.industry + details_data.industryType}}</span></el-form-item>
                     </el-col>
-                    <el-col :span="12">
-                        <el-form-item label="账户状态：">
-                            <span>付费使用</span>
-                        </el-form-item>
+                    <el-col :span="8">
+                        <el-form-item label="公司规模："><span>{{details_data.companyName}}</span></el-form-item>
                     </el-col>
-                </el-row>
-
-                <el-row :gutter="20">
-                    <el-col :span="12">
-                        <el-form-item label="账户余额：">
-                            <span>10000元</span>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="12">
-                        <el-form-item label="余额提醒：">
-                            <span>1000元</span>
-                            <em class="ml15 cursor" @click="checkBalance = true"><i class="iconfont icon-zhongzhi mr5"></i>修改余额提醒</em>
-                        </el-form-item>
+                    <el-col :span="8">
+                        <el-form-item label="公司邮箱："><span>{{details_data.companyName}}</span></el-form-item>
                     </el-col>
                 </el-row>
 
                 <el-row :gutter="20">
-                    <el-col :span="12">
-                        <el-form-item label="公司地址：">
-                            <span>上海市浦东新区峨山路91号</span>
-                        </el-form-item>
+                    <el-col :span="8">
+                        <el-form-item label="联系人"><span>{{details_data.companyName}}</span></el-form-item>
                     </el-col>
-                    <el-col :span="12">
-                        <el-form-item label="所在地：">
-                            <span>上海市-浦东新区</span>
-                        </el-form-item>
+                    <el-col :span="8">
+                        <el-form-item label="职务"><span>{{details_data.deptId}}</span></el-form-item>
                     </el-col>
-                </el-row>
-
-                <el-row :gutter="20">
-                    <el-col :span="12">
-                        <el-form-item label="联系人：">
-                            <span>王小虎</span>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="12">
-                        <el-form-item label="所属行业：">
-                            <span>IT/互联网-金融科技</span>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-
-                <el-row :gutter="20">
-                    <el-col :span="12">
-                        <el-form-item label="联系手机：">
-                            <span>13901871234</span>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="12">
-                        <el-form-item label="职位：">
-                            <span>风控总监</span>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-
-                <el-row :gutter="20">
-                    <el-col :span="24">
-                        <el-form-item label="公司邮箱：">
-                            <span>wangxiuming@163.com</span>
-                        </el-form-item>
+                    <el-col :span="8">
+                        <el-form-item label="联系手机"><span>{{details_data.deptId}}</span></el-form-item>
                     </el-col>
                 </el-row>
 
@@ -110,10 +60,10 @@
                     </el-col>
                 </el-row>
 
-                <el-row :gutter="20">
+                <el-row :gutter="20" v-if="details_data.remark">
                     <el-col :span="24">
                         <el-form-item label="备注：">
-                            <span>2018.7.1 对接需求，开测试帐号，后期继续跟进。</span>
+                            <span>{{details_data.remark}}</span>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -136,44 +86,6 @@
                     </div>
                 </div>
             </div>
-            <!--修改密码-->
-            <!--修改密码 弹框-->
-            <el-dialog title="修改登录密码" :visible.sync="checkPass">
-                <el-form :model="form" ref="form" :rules="rules">
-                    <el-row>
-                        <el-col :span="24">
-                            <el-form-item label="新密码" label-width="80px" prop="password">
-                                <el-input v-model="form.password" placeholder="输入新密码" maxlength="12"></el-input>
-                            </el-form-item>
-                        </el-col>
-                    </el-row>
-                </el-form>
-                <span slot="footer">
-                    <el-button @click="checkPass = false">取 消</el-button>
-                    <el-button type="primary" @click="submit_pass">确 定</el-button>
-                </span>
-            </el-dialog>
-            <!--修改余额提醒-->
-            <el-dialog title="修改余额提醒" :visible.sync="checkBalance">
-                <el-form :model="form" ref="form" :rules="rules">
-                    <el-row :gutter="10">
-                        <el-col :span="17">
-                            <el-form-item label="余额低于" label-width="80px" prop="password">
-                                <el-input v-model="form.password" placeholder="请输入最低余额提醒"></el-input>
-                            </el-form-item>
-                        </el-col>
-                        <el-col :span="6">
-                            <el-form-item>
-                                <em>元,进行余额提醒</em>
-                            </el-form-item>
-                        </el-col>
-                    </el-row>
-                </el-form>
-                <span slot="footer">
-                    <el-button @click="checkBalance = false">取 消</el-button>
-                    <el-button type="primary" @click="submit_balance">确 定</el-button>
-                </span>
-            </el-dialog>
         </div>
     </div>
 </template>
@@ -187,55 +99,23 @@ export default {
     },
     data () {
         return {
-            sys_company_upd:false,      //是否有权限修改公司详情
-            restart:false,          //是否启用
-            checkPass:false,        //修改密码
-            checkBalance:false,     //修改余额提醒
             autoplay:false,         //轮播图不制动滚动
             index:0,                //轮播图默认展示第一张
             swiper_img:false,       //查看大图 默认隐藏
-            form:{
-                password:''         //新密码
-            },
-            rules: {
-                password: [
-                    {required: true, trigger: 'blur', validator: Validate.validatePass }
-                ]
-            },
+            details_data:{}         //公司详情数据
         }
     },
     created() {
         this.sys_company_upd = this.permissions["sys_company_upd"];
+        this.details_data = JSON.parse(this.$route.query.item)
     },
     mounted(){
 
     },
     methods: {
-        //重置key
-        check_key(){
-            this.$confirm('确定重置key吗?', '取消', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(() => {
-                
-            }).catch(() => {
-                          
-            });
-        },
-        //启用停用
-        check_restart(e){
-            if(!this.restart){
-               this.$confirm('确定停用吗?', '取消', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    this.restart = false;
-                }).catch(() => {
-                     this.restart = true;         
-                }); 
-            }
+        //点击修改
+        for_company_change(){
+            this.$router.push({path:'/admin/company/change', query: {type:'change',item:this.$route.query.item}});
         },
         //轮播图切换
         switch_index:function(type){
@@ -252,16 +132,6 @@ export default {
         setActiveItem:function(index){
             this.$refs.carousel.setActiveItem(index);
         },
-        //修改密码 确认
-        submit_pass(){
-            this.$refs['form'].validate(valid => {
-                console.log(valid,'111')
-            })
-        },
-        //修改余额
-        submit_balance(){
-
-        }
     }
 }
 </script>
@@ -288,4 +158,7 @@ export default {
 .handle>a.next{ right:-60px;}
 
 .swiper img{ width: 560px; height: auto;}
+
+.spec_head div em{ background: none; color: #1A8CE1;}
+.spec_head div i{ color: #1A8CE1;}
 </style>

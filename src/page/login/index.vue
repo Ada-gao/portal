@@ -62,7 +62,6 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-around;
-  background: rgba(0, 0, 0, 0.3);
   position: relative;
 }
 .login-container::before {
@@ -91,7 +90,7 @@ export default {
   flex-direction: column;
   padding: 30px 40px 25px 40px;
   background-color: #fff;
-  border-radius: 6px;
+  border-radius: 2px;
   box-shadow: 1px 1px 2px #eee;
 }
 .login-main {
@@ -160,8 +159,9 @@ export default {
 }
 
 .forget_btn{ color: #9B9B9B;}
+.forget_btn:hover{ color: #409EFF;}
 .login-border .el-form-item__error{ padding-top: 0;}
-.login-border .el-step__main .el-step__title{ font-size: 12px; color: #9B9B9B;} 
+.login-border .el-step__main .el-step__title{ font-size: 12px;} 
 .login-border .el-step__main .is-process,.login-border .el-step__main .is-finish{ color: #1A8CE1; font-weight: 500;}
 .login-border .el-step__icon.is-text{ border:2px solid #D8D8D8; background-color:#D8D8D8; }
 .login-border .el-step__icon-inner{ color: #fff; font-weight: 500;}

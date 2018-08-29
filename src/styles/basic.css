@@ -104,10 +104,10 @@ textarea{resize:none}
 .none{ display:none; }
 .omit1{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
 .cursor{ cursor:pointer;}
-::-webkit-input-placeholder{ color:#999999;}
-:-moz-placeholder{ color:#999999;}
-::-moz-placeholder{  color:#999999;}
-:-ms-input-placeholder{  color:#999999;}
+::-webkit-input-placeholder{ color:#9B9B9B;}
+:-moz-placeholder{ color:#9B9B9B;}
+::-moz-placeholder{  color:#9B9B9B;}
+:-ms-input-placeholder{  color:#9B9B9B;}
 /*遮罩层*/
 .mask{ position:fixed; left:0; right:0; top:0; bottom:0; background-color:#000; opacity:0.5; z-index:20;}
 /*公共样式*/

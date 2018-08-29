@@ -2,11 +2,11 @@
     <div>
         <div class="basic_info common_style mt20 box_adorn">
             <div class="common_head omit1">
-                <i class="iconfont icon-552cde89f09d1"></i>
+                <i class="iconfont icon-gerenxinxi"></i>
                 <em class="font16">基本信息<i class="font12">（变更账号信息，请联系对接商务经理，谢谢）</i></em>
             </div>
             <div class="app-container mt10">
-                <el-form class="form-border" label-width="100px">
+                <el-form class="form-border" label-width="110px">
                     <el-row :gutter="20">
                         <el-col :span="8">
                             <el-form-item label="账号ID：">
@@ -14,19 +14,39 @@
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
-                            <el-form-item label="姓名：">
-                                <span>王秀明</span>
+                            <el-form-item label="账号类型：">
+                                <span>付费使用</span>
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
-                            <el-form-item label="联系手机：">
-                                <span>13333333333</span>
+                            <el-form-item label="账户到期时间：">
+                                <span>2018.12.31</span>
                             </el-form-item>
                         </el-col>
                     </el-row>
+
                     <el-row :gutter="20">
                         <el-col :span="8">
                             <el-form-item label="Account ID：">
+                                <span>shuxiangxinxikeji</span>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="8">
+                            <el-form-item label="姓名：">
+                                <span>王小虎</span>
+                            </el-form-item>
+                        </el-col>
+
+                        <el-col :span="8">
+                            <el-form-item label="联系手机：">
+                                <span>13386182259</span>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+
+                    <el-row :gutter="20">
+                        <el-col :span="8">
+                            <el-form-item label="公司名称：">
                                 <span>shuxiangxinxikeji</span>
                             </el-form-item>
                         </el-col>
@@ -41,23 +61,20 @@
                             </el-form-item>
                         </el-col>
                     </el-row>
+
                     <el-row :gutter="20">
-                        <el-col :span="8">
-                            <el-form-item label="公司名称：">
-                                <span>shuxiangxinxikeji</span>
-                            </el-form-item>
-                        </el-col>
                         <el-col :span="8">
                             <el-form-item label="所在地：">
                                 <span>上海市-浦东新区</span>
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
-                            <el-form-item label="公司邮箱：">
+                            <el-form-item label="所在地：">
                                 <span>wangxiuming@163.com</span>
                             </el-form-item>
                         </el-col>
                     </el-row>
+
                 </el-form>
             </div>
         </div>

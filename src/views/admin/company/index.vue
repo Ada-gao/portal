@@ -1,9 +1,44 @@
 <template>
     <div class="app-container calendar-list-container">
-        <div class="filter-container">
-            <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="公司名称" v-model="listQuery.name"></el-input>
-            <el-button class="filter-item" type="primary" v-waves icon="search" @click="handleFilter">搜索</el-button>
-            <el-button v-if="sys_company_add" class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="edit">添加</el-button>
+        <div class="common_head omit1">
+            <i class="iconfont icon-gongsi1"></i>
+            <em class="font16">公司列表</em>
+        </div>
+        <el-form :model="form" :rules="rules" ref="form" class="pt20">
+            <el-row :gutter="20">
+                <el-col :span="6">
+                    <el-form-item prop="companyName">
+                        <el-input @keyup.enter.native="handleFilter" v-model="form.companyName" placeholder="输入所属公司名称" maxlength="50"></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="6">
+                    <el-form-item prop="accountId">
+                        <el-input @keyup.enter.native="handleFilter" v-model="form.accountId" placeholder="输入账号ID"></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="6">
+                    <el-form-item prop="contactName">
+                        <el-input @keyup.enter.native="handleFilter" v-model="form.contactName" placeholder="输入联系人姓名" maxlength="50"></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="6">
+                    <el-form-item prop="accountStatus">
+                        <el-select style="width: 100%" v-model="form.accountStatus" placeholder="选择账户状态" clearable @change="check_status">
+                            <el-option v-for="item in account_status" :key="item.value" :label="item.label" :value="item.label"></el-option>
+                       </el-select>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+        </el-form>
+        <div class="common_btn tc">
+            <button @click="reset"><i class="iconfont icon-zhongzhi"></i>重置</button>
+            <button @click="handleFilter"><i class="iconfont el-icon-search"></i>查询</button>
+        </div>
+
+        <div class="filter-container tr">
+            <el-button v-if="sys_company_add" class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="edit" size="medium">
+                <i class="iconfont icon-svg16"></i>新建公司
+            </el-button>
         </div>
 
         <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 99%" v-if="list.length">
@@ -18,11 +53,11 @@
                 </template>
             </el-table-column>
 
-            <el-table-column align="center" label="公司地址">
+            <el-table-column align="center" label="公司所在地" show-overflow-tooltip>
                 <template slot-scope="scope"><span>{{scope.row.companyAddress}}</span></template>
             </el-table-column>
 
-            <el-table-column align="center" label="所在省份" show-overflow-tooltip>
+            <el-table-column align="center" label="所在省份">
                 <template slot-scope="scope"><span>{{scope.row.companyProvince}} </span></template>
             </el-table-column>
 
@@ -63,12 +98,33 @@ export default {
     data() {
         return {
             list: null,             //公司管理列表数据
+            account_status:[],      //账户状态 数据
             total: null,            //数据总页码
             listLoading: true,      //加载列表数据loading
             listQuery: {
                 page: 1,            //当前页数
                 limit: 20,          //一页显示数据量
                 name:''         //搜索公司名称
+            },
+            rules: {    //表单验证
+                companyName: [
+                    {required: true, trigger: 'blur', message: '请输入所属公司名称'}
+                ],
+                accountId: [
+                    {required: true, trigger: 'blur', message: '请输入账号id'}
+                ],
+                contactName: [
+                    {required: true, trigger: 'blur', message: '请输入联系人姓名'}
+                ],
+                accountStatus: [
+                     {required: true, trigger: 'blur', message: '请输入选择账户状态'}
+                ],
+            },
+            form:{
+                companyName:'',          //公司名称
+                accountId:'',            //账号id
+                contactName:'',          //联系人姓名
+                accountStatus:'',        //账户状态
             },
             tableKey: 0
         };
@@ -84,9 +140,17 @@ export default {
         this.sys_company_upd = this.permissions["sys_company_upd"];
     },
     methods: {
+        //选择账户状态
+        check_status(){
+
+        },
+        //点击重置
+        reset(){
+            this.$refs['form'].resetFields()
+        },
         //查看公司详情跳转
         for_company_details(item){
-            this.$router.push({path:'/admin/company/detail', query: {item: encodeURI(JSON.stringify(item))}});
+            this.$router.push({path:'/admin/company/detail', query: {item:JSON.stringify(item)}});
         },
         //创建新公司跳转
         handleCreate() {
@@ -157,3 +221,6 @@ export default {
     }
 };
 </script>
+<style scoped lang="scss">
+.filter-item i{ color:#fff; margin-right: 10px;}
+</style>

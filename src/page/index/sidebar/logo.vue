@@ -2,18 +2,14 @@
   <div class="logo">
     <transition name="fade">
       <span v-if="isCollapse" class="logo_title is-bold " key="0" :class="{'is-text':!type,'is-img':type}">
-        <template v-if="type">
-          <img :src="website.logo" width="40" height="40" />
-        </template>
-        <template v-else>
-          {{website.logo}}
-        </template>
+          <img src="../../../assets/img/logo.png" width="26" height="26" style="margin: 18px 0 0 8px;"/>
       </span>
     </transition>
     <transition-group name="fade">
       <template v-if="!isCollapse">
-        <span class="logo_title is-bold" key="1">{{website.title}} </span>
-        <span class="logo_subtitle" key="2">{{website.author}}</span>
+<!--         <span class="logo_title is-bold" key="1">{{website.title}}</span> -->
+        <span class="logo_title vm" key="1"> <img src="../../../assets/img/logo.png"></span>
+        <span class="logo_subtitle vm" key="2">数赟大数据平台</span>
       </template>
     </transition-group>
   </div>
@@ -68,6 +64,7 @@ export default {
   padding: 0 5px 0 0;
   color: #409eff;
   font-size: 28px;
+  margin-right: 10px;
   &.is-bold {
     font-weight: 700;
   }

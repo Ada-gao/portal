@@ -10,15 +10,15 @@
                     </template>
                 </el-table-column>
 
-                <el-table-column align="center" label="产品类型" class-name="left">
+                <el-table-column align="center" label="消费产品">
                     <template slot-scope="scope">
-                        <span>{{scope.row.companyName}}</span>
+                        <span>{{scope.row.companyCode}}</span>
                     </template>
                 </el-table-column>
 
-                <el-table-column align="center" label="核验类型">
+                <el-table-column align="center" label="产品详情">
                     <template slot-scope="scope">
-                        <span>{{scope.row.companyAddress}}</span>
+                        <span>{{scope.row.companyName}}</span>
                     </template>
                 </el-table-column>
 
@@ -28,7 +28,7 @@
                     </template>
                 </el-table-column>
 
-                <el-table-column align="center" label="消费数量" show-overflow-tooltip>
+                <el-table-column align="center" label="消费数量">
                     <template slot-scope="scope">
                         <span>{{scope.row.industryType}}</span>
                     </template>

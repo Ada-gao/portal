@@ -8,13 +8,13 @@
         <div class="mt20">
         	<el-table :data="list" v-loading="false" element-loading-text="给我一点时间" fit highlight-current-row style="width: 100%">
 
-                <el-table-column align="center" label="消费批次号">
+                <el-table-column align="center" label="消费流水号">
                     <template slot-scope="scope">
                         <span>{{scope.row.companyCode}}</span>
                     </template>
                 </el-table-column>
 
-                <el-table-column align="center" label="核验类型" class-name="left">
+                <el-table-column align="center" label="产品详情">
                     <template slot-scope="scope">
                         <span>{{scope.row.companyName}}</span>
                     </template>
@@ -54,7 +54,7 @@
                     <template slot-scope="scope"><span>{{scope.row.orgSize}}</span></template>
                 </el-table-column>
 
-                <el-table-column align="center" label="消费金额">
+                <el-table-column align="center" label="消费金额(元)">
                     <template slot-scope="scope"><span>{{scope.row.orgSize}}</span></template>
                 </el-table-column>
 
@@ -62,7 +62,7 @@
                     <template slot-scope="scope"><span>{{scope.row.orgSize}}</span></template>
                 </el-table-column>
 
-                <el-table-column align="center" label="所需公司">
+                <el-table-column align="center" label="所属公司">
                     <template slot-scope="scope"><span>{{scope.row.orgSize}}</span></template>
                 </el-table-column>
 

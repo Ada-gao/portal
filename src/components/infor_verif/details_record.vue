@@ -10,40 +10,40 @@
 
                 <el-table-column align="center" label="消费批次号">
                     <template slot-scope="scope">
-                        <span>{{scope.row.companyCode}}</span>
+                        <span>C000001</span>
                     </template>
                 </el-table-column>
 
                 <el-table-column align="center" label="核验类型" class-name="left">
                     <template slot-scope="scope">
-                        <span>{{scope.row.companyName}}</span>
+                        <span>二要素</span>
                     </template>
                 </el-table-column>
 
                 <el-table-column align="center" label="姓名">
                     <template slot-scope="scope">
-                        <span>{{scope.row.companyAddress}}</span>
+                        <span>张三</span>
                     </template>
                 </el-table-column>
 
                 <el-table-column align="center" label="手机号码">
                     <template slot-scope="scope">
-                        <span>{{scope.row.companyProvince}}</span>
+                        <span>13386182259</span>
                     </template>
                 </el-table-column>
 
                 <el-table-column align="center" label="身份证号码" show-overflow-tooltip>
                     <template slot-scope="scope">
-                        <span>{{scope.row.industryType}}</span>
+                        <span>12334552323232323</span>
                     </template>
                 </el-table-column>
 
                 <el-table-column align="center" label="核验结果">
-                    <template slot-scope="scope"><span>{{scope.row.orgSize}}</span></template>
+                    <template slot-scope="scope"><span>信息一致/信息不一致</span></template>
                 </el-table-column>
 
                 <el-table-column align="center" label="查询时间">
-                    <template slot-scope="scope"><span>{{scope.row.orgSize}}</span></template>
+                    <template slot-scope="scope"><span>2018-8-29 14:50:24</span></template>
                 </el-table-column>
 
                 <el-table-column align="center" label="核验状态">
@@ -51,19 +51,19 @@
                 </el-table-column>
 
                 <el-table-column align="center" label="核验方式">
-                    <template slot-scope="scope"><span>{{scope.row.orgSize}}</span></template>
+                    <template slot-scope="scope"><span>API</span></template>
                 </el-table-column>
 
-                <el-table-column align="center" label="消费金额">
-                    <template slot-scope="scope"><span>{{scope.row.orgSize}}</span></template>
+                <el-table-column align="center" label="消费金额(元)">
+                    <template slot-scope="scope"><span>0.2</span></template>
                 </el-table-column>
 
                 <el-table-column align="center" label="查询人">
-                    <template slot-scope="scope"><span>{{scope.row.orgSize}}</span></template>
+                    <template slot-scope="scope"><span>ABC</span></template>
                 </el-table-column>
 
-                <el-table-column align="center" label="所需公司">
-                    <template slot-scope="scope"><span>{{scope.row.orgSize}}</span></template>
+                <el-table-column align="center" label="所属公司">
+                    <template slot-scope="scope"><span>数赟科技</span></template>
                 </el-table-column>
 
             </el-table>

@@ -42,7 +42,7 @@
 		</el-form>
 		<div class="common_btn tc">
         	<button @click="reset"><i class="iconfont icon-zhongzhi"></i>重置</button>
-        	<button @click="get_data"><i class="iconfont icon-xiazai"></i>查询</button>
+        	<button @click="get_data"><i class="iconfont el-icon-search"></i>查询</button>
         </div>
         <!--table 列表-->
         <div class="mt20" v-if="list.length">
@@ -54,7 +54,19 @@
                     </template>
                 </el-table-column>
 
-                <el-table-column align="center" label="产品类型" class-name="left">
+                <el-table-column align="center" label="产品类型">
+                    <template slot-scope="scope">
+                        <span>身份信息核验</span>
+                    </template>
+                </el-table-column>
+
+                <el-table-column align="center" label="核验类型"><!--信息核验-->
+                    <template slot-scope="scope">
+                        <span>二要素</span>
+                    </template>
+                </el-table-column>
+
+                <el-table-column align="center" label="产品详情"><!--历史结果查询-->
                     <template slot-scope="scope">
                         <span>{{scope.row.companyName}}</span>
                     </template>
@@ -72,7 +84,7 @@
                     </template>
                 </el-table-column>
 
-                <el-table-column align="center" label="核验失败" show-overflow-tooltip>
+                <el-table-column align="center" label="核验失败">
                     <template slot-scope="scope">
                         <span>{{scope.row.industryType}}</span>
                     </template>
@@ -94,7 +106,7 @@
                     <template slot-scope="scope"><span>{{scope.row.orgSize}}</span></template>
                 </el-table-column>
 
-                <el-table-column align="center" label="操作" fixed="right">
+                <el-table-column align="center" label="操作">
                     <template slot-scope="scope">
                         <a size="small" class="common_btn" @click="get_details(scope.row)">查看详情</a>
                     </template>

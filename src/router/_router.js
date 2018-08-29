@@ -57,9 +57,9 @@ export default [{
   path: '/admin/company',
   component: Layout,
   children: [
-    { path: 'detail', name: '公司详情', component: _import('admin/company/detail', 'views')},
-    { path: 'create', name: '公司账号创建', component: _import('admin/company/create', 'views')},
-    { path: 'change', name: '公司详情修改', component: _import('admin/company/change', 'views')}
+    { path: 'detail', name: '公司信息', component: _import('admin/company/detail', 'views')},
+    { path: 'create', name: '新建公司', component: _import('admin/company/create', 'views')},
+    { path: 'change', name: '修改公司信息', component: _import('admin/company/change', 'views')}
   ]
 }, {
   path: '/404',

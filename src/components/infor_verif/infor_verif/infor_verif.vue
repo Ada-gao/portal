@@ -39,7 +39,7 @@
 
 	        <div class="common_btn tc">
 	        	<button @click="reset"><i class="iconfont icon-zhongzhi"></i>重置</button>
-	        	<button @click="verif"><i class="iconfont icon-xiazai"></i>立即核验</button>
+	        	<button @click="verif"><i class="iconfont icon-heyan"></i>立即核验</button>
 	        </div>
 
     	</div>

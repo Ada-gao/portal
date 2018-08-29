@@ -2,19 +2,6 @@
     <div>
 		<el-form :model="form" :rules="rules" ref="form" class="pt20" label-width="100px">
 
-            <!-- <el-row :gutter="20">
-                <el-col :span="12">
-                    <el-form-item label="账号ID" prop="account">
-                        <el-input v-model="form.account" placeholder="请输入账号id"></el-input>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                    <el-form-item label="登录密码" prop="password">
-                        <el-input v-model="form.password" placeholder="请输入登录密码" maxlength="12"></el-input>
-                    </el-form-item>
-                </el-col>
-            </el-row> -->
-
             <el-row :gutter="20">
                 <el-col :span="12">
                     <el-form-item label="公司名称" prop="companyName">
@@ -55,21 +42,36 @@
 
             <el-row :gutter="20">
                 <el-col :span="12">
-                    <el-form-item label="联系人" prop="contact">
-                        <el-input v-model="form.contact" placeholder="请输入联系人姓名"></el-input>
+                    <el-form-item label="公司规模" prop="companyNumber">
+                        <el-select v-model="form.industryType" placeholder="请选择公司规模" @change="changeIndustry">
+                            <el-option v-for="item in coInfo.industryType" :key="item.id" :label="item.name" :value="item.id"></el-option>
+                        </el-select>
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item label="联系手机" prop="contactMobile">
-                        <el-input v-model="form.contactMobile" placeholder="请输入联系手机" maxlength="11"></el-input>
+                    <el-form-item label="公司邮箱" prop="companyMail">
+                        <el-input v-model="form.companyMail" placeholder="请输入公司邮箱"></el-input>
                     </el-form-item>
                 </el-col>
             </el-row>
 
             <el-row :gutter="20">
                 <el-col :span="12">
-                    <el-form-item label="公司邮箱" prop="companyMail">
-                        <el-input v-model="form.companyMail" placeholder="请输入公司邮箱"></el-input>
+                    <el-form-item label="联系人" prop="contact">
+                        <el-input v-model="form.contact" placeholder="请输入联系人姓名"></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                    <el-form-item label="职务">
+                        <el-input v-model="form.occupation" placeholder="请输入职务"></el-input>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+
+            <el-row :gutter="20">
+                <el-col :span="12">
+                    <el-form-item label="联系手机" prop="contactMobile">
+                        <el-input v-model="form.contactMobile" placeholder="请输入联系手机" maxlength="11"></el-input>
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -167,17 +169,18 @@ export default {
             img_list:[],            //上传图片列表
             form:{
                 companyName:'',                      //公司名称
-                companyProvince:"河南省",            //省
+                companyProvince:"",            //省
                 companyCity:'',                     //市
                 companyAddress:'',                  //公司地址
-                companyQualification:'11',            //公司资质
-                industryType:'11',                  //行业大类
-                industry:'22',                      //行业小类
+                companyQualification:'',            //公司资质
+                industryType:'',                  //行业大类
+                industry:'',                      //行业小类
                 remark:'',                          //备注
-                deptId:'33',
+                deptId:'',
                 contact:'',                         //联系人姓名
                 contactMobile:'',                   //联系电话
-                companyMail:''                      //公司邮箱
+                companyMail:'',                     //公司邮箱
+                occupation:'',                      //职务
             },
             rules: {    //表单验证
                 companyName: [
@@ -204,6 +207,9 @@ export default {
                 product_type: [
                      {required: true, trigger: 'blur', message: '请选择产品类型'}
                 ],
+                companyNumber: [
+                     {required: true, trigger: 'blur', message: '请选择公司规模'}
+                ],
             }
         }
     },
@@ -212,7 +218,10 @@ export default {
         if(this.$route.query.type){
             this.type = this.$route.query.type;
         }
-        this.changeProvince(this.form.companyProvince)
+        if(this.$route.query.item){
+            this.form = JSON.parse(this.$route.query.item)
+        }
+        this.changeProvince(this.form.companyProvince,'init')
     },
     methods: {
         //上传图片
@@ -238,7 +247,7 @@ export default {
             
         },
         //选择省份
-    	changeProvince (val) {
+    	changeProvince (val,type) {
             let idx = this.provinceData.findIndex((item, index) => {
                 return item.label == val
             })
@@ -251,7 +260,7 @@ export default {
                 return
             }
             this.cityData = this.provinceData[idx].children
-            this.form.companyCity = null
+            if(!type) this.form.companyCity = null
         },
         //获取行业大类数据
         get_industry_data(){
@@ -284,7 +293,7 @@ export default {
                         data: this.form,
                     }).then(response => {
                         if (response.data.code == 0) {
-                            this.$message.error('新建公司账号成功')
+                            this.$message({ showClose: true, message: '新建公司账号成功', type: 'success'})
                             this.$router.back()
                         } else {
                             this.$message.error(response.data.msg);

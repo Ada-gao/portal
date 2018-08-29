@@ -1,7 +1,7 @@
 <template>
     <div class="login-border">
         <el-form autoComplete="on" :model="loginForm" :rules="loginRules1" ref="loginForm" label-position="left" label-width="0px" class="card-box login-form">
-            <div class="title tc font16">找回密码</div>
+            <div class="title tc font14">找回密码</div>
             <div class="fg-cont">
                 <el-steps :active="activeStep" align-center>
                     <el-step title="身份验证"></el-step>

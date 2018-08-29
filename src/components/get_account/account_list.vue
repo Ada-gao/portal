@@ -1,7 +1,7 @@
 <template>
     <div class="basic_info common_style box_adorn mt20">
     	<div class="common_head omit1">
-            <i class="iconfont icon-552cde89f09d1"></i>
+            <i class="iconfont icon-gongsi1"></i>
             <em class="font16">帐号列表</em>
         </div>
         <el-form :model="form" :rules="rules" ref="form" class="pt20">
@@ -32,7 +32,7 @@
         </el-form>
         <div class="common_btn tc">
         	<button @click="reset"><i class="iconfont icon-zhongzhi"></i>重置</button>
-        	<button @click="verif"><i class="iconfont icon-xiazai"></i>立即核验</button>
+        	<button @click="verif"><i class="iconfont icon-heyan"></i>立即核验</button>
         </div>
         <!--table 列表-->
         <div class="mt20" v-if="list.length">

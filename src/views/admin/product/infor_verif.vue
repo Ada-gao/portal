@@ -33,7 +33,7 @@ export default {
     	//tab 切换
     	check_type(type){
     		this.type = type;
-            this.$router.replace({path:'/infor_verif', query: {type: this.type}});
+            this.$router.replace({path:'/product/infor_verif', query: {type: this.type}});
     	}
     }
 }

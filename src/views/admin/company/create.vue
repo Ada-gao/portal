@@ -1,9 +1,8 @@
 <template>
     <div  class="basic_info common_style box_adorn">
     	<div class="spec_head">
-    		<em class="in_b"></em><span>新建公司账号</span>
+    		<em class="in_b"></em><span>新建公司</span>
     	</div>
-    	<div class="product_set">公司基本信息</div>
     	<common_form></common_form>
     </div>
 </template>

@@ -3,94 +3,55 @@
         <el-form class="company_details pt20" label-width="100px">
 
             <el-row :gutter="20">
-                <el-col :span="12">
-                    <el-form-item label="账号ID：" class="omit1">
-                        <span>shuyunxinxikeji1001</span>
-                        <em class="ml15 cursor" @click="checkPass = true"><i class="iconfont icon-zhongzhi mr5"></i>修改密码</em>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                    <el-form-item label="Account Id：" class="omit1">
-                        <span>shuyunxinxikeji1002</span>
-                        <em class="ml15 cursor" @click="check_key"><i class="iconfont icon-zhongzhi mr5"></i>重置key</em>
-                        <div class="fr">
-                            <router-link :to="{path:'/admin/company/update', query:{type:'change'}}" tag="span" class="mr20 cursor"><i class="iconfont icon-zhongzhi mr5"></i><em>修改</em></router-link>
-                            <el-switch @change="check_restart" v-model="restart" active-color="#1A8CE1" active-text="启用"></el-switch>
-                        </div>
-                    </el-form-item>
-                </el-col>
-            </el-row>
-
-            <el-row :gutter="20">
-                <el-col :span="12">
-                    <el-form-item label="公司名称：">
+                <el-col :span="8">
+                    <el-form-item label="公司名称：" class="omit1">
                         <span>数赟信息科技有限公司</span>
                     </el-form-item>
                 </el-col>
-                <el-col :span="12">
-                    <el-form-item label="账户状态：">
-                        <span>付费使用</span>
-                    </el-form-item>
-                </el-col>
-            </el-row>
-
-            <el-row :gutter="20">
-                <el-col :span="12">
-                    <el-form-item label="账户余额：">
-                        <span>10000元</span>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                    <el-form-item label="余额提醒：">
-                        <span>1000元</span>
-                        <em class="ml15 cursor" @click="checkBalance = true"><i class="iconfont icon-zhongzhi mr5"></i>修改余额提醒</em>
-                    </el-form-item>
-                </el-col>
-            </el-row>
-
-            <el-row :gutter="20">
-                <el-col :span="12">
-                    <el-form-item label="公司地址：">
-                        <span>上海市浦东新区峨山路91号</span>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                    <el-form-item label="所在地：">
+                <el-col :span="8">
+                    <el-form-item label="所在地：" class="omit1">
                         <span>上海市-浦东新区</span>
                     </el-form-item>
                 </el-col>
+                <el-col :span="8">
+                    <el-form-item label="公司地址：" class="omit1">
+                        <span>上海市浦东新区陆家嘴</span>
+                    </el-form-item>
+                </el-col>
             </el-row>
 
             <el-row :gutter="20">
-                <el-col :span="12">
-                    <el-form-item label="联系人：">
-                        <span>王小虎</span>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="12">
+                <el-col :span="8">
                     <el-form-item label="所属行业：">
                         <span>IT/互联网-金融科技</span>
                     </el-form-item>
                 </el-col>
-            </el-row>
-
-            <el-row :gutter="20">
-                <el-col :span="12">
-                    <el-form-item label="联系手机：">
-                        <span>13901871234</span>
+                <el-col :span="8">
+                    <el-form-item label="公司规模：">
+                        <span>1000以上</span>
                     </el-form-item>
                 </el-col>
-                <el-col :span="12">
-                    <el-form-item label="职位：">
-                        <span>风控总监</span>
-                    </el-form-item>
-                </el-col>
-            </el-row>
-
-            <el-row :gutter="20">
-                <el-col :span="24">
+                <el-col :span="8">
                     <el-form-item label="公司邮箱：">
                         <span>wangxiuming@163.com</span>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+
+            <el-row :gutter="20">
+                <el-col :span="8">
+                    <el-form-item label="联系人：">
+                        <span>王秀明</span>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                    <el-form-item label="职务：">
+                        <span>总经理</span>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                    <el-form-item label="联系手机：">
+                        <span>13333333333</span>
                     </el-form-item>
                 </el-col>
             </el-row>

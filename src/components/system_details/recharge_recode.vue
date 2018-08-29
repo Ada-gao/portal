@@ -6,17 +6,11 @@
     	</div>
     	<!--table 列表-->
         <div class="mt20">
-        	<el-table :data="list" v-if="list.length" v-loading="false" element-loading-text="给我一点时间" fit highlight-current-row style="width: 100%">
+        	<el-table :data="list" v-loading="false" element-loading-text="给我一点时间" fit highlight-current-row style="width: 100%">
 
-                <el-table-column align="center" label="充值编号">
+                <el-table-column align="center" label="充值流水号">
                     <template slot-scope="scope">
                         <span>{{scope.row.companyCode}}</span>
-                    </template>
-                </el-table-column>
-
-                <el-table-column align="center" label="充值类型" class-name="left">
-                    <template slot-scope="scope">
-                        <span>{{scope.row.companyName}}</span>
                     </template>
                 </el-table-column>
 
@@ -26,13 +20,7 @@
                     </template>
                 </el-table-column>
 
-                <el-table-column align="center" label="备注">
-                    <template slot-scope="scope">
-                        <span>{{scope.row.companyProvince}}</span>
-                    </template>
-                </el-table-column>
-
-                <el-table-column align="center" label="充值时间" show-overflow-tooltip>
+                <el-table-column align="center" label="充值时间" >
                     <template slot-scope="scope">
                         <span>{{scope.row.industryType}}</span>
                     </template>
@@ -40,6 +28,12 @@
 
                 <el-table-column align="center" label="充值状态">
                     <template slot-scope="scope"><span>{{scope.row.orgSize}}</span></template>
+                </el-table-column>
+
+                <el-table-column align="center" label="充值备注" show-overflow-tooltip>
+                    <template slot-scope="scope">
+                        <span>{{scope.row.companyProvince}}</span>
+                    </template>
                 </el-table-column>
 
                 <el-table-column align="center" label="操作人">

@@ -13,10 +13,8 @@
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item label="充值类型" prop="type">
-                        <el-select style="width: 100%" v-model="form.type" placeholder="选择充值类型" clearable @change="check_type">
-		                	<el-option v-for="item in type_list" :key="item.value" :label="item.label" :value="item.label"></el-option>
-          			   </el-select>
+                    <el-form-item label="所属账户" prop="money">
+                        <el-input type="password" v-model="form.money" placeholder="请选择所属账户"></el-input>
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -36,8 +34,8 @@
 
             <el-row>
                 <el-col :span="24">
-                    <el-form-item label="备注">
-                        <el-input type="textarea" rows="3" v-model="form.text" placeholder="输入备注内容" maxlength="12"></el-input>
+                    <el-form-item label="充值备注">
+                        <el-input type="textarea" rows="3" v-model="form.text" placeholder="请输入备注内容" maxlength="12"></el-input>
                     </el-form-item>
                 </el-col>
             </el-row>
