@@ -87,7 +87,7 @@ export default {
                 newPW1:'',     //确认新密码
             },
             loading: false,
-            activeStep: 1,
+            activeStep: 0,
             time: 60,
             timeFlag:false,
             pwdStep: 0,
