@@ -4,28 +4,33 @@
             <i class="iconfont icon-gongsi1"></i>
             <em class="font16">公司列表</em>
         </div>
-        <el-form :model="form" :rules="rules" ref="form" class="pt20">
+        <!--筛选条件-->
+        <el-form :model="listQuery" ref="form" class="pt20">
             <el-row :gutter="20">
                 <el-col :span="6">
-                    <el-form-item prop="companyName">
-                        <el-input @keyup.enter.native="handleFilter" v-model="form.companyName" placeholder="输入所属公司名称" maxlength="50"></el-input>
+                    <el-form-item prop="name">
+                        <el-input @keyup.enter.native="handleFilter" v-model="listQuery.name" placeholder="输入公司名称" maxlength="50"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
-                    <el-form-item prop="accountId">
-                        <el-input @keyup.enter.native="handleFilter" v-model="form.accountId" placeholder="输入账号ID"></el-input>
+                    <el-form-item prop="companyProvince">
+                        <el-select v-model="listQuery.companyProvince" placeholder="省份筛选">
+                            <el-option v-for="item in provinceData" :key="item.value" :label="item.label" :value="item.label"></el-option>
+                        </el-select>
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
-                    <el-form-item prop="contactName">
-                        <el-input @keyup.enter.native="handleFilter" v-model="form.contactName" placeholder="输入联系人姓名" maxlength="50"></el-input>
+                    <el-form-item prop="industryType">
+                        <el-select v-model="listQuery.industryType" placeholder="行业筛选">
+                            <el-option v-for="item in industryData" :key="item.industryName" :label="item.industryName" :value="item.industryName"></el-option>
+                        </el-select>
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
-                    <el-form-item prop="accountStatus">
-                        <el-select style="width: 100%" v-model="form.accountStatus" placeholder="选择账户状态" clearable @change="check_status">
-                            <el-option v-for="item in account_status" :key="item.value" :label="item.label" :value="item.label"></el-option>
-                       </el-select>
+                    <el-form-item prop="orgSize">
+                        <el-select v-model="listQuery.orgSize" placeholder="公司规模筛选">
+                            <el-option v-for="item in orgSizeData" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                        </el-select>
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -62,11 +67,11 @@
             </el-table-column>
 
             <el-table-column align="center" label="所属行业">
-                <template slot-scope="scope"><span>{{scope.row.industry}}-{{scope.row.industryType}}</span></template>
+                <template slot-scope="scope"><span>{{scope.row.industryType}}</span></template>
             </el-table-column>
 
             <el-table-column align="center" label="公司规模">
-                <template slot-scope="scope"><span>{{scope.row.deptName}}</span></template>
+                <template slot-scope="scope"><span>{{scope.row.orgSize}}</span></template>
             </el-table-column>
 
             <el-table-column align="center" label="操作" width="180">
@@ -87,44 +92,29 @@
 </template>
 
 <script>
-import { fetchList, getObj, addObj, putObj, delObj } from "@/api/user";
-import { deptRoleList, fetchDeptTree } from "@/api/role";
 import waves from "@/directive/waves/index.js"; // 水波纹指令
 import { mapGetters } from "vuex";
+import { provinceAndCityData } from 'element-china-area-data' // 省市区数据
 import request from "@/router/axios";
 export default {
-    name: "table_user",
+    name: "company_index",
     directives: { waves },
     data() {
         return {
+            provinceData: provinceAndCityData,      //省份数据
+            orgSizeData:[],                         //公司规模
+            industryData:[],                        //行业
             list: null,             //公司管理列表数据
             account_status:[],      //账户状态 数据
             total: null,            //数据总页码
             listLoading: true,      //加载列表数据loading
             listQuery: {
-                page: 1,            //当前页数
-                limit: 20,          //一页显示数据量
-                name:''         //搜索公司名称
-            },
-            rules: {    //表单验证
-                companyName: [
-                    {required: true, trigger: 'blur', message: '请输入所属公司名称'}
-                ],
-                accountId: [
-                    {required: true, trigger: 'blur', message: '请输入账号id'}
-                ],
-                contactName: [
-                    {required: true, trigger: 'blur', message: '请输入联系人姓名'}
-                ],
-                accountStatus: [
-                     {required: true, trigger: 'blur', message: '请输入选择账户状态'}
-                ],
-            },
-            form:{
-                companyName:'',          //公司名称
-                accountId:'',            //账号id
-                contactName:'',          //联系人姓名
-                accountStatus:'',        //账户状态
+                page: 1,                //当前页数
+                limit: 20,              //一页显示数据量
+                name:'',                //搜索公司名称
+                companyProvince:'',     //所在省份
+                industryType:'',        //所属行业
+                orgSize:'',             //公司规模
             },
             tableKey: 0
         };
@@ -133,20 +123,42 @@ export default {
         ...mapGetters(["permissions"])
     },
     created() {
-        this.getList();
+        //获取操作权限
         this.sys_company_view = this.permissions["sys_company_view"];
         this.sys_company_del = this.permissions["sys_company_del"];
         this.sys_company_add = this.permissions["sys_company_add"];
         this.sys_company_upd = this.permissions["sys_company_upd"];
+        this.getList();
+        this.get_orgSizeData();
+        this.get_industryData(0);
     },
     methods: {
-        //选择账户状态
-        check_status(){
-
+        //获取公司规模
+        get_orgSizeData(){
+            request({
+                url: "/admin/dict/type/" + 'org_size',
+                method: "get",
+            }).then(response => {
+                if(response.status == 200){
+                   this.orgSizeData = response.data;
+                }
+            })
+        },
+        //获取行业  一级
+        get_industryData(id){
+            request({
+                url: "/admin/industry/" + id,
+                method: "get",
+            }).then(response => {
+                if(response.status == 200){
+                   this.industryData = response.data
+                }
+            })
         },
         //点击重置
         reset(){
-            this.$refs['form'].resetFields()
+            this.$refs['form'].resetFields();
+            this.getList();
         },
         //查看公司详情跳转
         for_company_details(item){
@@ -159,15 +171,29 @@ export default {
         //获取公司列表
         getList() {
             this.listLoading = true;
+            var params = {};
+            params.page = this.listQuery.page;
+            params.limit = this.listQuery.limit;
+            if(this.listQuery.name) params.name = this.listQuery.name;
+            if(this.listQuery.companyProvince) params.companyProvince = this.listQuery.companyProvince;
+            if(this.listQuery.industryType) params.industryType = this.listQuery.industryType;
+            if(this.listQuery.orgSize) params.orgSize = this.listQuery.orgSize;
             request({
                 url: "/admin/company/companyPage",
                 method: "get",
-                params:this.listQuery
+                params:params
             }).then(response => {
                 this.listLoading = false;
                 if (response.status == 200) {
                     this.total = response.data.total;
-                    this.list = response.data.records
+                    this.list = response.data.records;
+                    for(var i in this.list){
+                        for(var j in this.orgSizeData){
+                           if(this.orgSizeData[j].value == this.list[i].orgSize){
+                                this.list[i].orgSize = this.orgSizeData[j].label
+                            } 
+                        } 
+                    }
                 } else {
                     this.$message.error(response.data.msg);
                 }

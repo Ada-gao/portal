@@ -31,10 +31,10 @@
                 <el-col :span="12">
                     <el-form-item label="所属行业" prop="industry">
                         <el-select v-model="form.industryType" placeholder="请选择行业大类" @change="changeIndustry" style="width: 47%!important;">
-                            <el-option v-for="item in coInfo.industryType" :key="item.id" :label="item.name" :value="item.id"></el-option>
+                            <el-option v-for="item in coInfo.industryType" :key="item.industryName" :label="item.industryName" :value="item.industryName""></el-option>
                         </el-select>
                         <el-select class="fr" v-model="form.industry" placeholder="请选择行业小类" style="width: 47%!important;">
-                            <el-option v-for="item in coInfo.industry" :key="item.id" :label="item.name" :value="item.id"></el-option>
+                            <el-option v-for="item in coInfo.industry" :key="item.industryName" :label="item.industryName" :value="item.industryName"></el-option>
                         </el-select>
                     </el-form-item>
                 </el-col>
@@ -42,15 +42,15 @@
 
             <el-row :gutter="20">
                 <el-col :span="12">
-                    <el-form-item label="公司规模" prop="companyNumber">
-                        <el-select v-model="form.industryType" placeholder="请选择公司规模" @change="changeIndustry">
-                            <el-option v-for="item in coInfo.industryType" :key="item.id" :label="item.name" :value="item.id"></el-option>
+                    <el-form-item label="公司规模" prop="orgSize">
+                        <el-select v-model="form.orgSize" placeholder="请选择公司规模" @change="changeIndustry">
+                            <el-option v-for="item in orgSizeData" :key="item.value" :label="item.label" :value="item.value"></el-option>
                         </el-select>
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item label="公司邮箱" prop="companyMail">
-                        <el-input v-model="form.companyMail" placeholder="请输入公司邮箱"></el-input>
+                    <el-form-item label="公司邮箱" prop="companyEmail">
+                        <el-input v-model="form.companyEmail" placeholder="请输入公司邮箱"></el-input>
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -78,7 +78,7 @@
 
             <el-row :gutter="20">
                 <el-col :span="24">
-                    <el-form-item label="公司资质" class="clearfix">
+                    <el-form-item label="公司资质" class="clearfix" prop="companyQualification">
                         <ul class="img_list fl clearfix" v-if="img_list.length">
                             <li class="pr fl" v-for="(img,index) in img_list"><img :src="img"><span @click="delete_img(index)" class="pa in_b none">删除</span></li>
                         </ul>
@@ -153,12 +153,13 @@
 import Validate from '@/util/filter_rules'
 import request from "@/router/axios";
 import { provinceAndCityData } from 'element-china-area-data' // 省市区数据
-// import { getAuthDustryByType, getAuthDustries, uploadLogo } from '@/api/api'
 export default {
     data () {
         return {
             type:'',                    //当为change是为修改   其他为创建账号
             provinceData: provinceAndCityData,      //省份数据
+            orgSizeData:[],                 //公司规模
+            industryTypeData:[],            //所属行业一级
             cityData:{},                //市数据
             select_list:[],             //产品类型数据
             checkList:[],
@@ -168,8 +169,9 @@ export default {
             },
             img_list:[],            //上传图片列表
             form:{
+                dto:'dto',
                 companyName:'',                      //公司名称
-                companyProvince:"",            //省
+                companyProvince:"",                 //省
                 companyCity:'',                     //市
                 companyAddress:'',                  //公司地址
                 companyQualification:'',            //公司资质
@@ -179,8 +181,9 @@ export default {
                 deptId:'',
                 contact:'',                         //联系人姓名
                 contactMobile:'',                   //联系电话
-                companyMail:'',                     //公司邮箱
+                companyEmail:'',                     //公司邮箱
                 occupation:'',                      //职务
+                orgSize:''                          //公司规模
             },
             rules: {    //表单验证
                 companyName: [
@@ -201,7 +204,7 @@ export default {
                 contactMobile: [
                      {required: true, trigger: 'blur', validator: Validate.isvalidateMobile}
                 ],
-                companyMail: [
+                companyEmail: [
                      {required: true, trigger: 'blur', validator: Validate.validEmail}
                 ],
                 product_type: [
@@ -210,29 +213,46 @@ export default {
                 companyNumber: [
                      {required: true, trigger: 'blur', message: '请选择公司规模'}
                 ],
+                companyQualification: [
+                     {required: true, trigger: 'blur', message: '请上传公司资质'}
+                ],
+                orgSize: [
+                     {required: true, trigger: 'change', message: '请选择公司规模'}
+                ]
             }
         }
     },
     created(){
-        //this.get_industry_data();
         if(this.$route.query.type){
             this.type = this.$route.query.type;
         }
         if(this.$route.query.item){
             this.form = JSON.parse(this.$route.query.item)
         }
-        this.changeProvince(this.form.companyProvince,'init')
+        this.get_orgSizeData();
+        //获取一级行业
+        this.get_industryData(0)
+        //当存在省份  获取省份下的市
+        if(this.form.companyProvince){
+            this.changeProvince(this.form.companyProvince,'init')
+        }
     },
     methods: {
+        //获取公司规模
+        get_orgSizeData(){
+            request({
+                url: "/admin/dict/type/" + 'org_size',
+                method: "get",
+            }).then(response => {
+                if(response.status == 200){
+                   this.orgSizeData = response.data 
+                }
+            })
+        },
         //上传图片
         upload_img(){
-            //var file_obj = this.$refs['img'].files[0];
             var file_obj = this.$refs['img'].files[0]
-            //this.arr = [];
             let formData = new FormData()
-            // for(var i in file_obj){
-            //     this.$set(this.arr, i, file_obj[i]);
-            // }
             formData.append('file', file_obj)
             request({
                 url: "/admin/company/upload",
@@ -243,8 +263,15 @@ export default {
                 }
             }).then(response => {
                 this.img_list.push(response.data)
+                this.form.companyQualification = this.img_list.join(",");
+
             }).catch(() => {})
             
+        },
+        //删除图片
+        delete_img(index){
+            this.img_list.splice(index,1);
+            this.form.companyQualification = this.img_list.join(",");
         },
         //选择省份
     	changeProvince (val,type) {
@@ -262,27 +289,29 @@ export default {
             this.cityData = this.provinceData[idx].children
             if(!type) this.form.companyCity = null
         },
-        //获取行业大类数据
-        get_industry_data(){
-            getAuthDustries().then(res => {
-                this.coInfo.industryType = res.data 
+        //所属行业  一级
+        get_industryData(id,type){
+            request({
+                url: "/admin/industry/" + id,
+                method: "get",
+            }).then(response => {
+                if(response.status == 200){
+                   if(type){
+                        this.coInfo.industry = response.data
+                   }else{
+                        this.coInfo.industryType = response.data
+                   }
+                }
             })
         },
-        
-        //选择行业大类
-        changeIndustry (val) {
-            this.form.industry = ''
-            //获取行业小类
-            getAuthDustryByType(val).then(res => {
-                this.coInfo.industry = res.data
-            })
+        //选择所属行业 一级
+        changeIndustry(){
+            for(var i in this.coInfo.industryType){
+                if(this.coInfo.industryType[i].industryName == this.form.industryType){
+                    this.get_industryData(this.coInfo.industryType[i].industryId,'industry')
+                }
+            }
         },
-
-        //删除图片
-        delete_img(index){
-            this.img_list.splice(index,1);
-        },
-
         //提交
         submit(){
             this.$refs['form'].validate(valid => {
@@ -312,7 +341,7 @@ export default {
 .upload{ width: 120px; height: 80px; border:1px solid #C8C8C8; background-color: #FAFAFA; border-radius: 2px; -webkit-border-radius: 2px; line-height: 20px; font-size: 0; position: relative;}
 .upload input{ position: absolute; top: 0; left: 0; height: 80px; width: 120px; opacity: 0;}
 .upload em{ font-size: 30px; color:#1A8CE1; margin-top: 10px; }
-.upload span{ display: block; font-size: 12px; margin-top: 5px;}
+.upload span{ display: block; font-size: 12px; margin-top: 5px; color:#A1A1A1;}
 .upload i{ display: block; font-size: 10px;}
 .img_list li{ width: 120px; height: 80px; margin-right: 10px; }
 .img_list li:hover span{ display: block;}

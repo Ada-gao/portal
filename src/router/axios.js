@@ -20,44 +20,53 @@ NProgress.configure({ showSpinner: false })// NProgress Configuration
 let msg
 // HTTPrequest拦截
 axios.interceptors.request.use(config => {
-  NProgress.start() // start progress bar
-  if (store.getters.access_token) {
-    config.headers['Authorization'] = 'Bearer ' + getToken() // 让每个请求携带token--['X-Token']为自定义key 请根据实际情况自行修改
-  }
-  return config
-}, error => {
-  return Promise.reject(error)
-})
+    NProgress.start() // start progress bar
+    if (store.getters.access_token) {
+        config.headers['Authorization'] = 'Bearer ' + getToken() // 让每个请求携带token--['X-Token']为自定义key 请根据实际情况自行修改
+    }
+    return config
+    }, error => {
+        return Promise.reject(error)
+    }
+)
 // HTTPresponse拦截
 axios.interceptors.response.use(data => {
-  NProgress.done()
-  return data
+    NProgress.done()
+    return data
 }, error => {
-  NProgress.done()
-  let errMsg = error.toString()
-  let code = errMsg.substr(errMsg.indexOf('code') + 5)
+    NProgress.done()
+    let errMsg = error.toString()
+    let code = errMsg.substr(errMsg.indexOf('code') + 5)
 
-  //错误处理
+    //错误处理
     if (code === 400) {
-        message(res.data.message || res.data.error, 'error')
+        Message(res.data.message || res.data.error, 'error')
+        return
     } else if (code === 401) {
-        message('登录时间过期，请重新登录', 'error')
+        Message({
+            message:'登录时间过期，请重新登录',
+            type: 'error'
+        })
         removeToken()
         router.replace({ path: '/login' })
     } else if (code === 403) {
-        message('管理权限不足，请联系管理员')
+        Message({
+            message:'管理权限不足，请联系管理员',
+            type: 'error'
+        })
         router.replace({path: '/login'})
     } else if (code === 500) {
-        message(res.data.message || res.data.error, 'error')
+        Message({
+            message: res.data.message || res.data.error,
+            type: 'error'
+        })
     } else {
-        message('服务器被吃了⊙﹏⊙∥', 'error')
+        Message({
+            message:'服务器被吃了⊙﹏⊙∥',
+            type: 'error'
+        })
+        return
     }
-  
-  Message({
-    message: errorCode[code] || errorCode['default'],
-    type: 'error'
-  })
-  return Promise.reject(new Error(error))
+    return Promise.reject(new Error(error))
 })
-
 export default axios

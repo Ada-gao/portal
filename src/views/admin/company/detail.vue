@@ -40,13 +40,13 @@
 
                 <el-row :gutter="20">
                     <el-col :span="8">
-                        <el-form-item label="联系人"><span>{{details_data.companyName}}</span></el-form-item>
+                        <el-form-item label="联系人："><span>{{details_data.companyName}}</span></el-form-item>
                     </el-col>
                     <el-col :span="8">
-                        <el-form-item label="职务"><span>{{details_data.deptId}}</span></el-form-item>
+                        <el-form-item label="职务："><span>{{details_data.deptId}}</span></el-form-item>
                     </el-col>
                     <el-col :span="8">
-                        <el-form-item label="联系手机"><span>{{details_data.deptId}}</span></el-form-item>
+                        <el-form-item label="联系手机："><span>{{details_data.deptId}}</span></el-form-item>
                     </el-col>
                 </el-row>
 
@@ -93,6 +93,7 @@
 <script>
 import Validate from '@/util/filter_rules'
 import { mapGetters } from "vuex";
+import request from "@/router/axios";
 export default {
     computed: {
         ...mapGetters(["permissions"])
@@ -107,12 +108,21 @@ export default {
     },
     created() {
         this.sys_company_upd = this.permissions["sys_company_upd"];
-        this.details_data = JSON.parse(this.$route.query.item)
     },
     mounted(){
 
     },
     methods: {
+        //获取公司详情
+        get_industryData(id,type){
+            request({
+                url: "/admin/industry",
+                method: "get",
+            }).then(response => {
+                this.details_data = response.data;
+                this.details_data.list_img = response.data.list_img.split(',');
+            })
+        },
         //点击修改
         for_company_change(){
             this.$router.push({path:'/admin/company/change', query: {type:'change',item:this.$route.query.item}});

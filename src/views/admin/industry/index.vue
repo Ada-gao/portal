@@ -3,7 +3,7 @@
         <div class="filter-container">
             <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="用户名" v-model="listQuery.username"></el-input>
             <el-button class="filter-item" type="primary" v-waves icon="search" @click="handleFilter">搜索</el-button>
-            <el-button v-if="sys_user_add" class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="edit">添加</el-button>
+            <el-button v-if="sys_industry_add" class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="edit">添加</el-button>
         </div>
 
         <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 99%">
@@ -26,14 +26,6 @@
                 <template slot-scope="scope"><span>{{scope.row.deptName}} </span></template>
             </el-table-column>
 
-            <el-table-column align="center" label="创建时间">
-                <template slot-scope="scope"><span>{{scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}')}}</span></template>
-            </el-table-column>
-
-            <el-table-column align="center" label="到期时间">
-                <template slot-scope="scope"><span>{{scope.row.expirationDate | parseTime('{y}-{m}-{d} {h}:{i}')}}</span></template>
-            </el-table-column>
-
             <el-table-column align="center" label="账户类型">
                 <template slot-scope="scope"><span>{{scope.row.userType}}</span></template>
             </el-table-column>
@@ -44,8 +36,8 @@
 
             <el-table-column align="center" label="操作" width="200">
                 <template slot-scope="scope">
-                    <el-button v-if="sys_user_upd" size="small" type="success" @click="handleUpdate(scope.row)">编辑</el-button>
-                    <el-button v-if="sys_user_del" size="small" type="danger" @click="deletes(scope.row)">删除</el-button>
+                    <el-button v-if="sys_industry_upd" size="small" type="success" @click="handleUpdate(scope.row)">编辑</el-button>
+                    <el-button v-if="sys_industry_del" size="small" type="danger" @click="deletes(scope.row)">删除</el-button>
                 </template>
             </el-table-column>
 
@@ -65,23 +57,6 @@
                     <el-input v-model="form.username" placeholder="请输用户名"></el-input>
                 </el-form-item>
 
-                <el-form-item label="手机号" prop="phone">
-                    <el-input v-model="form.phone" placeholder="请输入手机号码"></el-input>
-                </el-form-item>
-
-                <el-form-item label="邮箱" prop="email">
-                    <el-input v-model="form.email" placeholder="请输入邮箱"></el-input>
-                </el-form-item>
-
-                <el-form-item v-if="dialogStatus == 'create'" label="密码" placeholder="请输入密码" prop="newpassword1">
-                    <el-input type="password" v-model="form.newpassword1"></el-input>
-                </el-form-item>
-
-                <el-form-item label="所属公司" prop="deptName">
-                    <el-input v-model="form.deptName" placeholder="请选择公司" @focus="handleDept()" readonly></el-input>
-                    <input type="hidden" v-model="form.deptId" />
-                </el-form-item>
-
                 <el-form-item label="角色" prop="role">
                     <el-select class="filter-item" v-model="role" placeholder="请选择" multiple>
                         <el-option v-for="item in rolesOptions" :key="item.roleId" :label="item.roleDesc" :value="item.roleId" :disabled="isDisabled[item.delFlag]">
@@ -91,13 +66,6 @@
                     </el-select>
                 </el-form-item>
 
-                <el-form-item label="账户类型" prop="userType">
-                    <el-input type="text" v-model="form.userType"></el-input>
-                </el-form-item>
-
-                <el-form-item label="到期时间" prop="expirationDate">
-                    <el-date-picker v-model="form.expirationDate" type="datetime" placeholder="请选择到期时间"></el-date-picker>
-                </el-form-item>
 
                 <el-form-item label="状态" v-if="dialogStatus == 'update' && sys_user_del " prop="delFlag">
                     <el-select class="filter-item" v-model="form.delFlag" placeholder="请选择">
@@ -122,6 +90,7 @@ import waves from "@/directive/waves/index.js"; // 水波纹指令
 import { mapGetters } from "vuex";
 import ElRadioGroup from "element-ui/packages/radio/src/radio-group";
 import ElOption from "element-ui/packages/select/src/option";
+import request from "@/router/axios";
 
 export default {
     components: { ElOption, ElRadioGroup},
@@ -219,19 +188,36 @@ export default {
     },
     created() {
         this.getList();
-        this.sys_user_add = this.permissions["sys_user_add"];
-        this.sys_user_upd = this.permissions["sys_user_upd"];
-        this.sys_user_del = this.permissions["sys_user_del"];
+        this.sys_industry_add = this.permissions["sys_industry_add"];
+        this.sys_industry_upd = this.permissions["sys_industry_upd"];
+        this.sys_industry_del = this.permissions["sys_industry_del"];
     },
     methods: {
+        //请求行业列表
         getList() {
             this.listLoading = true;
-            this.listQuery.isAsc = false;
-            fetchList(this.listQuery).then(response => {
-                this.list = response.data.records;
-                this.total = response.data.total;
+            // this.listQuery.isAsc = false;
+            // fetchList(this.listQuery).then(response => {
+            //     this.list = response.data.records;
+            //     this.total = response.data.total;
+            //     this.listLoading = false;
+            // });
+            request({
+                url: "/admin/industry/industryPage",
+                method: "get",
+                params:this.listQuery
+            }).then(response => {
+                console.log(response,'222')
                 this.listLoading = false;
-            });
+                if (response.status == 200) {
+                    this.total = response.data.total
+                    this.list = response.data.records
+                } else {
+                    this.$message.error(response.data.msg);
+                }
+            }).catch(() => {
+                this.listLoading = false;
+            })
         },
         getNodeData(data) {
             this.dialogDeptVisible = false;

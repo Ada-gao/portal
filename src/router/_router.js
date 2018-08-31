@@ -8,20 +8,12 @@ export default [{
   path: '/wel',
   component: Layout,
   redirect: '/wel/index',
-  children: [{
-    path: 'index',
-    name: '首页',
-    component: _import('wel')
-  }]
-}, {
-  path: '/system',
-  component: Layout,
-  redirect: '/system',
   children: [
-    {path: '/system/system_details',name: '系统详情',component: _import('system_manage/system_details', 'views')},
-    {path: '/system/company_details_change',name: '系统详情修改',component: _import('system_manage/company_details_change', 'views')},
-    {path: '/system/create_account', name: '创建账户',component: _import('system_manage/create_account', 'views')},
-    {path: '/system/account_recharge', name: '账户充值',component: _import('system_manage/account_recharge', 'views')}
+    { path: 'index', name: '首页', component: _import('wel')},
+    {path: '/wel/system_details',name: '系统详情',component: _import('system_manage/system_details', 'views')},
+    {path: '/wel/company_details_change',name: '系统详情修改',component: _import('system_manage/company_details_change', 'views')},
+    {path: '/wel/create_account', name: '创建账户',component: _import('system_manage/create_account', 'views')},
+    {path: '/wel/account_recharge', name: '账户充值',component: _import('system_manage/account_recharge', 'views')}
   ]
 }, {
   path: '*',
