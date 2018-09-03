@@ -31,8 +31,11 @@
             <el-form-item label="节点编号" prop="parentId" v-if="formEdit">
               <el-input v-model="form.deptId" :disabled="formEdit" placeholder="节点编号"></el-input>
             </el-form-item>
-            <el-form-item label="部门名称" prop="name">
-              <el-input v-model="form.name" :disabled="formEdit"  placeholder="请输入名称"></el-input>
+            <el-form-item label="公司名称" prop="name">
+              <!-- <el-input v-model="form.name"   placeholder="请输入名称"></el-input> -->
+                <el-select v-model="form.name" filterable placeholder="请选择公司名称" :disabled="formEdit">
+                    <el-option v-for="item in company_list" :key="item.companyName" :label="item.companyName" :value="item.companyName"></el-option>
+                </el-select>
             </el-form-item>
             <el-form-item label="排序" prop="orderNum">
               <el-input v-model="form.orderNum" :disabled="formEdit" placeholder="请输入排序"></el-input>
@@ -55,6 +58,7 @@
 <script>
   import { fetchTree, getObj, addObj, delObj, putObj } from '@/api/dept'
   import { mapGetters } from 'vuex'
+  import request from "@/router/axios";
   export default {
     name: 'menu',
     data() {
@@ -78,6 +82,7 @@
         labelPosition: 'right',
         form: {
           name: undefined,
+          compantId:undefined,
           orderNum: undefined,
           parentId: undefined,
           deptId: undefined
@@ -85,7 +90,8 @@
         currentId: 0,
         deptManager_btn_add: false,
         deptManager_btn_edit: false,
-        deptManager_btn_del: false
+        deptManager_btn_del: false,
+        company_list:[],                //公司列表
       }
     },
     filters: {
@@ -98,7 +104,8 @@
       }
     },
     created() {
-      this.getList()
+      this.getList();
+      this.get_company();
       this.deptManager_btn_add = this.permissions['sys_dept_add']
       this.deptManager_btn_edit = this.permissions['sys_dept_edit']
       this.deptManager_btn_del = this.permissions['sys_dept_del']
@@ -110,6 +117,19 @@
       ])
     },
     methods: {
+      //获取公司
+      get_company() {
+          request({
+              url: "/admin/company/company",
+              method: "get",
+          }).then(response => {
+              if (response.status == 200) {
+                  this.company_list = response.data;
+              } else {
+                  this.$message.error(response.data.msg);
+              }
+          }).catch(() => {})
+      },
       getList() {
         fetchTree(this.listQuery).then(response => {
           this.treeData = response.data
@@ -160,6 +180,11 @@
         })
       },
       update() {
+        for(var i in this.company_list){
+            if(this.company_list[i].companyName == this.form.name){
+                this.form.companyId = this.company_list[i].companyId
+            }
+        }
         putObj(this.form).then(() => {
           this.getList()
           this.$notify({
@@ -171,6 +196,11 @@
         })
       },
       create() {
+        for(var i in this.company_list){
+            if(this.company_list[i].companyName == this.form.name){
+                this.form.companyId = this.company_list[i].companyId
+            }
+        }
         addObj(this.form).then(() => {
           this.getList()
           this.$notify({

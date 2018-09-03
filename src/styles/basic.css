@@ -114,12 +114,16 @@ textarea{resize:none}
 .common_style{ padding:20px; }
 .common_head{ padding:10px 0; font-size: 0;}
 .common_head>i{ color: #1A8CE1; font-size: 16px; margin-right: 10px; }
-.common_btn button{ width: 100px; height: 30px; line-height: 30px; border: 1px solid #E4E4E4; border-radius: 2px; -webkit-border-radius: 2px; color: #1A8CE1; margin-left: 10px; cursor: pointer; }
+.common_btn button{ width: 100px; height: 30px; line-height: 30px; border: 1px solid #E4E4E4; border-radius: 2px; -webkit-border-radius: 2px; color: #1A8CE1; margin-left: 10px; cursor:pointer; }
+.common_btn button.disable{ cursor: not-allowed; color: #BABBBB; background: #F8F8F8; }
+.common_btn button.disable i{ color: #BABBBB; }
 .common_btn button i{ color: #1A8CE1; margin-right: 5px; }
 .common_btn button:hover{ background: rgba(65,174,255,0.05); color: #41AEFF; }
 .common_btn button:active{ background: rgba(65,174,255,0.04); }
 .common_btn button.current{ background: #1A8CE1; color: #fff; }
 .common_btn button.current i{ color: #fff; }
+.common_btn button.disable:hover{color: #BABBBB; background: #F8F8F8;}
+.common_btn button.disable:active{color: #BABBBB; background: #F8F8F8;}
 
 .spec_head{ height: 72px; line-height: 72px; border-bottom: 1px solid #D8D8D8;}
 .spec_head em{ width: 6px; height: 22px; background-color: #1A8CE1; margin-right: 10px; vertical-align: middle;}
@@ -135,3 +139,7 @@ textarea{resize:none}
 /*重写element-ui 样式*/
 .el-pagination .el-pager li.active{ color: #000; }
 .el-pager li{ color: #1A8CE1; }
+
+/*颜色*/
+.table_primary{ color: #1A8CE1; }
+.table_success{ color: #17C263; }

@@ -73,8 +73,8 @@
                     <el-input v-model="form.email" placeholder="请输入邮箱"></el-input>
                 </el-form-item>
 
-                <el-form-item v-if="dialogStatus == 'create'" label="密码" placeholder="请输入密码" prop="newpassword1">
-                    <el-input type="password" v-model="form.newpassword1"></el-input>
+                <el-form-item v-if="dialogStatus == 'create'" label="密码" placeholder="请输入密码" prop="password">
+                    <el-input type="password" v-model="form.password"></el-input>
                 </el-form-item>
 
                 <el-form-item label="所属公司" prop="deptName">
@@ -92,7 +92,9 @@
                 </el-form-item>
 
                 <el-form-item label="账户类型" prop="userType">
-                    <el-input type="text" v-model="form.userType"></el-input>
+                    <el-select class="filter-item" v-model="form.userType" placeholder="请选择账户类型">
+                        <el-option v-for="item in userType" :key="item.label" :label="item.label" :value="item.value"></el-option>
+                    </el-select>
                 </el-form-item>
 
                 <el-form-item label="到期时间" prop="expirationDate">
@@ -101,7 +103,8 @@
 
                 <el-form-item label="状态" v-if="dialogStatus == 'update' && sys_user_del " prop="delFlag">
                     <el-select class="filter-item" v-model="form.delFlag" placeholder="请选择">
-                    <el-option v-for="item in statusOptions" :key="item" :label="item | statusFilter" :value="item"> </el-option></el-select>
+                        <el-option v-for="item in statusOptions" :key="item" :label="item | statusFilter" :value="item"> </el-option>
+                    </el-select>
                 </el-form-item>
             </el-form>
 
@@ -145,20 +148,20 @@ export default {
             role: [],
             form: {
                 username: undefined,            //用户名
-                newpassword1: undefined,        //密码
+                password: undefined,        //密码
                 delFlag: undefined,             //角色 
                 deptId: undefined,              //所属公司
                 phone: undefined,               //手机号
                 email: undefined,               //邮箱
                 expirationDate: undefined,      //到期时间
-                userType: 1,                    //账户类型
+                userType: undefined,            //账户类型
             },
             rules: {
                 username: [
                     { required: true, message: "请输入账户", trigger: "blur"},
                     { min: 3, max: 20, message: "长度在 3 到 20 个字符", trigger: "blur"}
                 ],
-                newpassword1: [
+                password: [
                     { required: true, message: "请输入密码", trigger: "blur" },
                     { min: 6, max: 20, message: "长度在 6 到 20 个字符", trigger: "blur"}
                 ],
@@ -175,7 +178,7 @@ export default {
                     { required: true, trigger: 'blur', validator: Validate.validEmail }
                 ],
                 deptName: [
-                    { required: true, message: "请所属公司", trigger: "blur"}
+                    { required: true, message: "请选择所属公司", trigger: "blur"}
                 ],
                 userType: [
                     { required: true, message: "请选择账户类型", trigger: "blur"}
@@ -201,6 +204,10 @@ export default {
                 0: false,
                 1: true
             },
+            userType:[
+                {label:'付费使用',value:0},
+                {label:'试用体验',value:1}
+            ],
             tableKey: 0
         };
     },
@@ -261,26 +268,36 @@ export default {
             this.getList();
         },
         //点击添加 新增用户管理
+        // handleCreate() {
+        //     this.resetTemp();
+        //     this.dialogStatus = "create";
+        //     this.dialogFormVisible = true;
+        // },
+        //点击添加 创建账号
         handleCreate() {
-            this.resetTemp();
-            this.dialogStatus = "create";
-            this.dialogFormVisible = true;
+            this.$router.push({path:'/admin/user/create_account'});
+        },
+        //点击编辑 修改用户信息
+        handleUpdate(row) {
+            console.log(row,'5555')
+            var account_data = JSON.stringify(row);
+            this.$router.push({path:'/admin/user/create_account', query: {type:'change',data:account_data}});
         },
         //点击编辑 用户管理编辑
-        handleUpdate(row) {
-            getObj(row.userId).then(response => {
-                this.form = response.data;
-                this.dialogFormVisible = true;
-                this.dialogStatus = "update";
-                this.role = [];
-                for (var i = 0; i < row.roleList.length; i++) {
-                    this.role[i] = row.roleList[i].roleId;
-                }
-                deptRoleList(response.data.deptId).then(response => {
-                    this.rolesOptions = response.data;
-                });
-            });
-        },
+        // handleUpdate(row) {
+        //     getObj(row.userId).then(response => {
+        //         this.form = response.data;
+        //         this.dialogFormVisible = true;
+        //         this.dialogStatus = "update";
+        //         this.role = [];
+        //         for (var i = 0; i < row.roleList.length; i++) {
+        //             this.role[i] = row.roleList[i].roleId;
+        //         }
+        //         deptRoleList(response.data.deptId).then(response => {
+        //             this.rolesOptions = response.data;
+        //         });
+        //     });
+        // },
         //点击 弹框确定 创建新的用户
         create(formName) {
             const set = this.$refs;

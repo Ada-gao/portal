@@ -39,15 +39,11 @@
         	<el-table :data="list" v-loading="false" element-loading-text="给我一点时间" fit highlight-current-row style="width: 100%">
 
                 <el-table-column align="center" label="充值编号">
-                    <template slot-scope="scope">
-                        <span>{{scope.row.description}}</span>
-                    </template>
+                    <template slot-scope="scope"><span>{{scope.row.description}}</span></template>
                 </el-table-column>
 
                 <el-table-column align="center" label="所属公司">
-                    <template slot-scope="scope">
-                        <span>{{scope.row.description}}</span>
-                    </template>
+                    <template slot-scope="scope"><span>{{scope.row.description}}</span></template>
                 </el-table-column>
 
                 <el-table-column align="center" label="充值类型">

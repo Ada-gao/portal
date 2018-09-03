@@ -142,6 +142,8 @@ export default {
                 if(response.status == 200){
                    this.orgSizeData = response.data;
                 }
+            }).catch(()=>{
+
             })
         },
         //获取行业  一级
@@ -153,6 +155,8 @@ export default {
                 if(response.status == 200){
                    this.industryData = response.data
                 }
+            }).catch(()=>{
+
             })
         },
         //点击重置
@@ -162,7 +166,7 @@ export default {
         },
         //查看公司详情跳转
         for_company_details(item){
-            this.$router.push({path:'/admin/company/detail', query: {item:JSON.stringify(item)}});
+            this.$router.push({path:'/admin/company/detail', query: {companyId:item.companyId}});
         },
         //创建新公司跳转
         handleCreate() {
@@ -171,17 +175,10 @@ export default {
         //获取公司列表
         getList() {
             this.listLoading = true;
-            var params = {};
-            params.page = this.listQuery.page;
-            params.limit = this.listQuery.limit;
-            if(this.listQuery.name) params.name = this.listQuery.name;
-            if(this.listQuery.companyProvince) params.companyProvince = this.listQuery.companyProvince;
-            if(this.listQuery.industryType) params.industryType = this.listQuery.industryType;
-            if(this.listQuery.orgSize) params.orgSize = this.listQuery.orgSize;
             request({
                 url: "/admin/company/companyPage",
                 method: "get",
-                params:params
+                params:this.listQuery
             }).then(response => {
                 this.listLoading = false;
                 if (response.status == 200) {

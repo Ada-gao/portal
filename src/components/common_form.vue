@@ -43,7 +43,7 @@
             <el-row :gutter="20">
                 <el-col :span="12">
                     <el-form-item label="公司规模" prop="orgSize">
-                        <el-select v-model="form.orgSize" placeholder="请选择公司规模" @change="changeIndustry">
+                        <el-select v-model="form.orgSize" placeholder="请选择公司规模">
                             <el-option v-for="item in orgSizeData" :key="item.value" :label="item.label" :value="item.value"></el-option>
                         </el-select>
                     </el-form-item>
@@ -144,7 +144,8 @@
 
         <el-col :span="24" slot="footer" class="clearfix" style="text-align: center; float: none;">
             <el-button class="search_btn" @click="$router.back()">取 消</el-button>
-            <el-button type="primary" @click="submit">提 交</el-button>
+            <el-button v-if="type != 'change'" type="primary" @click="submit">提 交</el-button>
+            <el-button v-if="type == 'change'" type="primary" @click="details_change">修 改</el-button>
         </el-col>
     </div>
 </template>
@@ -170,6 +171,7 @@ export default {
             img_list:[],            //上传图片列表
             form:{
                 dto:'dto',
+                companyId:'',                       //公司ID
                 companyName:'',                      //公司名称
                 companyProvince:"",                 //省
                 companyCity:'',                     //市
@@ -178,7 +180,7 @@ export default {
                 industryType:'',                  //行业大类
                 industry:'',                      //行业小类
                 remark:'',                          //备注
-                deptId:'',
+                deptId:'',                          //部门id
                 contact:'',                         //联系人姓名
                 contactMobile:'',                   //联系电话
                 companyEmail:'',                     //公司邮箱
@@ -226,8 +228,11 @@ export default {
         if(this.$route.query.type){
             this.type = this.$route.query.type;
         }
-        if(this.$route.query.item){
-            this.form = JSON.parse(this.$route.query.item)
+        if(this.$route.query.details_data){
+            var details_data = this.$route.query.details_data
+            this.form = JSON.parse(details_data)
+            this.form.companyQualification = JSON.parse(details_data).companyQualification.join(",");
+            this.img_list = JSON.parse(details_data).companyQualification;
         }
         this.get_orgSizeData();
         //获取一级行业
@@ -311,6 +316,7 @@ export default {
                     this.get_industryData(this.coInfo.industryType[i].industryId,'industry')
                 }
             }
+            this.form.industry = '';
         },
         //提交
         submit(){
@@ -330,7 +336,32 @@ export default {
                     }).catch(() => {})
                 }
             })
-        }
+        },
+        //修改公司信息
+        details_change(){
+            this.$refs['form'].validate(valid => {
+                if(valid){
+                    //公司规模传给后台 转化
+                    for(var j in this.orgSizeData){
+                       if(this.orgSizeData[j].value == this.form.orgSize){
+                            this.form.orgSize = this.orgSizeData[j].value
+                        } 
+                    }
+                    request({
+                        url: "/admin/company/" + this.form.companyId,
+                        method: "put",
+                        data: this.form,
+                    }).then(response => {
+                        if (response.data.code == 0) {
+                            this.$message({ showClose: true, message: '新建公司账号成功', type: 'success'})
+                            this.$router.back()
+                        } else {
+                            this.$message.error(response.data.msg);
+                        }
+                    }).catch(() => {})
+                }
+            })
+        },
     }
 }
 </script>

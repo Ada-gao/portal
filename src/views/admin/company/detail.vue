@@ -16,11 +16,11 @@
                     </el-col>
                     <el-col :span="8">
                         <el-form-item label="所在地：" class="omit1">
-                            <span>{{details_data.companyProvince}}-{{details_data.companyCity}}</span>
+                            <span>{{details_data.companyProvince}} - {{details_data.companyCity}}</span>
                         </el-form-item>
                     </el-col>
                     <el-col :span="8">
-                        <el-form-item label="所在地：" class="omit1">
+                        <el-form-item label="公司地址：" class="omit1">
                             <span>{{details_data.companyAddress}}</span>
                         </el-form-item>
                     </el-col>
@@ -28,25 +28,25 @@
 
                 <el-row :gutter="20">
                     <el-col :span="8">
-                        <el-form-item label="所属行业："><span>{{details_data.industry + details_data.industryType}}</span></el-form-item>
+                        <el-form-item label="所属行业："><span>{{details_data.industryType + details_data.industry}}</span></el-form-item>
                     </el-col>
                     <el-col :span="8">
-                        <el-form-item label="公司规模："><span>{{details_data.companyName}}</span></el-form-item>
+                        <el-form-item label="公司规模："><span>{{details_data.orgSize}}</span></el-form-item>
                     </el-col>
                     <el-col :span="8">
-                        <el-form-item label="公司邮箱："><span>{{details_data.companyName}}</span></el-form-item>
+                        <el-form-item label="公司邮箱："><span>{{details_data.companyEmail}}</span></el-form-item>
                     </el-col>
                 </el-row>
 
                 <el-row :gutter="20">
                     <el-col :span="8">
-                        <el-form-item label="联系人："><span>{{details_data.companyName}}</span></el-form-item>
+                        <el-form-item label="联系人："><span>{{details_data.contact}}</span></el-form-item>
                     </el-col>
                     <el-col :span="8">
-                        <el-form-item label="职务："><span>{{details_data.deptId}}</span></el-form-item>
+                        <el-form-item label="职务："><span>{{details_data.occupation}}</span></el-form-item>
                     </el-col>
                     <el-col :span="8">
-                        <el-form-item label="联系手机："><span>{{details_data.deptId}}</span></el-form-item>
+                        <el-form-item label="联系手机："><span>{{details_data.contactMobile}}</span></el-form-item>
                     </el-col>
                 </el-row>
 
@@ -54,7 +54,7 @@
                     <el-col :span="24">
                         <el-form-item label="公司资质：" style="margin-bottom: 0;">
                             <ul class="img_list in_b clearfix">
-                                <li class="pr fl" @click="swiper_img = true"><img src="/static/img/bg/bg1.jpg"><span class="pa in_b none">查看图片</span></li>
+                                <li class="pr fl" @click="swiper_img = true" v-for="(img,index) in details_data.companyQualification" :key="index"><img :src="img"><span class="pa in_b none">查看图片</span></li>
                             </ul>
                         </el-form-item>
                     </el-col>
@@ -72,11 +72,8 @@
             <div class="img_tk" v-if="swiper_img == true">
                 <div class="swiper">
                     <el-carousel arrow='never' :initial-index="index" :autoplay="autoplay" ref="carousel" indicator-position="none" width="560px">
-                        <el-carousel-item name="index">
-                            <h3><img class="block" src="/static/img/bg/bg1.jpg"></h3>
-                        </el-carousel-item>
-                        <el-carousel-item name="index">
-                            <h3><img class="block" src="/static/img/bg/bg1.jpg"></h3>
+                        <el-carousel-item name="index" v-for="(img,index) in details_data.companyQualification" :key="index">
+                            <h3><img class="block" :src="img"></h3>
                         </el-carousel-item>
                     </el-carousel>
                     <a @click="swiper_img = false,index = 0" class="closed" href="javascript:void(0);"><i class="el-icon-close"></i></a>
@@ -100,6 +97,8 @@ export default {
     },
     data () {
         return {
+            companyId:'',           //公司id
+            orgSizeData:[],         //公司规模
             autoplay:false,         //轮播图不制动滚动
             index:0,                //轮播图默认展示第一张
             swiper_img:false,       //查看大图 默认隐藏
@@ -110,22 +109,42 @@ export default {
         this.sys_company_upd = this.permissions["sys_company_upd"];
     },
     mounted(){
-
+        this.companyId = this.$route.query.companyId;
+        this.get_orgSizeData();
     },
     methods: {
-        //获取公司详情
-        get_industryData(id,type){
+        //获取公司规模
+        get_orgSizeData(){
             request({
-                url: "/admin/industry",
+                url: "/admin/dict/type/" + 'org_size',
                 method: "get",
             }).then(response => {
+                if(response.status == 200){
+                   this.orgSizeData = response.data;
+                   this.get_companyDetails();
+                }
+            }).catch(()=>{
+
+            })
+        },
+        //获取公司详情
+        get_companyDetails(id,type){
+            request({
+                url: "/admin/company/" + this.companyId,
+                method: "get"
+            }).then(response => {
                 this.details_data = response.data;
-                this.details_data.list_img = response.data.list_img.split(',');
+                this.details_data.companyQualification = response.data.companyQualification.split(',');
+                for(var j in this.orgSizeData){
+                   if(this.orgSizeData[j].value == this.details_data.orgSize){
+                        this.details_data.orgSize = this.orgSizeData[j].label
+                    } 
+                }
             })
         },
         //点击修改
         for_company_change(){
-            this.$router.push({path:'/admin/company/change', query: {type:'change',item:this.$route.query.item}});
+            this.$router.push({path:'/admin/company/change', query: {type:'change',details_data:JSON.stringify(this.details_data)}});
         },
         //轮播图切换
         switch_index:function(type){
@@ -167,7 +186,7 @@ export default {
 .handle>a.prev{ left:-60px;}
 .handle>a.next{ right:-60px;}
 
-.swiper img{ width: 560px; height: auto;}
+.swiper img{ width: 560px; max-height: 300px;}
 
 .spec_head div em{ background: none; color: #1A8CE1;}
 .spec_head div i{ color: #1A8CE1;}

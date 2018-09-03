@@ -13,29 +13,35 @@
                 <el-table :data="list" :key='0' element-loading-text="给我一点时间" fit highlight-current-row style="width: 100%">
 
                     <el-table-column align="center" label="充值流水号">
-                        <template slot-scope="scope"><span>11</span></template>
+                        <template slot-scope="scope"><span>{{scope.row.rechargeCode}}</span></template>
                     </el-table-column>
 
                     <el-table-column align="center" label="充值金额(元)">
-                        <template slot-scope="scope"><span class="table_primary">22</span></template>
+                        <template slot-scope="scope"><span class="table_primary">{{scope.row.rechargeAmount | formatMoney}}</span></template>
                     </el-table-column>
 
                     <el-table-column align="center" label="充值时间">
-                        <template slot-scope="scope"><span>2018-08-29 14:50:24</span></template>
+                        <template slot-scope="scope"><span>{{scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}')}}</span></template>
                     </el-table-column>
 
                     <el-table-column align="center" label="充值状态" show-overflow-tooltip>
-                        <template slot-scope="scope"><span:class="{'table_success':scope.row.sort == 1,'table_fail':scope.row.sort == 0}">充值成功</span></template>
+                        <template slot-scope="scope"><span class="table_success">充值成功</span></template>
+                    </el-table-column>
+
+                    <el-table-column align="center" label="充值备注" show-overflow-tooltip>
+                        <template slot-scope="scope">
+                            <span>{{scope.row.remark}}</span>
+                        </template>
                     </el-table-column>
 
                     <el-table-column align="center" label="操作人">
-                        <template slot-scope="scope"><span>王秀明</span></template>
+                        <template slot-scope="scope"><span>{{scope.row.username}}</span></template>
                     </el-table-column>
 
                 </el-table>
                 <div class="page clearfix mt20 box">
                     <el-col :span="18">
-                        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[10, 20, 30, 40, 50]" :page-size="10" layout="total, sizes, prev, pager, next, jumper" :total="50"></el-pagination>
+                        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="listQuery.page" :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total"></el-pagination>
                     </el-col>
                     <el-col :span="6" class="tr">
                         <div class="tip pr in_b">
@@ -49,33 +55,48 @@
                 </div>
             </div>
             <!--没有数据-->
-            <v_no_data class="list.length == 0"></v_no_data>
+            <v_no_data v-if="list.length == 0"></v_no_data>
         </div>
     </div>
 </template>
 
 <script>
+import request from "@/router/axios";
 export default {
     data () {
         return {
-            list:[],
-            currentPage:1
+            list:[],            //充值记录列表
+            currentPage:1,      //当前页面为1
+            listQuery: {
+                page: 1,                //当前页数
+                limit: 20,              //一页显示数据量
+            },
+            total:null
         }
     },
     mounted(){
-        // this.$toast.show({
-        //     text: '12344',
-        //     type: 'error',
-        // })
+        this.get_rechargeData();
     },
     methods: {
+        //获取充值记录
+        get_rechargeData() {
+            request({
+                url: "/admin/rechargeRecord/rechargeRecordPage",
+                method: "get",
+            }).then(res => {
+                this.list = res.data.records;
+                this.total = res.data.total;
+            }).catch(() => {})
+        },
         //当前页码
         handleCurrentChange(val){
-            console.log(val,'111');
+            this.listQuery.page = val;
+            this.get_rechargeData();
         },
         //每页显示多少天数据
         handleSizeChange(val){
-            console.log(val,'222')
+            this.listQuery.limit = val;
+            this.get_rechargeData();
         }
     }
 }

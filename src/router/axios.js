@@ -37,11 +37,13 @@ axios.interceptors.response.use(data => {
     NProgress.done()
     let errMsg = error.toString()
     let code = errMsg.substr(errMsg.indexOf('code') + 5)
-
+    let res = error.data
     //错误处理
     if (code === 400) {
-        Message(res.data.message || res.data.error, 'error')
-        return
+        Message({
+            message: res.data.msg,
+            type: 'error'
+        })
     } else if (code === 401) {
         Message({
             message:'登录时间过期，请重新登录',
@@ -55,17 +57,16 @@ axios.interceptors.response.use(data => {
             type: 'error'
         })
         router.replace({path: '/login'})
-    } else if (code === 500) {
-        Message({
-            message: res.data.message || res.data.error,
-            type: 'error'
-        })
-    } else {
+    } else if (code === 404 || code === 504) {
         Message({
             message:'服务器被吃了⊙﹏⊙∥',
             type: 'error'
         })
-        return
+    } else {
+        Message({
+            message: res.data.msg,
+            type: 'error'
+        })
     }
     return Promise.reject(new Error(error))
 })

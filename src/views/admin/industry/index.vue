@@ -318,7 +318,7 @@ export default {
         },
         //删除用户
         deletes(row) {
-            this.$confirm("此操作将永久删除该用户(用户名:" + row.username + "), 是否继续?","提示",{
+            this.$confirm("此操作将永久删除该行业(行业名:" + row.username + "), 是否继续?","提示",{
                 confirmButtonText: "确定",
                 cancelButtonText: "取消",
                 type: "warning"

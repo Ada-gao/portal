@@ -10,17 +10,17 @@
                     <el-row :gutter="20">
                         <el-col :span="8">
                             <el-form-item label="账号ID：">
-                                <span>shuxiangxinxikeji</span>
+                                <span>{{userInfo.username}}</span>
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
                             <el-form-item label="账号类型：">
-                                <span>付费使用</span>
+                                <span>{{basic_info.userType}}</span>
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
                             <el-form-item label="账户到期时间：">
-                                <span>2018.12.31</span>
+                                <span>{{basic_info.expirationDate | parseTime('{y}-{m}-{d} {h}:{i}')}}</span>
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -33,13 +33,13 @@
                         </el-col>
                         <el-col :span="8">
                             <el-form-item label="姓名：">
-                                <span>王小虎</span>
+                                <span>{{basic_info.name}}</span>
                             </el-form-item>
                         </el-col>
 
                         <el-col :span="8">
                             <el-form-item label="联系手机：">
-                                <span>13386182259</span>
+                                <span>{{basic_info.phone}}</span>
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -47,17 +47,17 @@
                     <el-row :gutter="20">
                         <el-col :span="8">
                             <el-form-item label="公司名称：">
-                                <span>shuxiangxinxikeji</span>
+                                <span>{{basic_info.companyName}}</span>
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
                             <el-form-item label="职位：">
-                                <span>风控总监</span>
+                                <span>{{basic_info.position}}</span>
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
                             <el-form-item label="所属行业：">
-                                <span>IT/互联网-金融科技</span>
+                                <span>{{basic_info.industryType}}</span>
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -65,12 +65,12 @@
                     <el-row :gutter="20">
                         <el-col :span="8">
                             <el-form-item label="所在地：">
-                                <span>上海市-浦东新区</span>
+                                <span>{{basic_info.companyAddress}}</span>
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
-                            <el-form-item label="所在地：">
-                                <span>wangxiuming@163.com</span>
+                            <el-form-item label="公司邮箱：">
+                                <span>{{basic_info.email}}</span>
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -82,14 +82,47 @@
 </template>
 
 <script>
+import request from "@/router/axios";
+import { mapState } from "vuex";
 export default {
     data () {
         return {
-            list:[]         //基本信息列表
+            userType_list:[],       //类型
+            basic_info:{}           //基本信息
         }
     },
+    computed: {
+        ...mapState({
+            userInfo: state => state.user.userInfo
+        }),
+    },
+    created() {
+        this.get_allType();
+    },
     methods: {
-    
+        //获取所有类型
+        get_allType(){
+            request({
+                url: "/admin/dict/type/" + 'user_type',
+                method: "get",
+            }).then(res => {
+                this.userType_list = res.data;
+                this.get_basicInfo();
+            }).catch(() => {})
+        },
+        get_basicInfo(){
+            request({
+                url: "/admin/user/baseUserInfo/" + this.userInfo.userId,
+                method: "get",
+            }).then(res => {
+                this.basic_info = res.data;
+                for(var i in this.userType_list){
+                    if(this.userType_list[i].value == this.basic_info.userType){
+                        this.basic_info.userType = this.userType_list[i].label;
+                    }
+                }
+            }).catch(() => {})
+        }
     }
 }
 </script>

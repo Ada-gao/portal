@@ -7,27 +7,47 @@
             </div>
             <!--一键导出-->
             <div class="common_btn tr">
-                <button><i class="iconfont icon-xiazai"></i>一键导出</button>
+                <button class="disable" @click="get_excel"><i class="iconfont icon-xiazai"></i>一键导出</button>
             </div>
             <div class="table_style" v-if="list.length">
-                <el-table :data="list" :key='0' element-loading-text="给我一点时间" fit highlight-current-row style="width: 100%">
+                <el-table id="login-table" :data="list" :key='0' element-loading-text="给我一点时间" fit highlight-current-row style="width: 100%">
 
-                    <el-table-column align="center" label="登录ID">
-                        <template slot-scope="scope"><span>11</span></template>
-                    </el-table-column>
-
-                    <el-table-column align="center" label="登录时间">
-                        <template slot-scope="scope"><span>22</span></template>
+                    <el-table-column align="center" label="登录账号">
+                        <template slot-scope="scope"><span>{{scope.row.loginName}}</span></template>
                     </el-table-column>
 
                     <el-table-column align="center" label="登录IP地址">
-                        <template slot-scope="scope"><span>33</span></template>
+                        <template slot-scope="scope"><span>{{scope.row.ipaddr}}</span></template>
+                    </el-table-column>
+
+                    <el-table-column align="center" label="登录地点">
+                        <template slot-scope="scope"><span>{{scope.row.loginLocation}}</span></template>
+                    </el-table-column>
+
+                    <el-table-column align="center" label="浏览器">
+                        <template slot-scope="scope"><span>{{scope.row.browser}}</span></template>
+                    </el-table-column>
+
+                    <el-table-column align="center" label="操作系统">
+                        <template slot-scope="scope"><span>{{scope.row.os}}</span></template>
+                    </el-table-column>
+
+                    <el-table-column align="center" label="登录状态">
+                        <template slot-scope="scope"><span class="login_status" :class="{'success':scope.row.status == 0,'fail':scope.row.status == 1}">{{scope.row.status == 0 ? '成功' : '失败'}}</span></template>
+                    </el-table-column>
+
+                    <el-table-column align="center" label="操作信息" width="240px">
+                        <template slot-scope="scope"><span>{{scope.row.message}}</span></template>
+                    </el-table-column>
+
+                    <el-table-column align="center" label="登录时间">
+                        <template slot-scope="scope"><span>{{scope.row.loginTime | parseTime('{y}-{m}-{d} {h}:{i}')}}</span></template>
                     </el-table-column>
 
                 </el-table>
                 <div class="page clearfix mt20 box">
                     <el-col :span="18">
-                        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[10, 20, 30, 40, 50]" :page-size="10" layout="total, sizes, prev, pager, next, jumper" :total="50"></el-pagination>
+                        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="listQuery.page" :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total"></el-pagination>
                     </el-col>
                     <el-col :span="6">
                         <div class="tip pr">
@@ -43,29 +63,52 @@
 </template>
 
 <script>
+import request from "@/router/axios";
+import { getExcel } from '@/util/auth'
 export default {
     data () {
         return {
             list:[],
-            right:'160px',
-            currentPage:1
+            listQuery: {
+                page: 1,                //当前页数
+                limit: 10,              //一页显示数据量
+            },
+            total: null            //数据总页码
         }
     },
     mounted(){
-        // this.$toast.show({
-        //     text: '12344',
-        //     type: 'error',
-        // })
+        this.login_data();
     },
     methods: {
-        //当前页码
-        handleCurrentChange(val){
-            console.log(val,'111');
+        //获取登录信息
+        login_data(){
+            request({
+                url: "/admin//sysLoginLog/logPage",
+                method: "get",
+                params: this.listQuery
+            }).then(response => {
+                this.list = response.data.records;
+                this.total = response.data.total;
+            }).catch(()=>{
+
+            })
         },
-        //每页显示多少天数据
-        handleSizeChange(val){
-            console.log(val,'222')
-        }
+        //页码修改
+        handleSizeChange(val) {
+            this.listQuery.limit = val;
+            this.login_data();
+        },
+        //页码修改
+        handleCurrentChange(val) {
+            this.listQuery.page = val;
+            this.login_data();
+        },
+        //导出
+        get_excel(){
+            this.list
+            if(!this.list.length) return;
+            getExcel('login-table','登录记录.xlsx');
+        },
     }
 }
 </script>
@@ -78,4 +121,8 @@ export default {
 .tip:hover .tip_title{ display: block; }
 .tip p i{ display: inline-block; width: 6px; }
 .tip>p{ line-height: 32px; color: #1A8CE1; }
+
+.login_status{ display: inline-block; width:60px; height: 30px; line-height: 30px; text-align: center; border-radius: 14px; font-size: 15px; font-weight: 700; color: #fff; }
+.login_status.success{ background: #53b095; }
+.login_status.fail{ background: #dc6068; }
 </style>

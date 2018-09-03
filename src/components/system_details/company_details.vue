@@ -4,55 +4,37 @@
 
             <el-row :gutter="20">
                 <el-col :span="8">
-                    <el-form-item label="公司名称：" class="omit1">
-                        <span>数赟信息科技有限公司</span>
-                    </el-form-item>
+                    <el-form-item label="公司名称：" class="omit1"><span>数赟信息科技有限公司</span></el-form-item>
                 </el-col>
                 <el-col :span="8">
-                    <el-form-item label="所在地：" class="omit1">
-                        <span>上海市-浦东新区</span>
-                    </el-form-item>
+                    <el-form-item label="所在地：" class="omit1"><span>上海市-浦东新区</span></el-form-item>
                 </el-col>
                 <el-col :span="8">
-                    <el-form-item label="公司地址：" class="omit1">
-                        <span>上海市浦东新区陆家嘴</span>
-                    </el-form-item>
+                    <el-form-item label="公司地址：" class="omit1"><span>上海市浦东新区陆家嘴</span></el-form-item>
                 </el-col>
             </el-row>
 
             <el-row :gutter="20">
                 <el-col :span="8">
-                    <el-form-item label="所属行业：">
-                        <span>IT/互联网-金融科技</span>
-                    </el-form-item>
+                    <el-form-item label="所属行业："><span>IT/互联网-金融科技</span></el-form-item>
                 </el-col>
                 <el-col :span="8">
-                    <el-form-item label="公司规模：">
-                        <span>1000以上</span>
-                    </el-form-item>
+                    <el-form-item label="公司规模："><span>1000以上</span></el-form-item>
                 </el-col>
                 <el-col :span="8">
-                    <el-form-item label="公司邮箱：">
-                        <span>wangxiuming@163.com</span>
-                    </el-form-item>
+                    <el-form-item label="公司邮箱："><span>wangxiuming@163.com</span></el-form-item>
                 </el-col>
             </el-row>
 
             <el-row :gutter="20">
                 <el-col :span="8">
-                    <el-form-item label="联系人：">
-                        <span>王秀明</span>
-                    </el-form-item>
+                    <el-form-item label="联系人："><span>王秀明</span></el-form-item>
                 </el-col>
                 <el-col :span="8">
-                    <el-form-item label="职务：">
-                        <span>总经理</span>
-                    </el-form-item>
+                    <el-form-item label="职务："><span>总经理</span></el-form-item>
                 </el-col>
                 <el-col :span="8">
-                    <el-form-item label="联系手机：">
-                        <span>13333333333</span>
-                    </el-form-item>
+                    <el-form-item label="联系手机："><span>13333333333</span></el-form-item>
                 </el-col>
             </el-row>
 
