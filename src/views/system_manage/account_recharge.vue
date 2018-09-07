@@ -29,7 +29,7 @@
                 </el-col>
                 <el-col :span="12">
                     <el-form-item label="充值金额(元)" prop="rechargeamount">
-                        <el-input type="text" @keyup="validNumber" v-model="form.rechargeamount" placeholder="输入充值金额"></el-input>
+                        <el-input type="text" v-model="form.rechargeamount" placeholder="输入充值金额"></el-input>
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -66,6 +66,8 @@ import { fetchDeptTree } from "@/api/role";
 export default {
     data () {
         return {
+            deptId:'',                  //公司id
+            username:'',                //账号名称
         	company_list:[],		     //公司列表
             username_list:{},            //账号列表
         	type_list:[],			     //充值类型
@@ -99,8 +101,22 @@ export default {
         }
     },
     created() {
-      this.handleDept();
-      this.get_allType();
+        this.handleDept();
+        this.get_allType();
+        if(this.$route.query.deptId){
+            this.deptId = this.$route.query.deptId;
+            request({
+                url: "/admin/user/recharge/" + this.deptId,
+                method: "get",
+            }).then(res => {
+                this.username_list = res.data;
+            }).catch(() => {})
+        }
+        if(this.$route.query.username){
+            this.username = this.$route.query.username;
+            this.form.username = this.username;
+            this.get_userType(this.form.username)
+        }
     },
     methods: {
         //获取所有类型
@@ -116,11 +132,17 @@ export default {
         handleDept() {
             fetchDeptTree().then(response => {
                 this.company_list = response.data;
+                if(this.deptId){
+                    for(var i in this.company_list){
+                        if(this.company_list[i].id == this.deptId){
+                            this.form.companyName = this.company_list[i].name;
+                        }
+                    }
+                }
             });
         },
     	//选择公司 获取所属账户
     	check_company(e){
-            console.log(e,'555')
             this.form.companyName = e.name;
             request({
                 url: "/admin/user/recharge/" + e.id,
@@ -142,10 +164,6 @@ export default {
                     }
                 }
             }).catch(() => {})
-        },
-    	//验证输入类型
-    	validNumber(e){
-            console.log('444')
         },
         //提交
         submit(){

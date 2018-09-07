@@ -39,7 +39,7 @@
                 </el-table-column>
 
                 <el-table-column align="center" label="消费金额/元">
-                    <template slot-scope="scope"><span>{{scope.row.orgSize}}</span></template>
+                    <template slot-scope="scope"><span class="table_primary">{{scope.row.orgSize}}</span></template>
                 </el-table-column>
 
                 <el-table-column align="center" label="消费时间">
@@ -51,13 +51,13 @@
                 </el-table-column>
 
                 <el-table-column align="center" label="操作">
-                    <template slot-scope="scope"><span>{{scope.row.orgSize}}</span></template>
+                    <template slot-scope="scope"><span @click="get_consump_details" class="table_primary cursor">查看详情</span></template>
                 </el-table-column>
 
             </el-table>
             <div class="page clearfix mt20 box" v-if="list.length">
                 <el-col :span="18">
-                    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[10, 20, 30, 40, 50]" :page-size="10" layout="total, sizes, prev, pager, next, jumper" :total="50"></el-pagination>
+                    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="listQuery.page" :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total"></el-pagination>
                 </el-col>
                 <el-col :span="6">
                     <div class="tip pr">
@@ -70,24 +70,34 @@
         <!--table 结束-->
 
         <!--table 详情-->
-        <consump_details_recode></consump_details_recode>
+        <consump_details_recode v-if="details"></consump_details_recode>
     </div>
 </template>
 
 <script>
+import request from "@/router/axios"
 import consump_details_recode from './consump_details_recode'
 export default {
     components: { consump_details_recode },
     data () {
         return {
-        	list:[],			//查询列表
-        	currentPage:1,		//当前页面为1
+        	list:[],			    //查询列表
+        	listQuery: {
+                page: 1,            //当前页数
+                limit: 10           //一页显示数据量
+            },
+            total:null,
+            details:false            //展示消费详情  false为隐藏
         }
     },
     created(){
         
     },
     methods: {
+        //展示消费详情
+        get_consump_details(){
+            this.details = true;
+        },
     	//当前页码
         handleCurrentChange(val){
             console.log(val,'111');

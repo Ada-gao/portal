@@ -32,7 +32,10 @@ export default {
 	components: {account_details, company_details, product_manage_recode, consump_recode, recharge_recode },
     data () {
         return {
-            type:1,		// 1为信息核验 2位历史结果查询  默认为1
+            type:'',		// 1为信息核验 2位历史结果查询  默认为1
+            userId:this.$route.query.userId,        //用户id
+            deptId:this.$route.query.deptId,         //部门id
+            username:this.$route.query.username
         }
     },
     mounted(){
@@ -44,7 +47,7 @@ export default {
     	//tab 切换
     	check_type(type){
     		this.type = type;
-            this.$router.replace({path:'/wel/system_details', query: {type: this.type}});
+            this.$router.replace({path:'/wel/system_details', query: {type: this.type,userId:this.userId,deptId:this.deptId,username:this.username}});
     	}
     }
 }

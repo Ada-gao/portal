@@ -35,7 +35,7 @@
             </el-table-column>
 
             <el-table-column align="center" label="账户类型">
-                <template slot-scope="scope"><span>{{scope.row.userType}}</span></template>
+                <template slot-scope="scope"><span>{{scope.row.userTypeName}}</span></template>
             </el-table-column>
 
             <el-table-column align="center" class-name="status-col" label="状态">
@@ -125,7 +125,7 @@ import waves from "@/directive/waves/index.js"; // 水波纹指令
 import { mapGetters } from "vuex";
 import ElRadioGroup from "element-ui/packages/radio/src/radio-group";
 import ElOption from "element-ui/packages/select/src/option";
-
+import request from "@/router/axios";
 export default {
     components: { ElOption, ElRadioGroup},
     name: "table_user",
@@ -225,12 +225,22 @@ export default {
         }
     },
     created() {
-        this.getList();
         this.sys_user_add = this.permissions["sys_user_add"];
         this.sys_user_upd = this.permissions["sys_user_upd"];
         this.sys_user_del = this.permissions["sys_user_del"];
+        this.get_allType();
     },
     methods: {
+        //获取所有类型
+        get_allType(){
+            request({
+                url: "/admin/dict/type/" + 'user_type',
+                method: "get",
+            }).then(res => {
+                this.userType_list = res.data;
+                this.getList();
+            }).catch(() => {})
+        },
         getList() {
             this.listLoading = true;
             this.listQuery.isAsc = false;
@@ -238,6 +248,13 @@ export default {
                 this.list = response.data.records;
                 this.total = response.data.total;
                 this.listLoading = false;
+                for(var i in this.userType_list){
+                    for(var j in this.list){
+                        if(this.list[j].userType == this.userType_list[i].value){
+                            this.list[j].userTypeName = this.userType_list[i].label
+                        }
+                    }
+                }
             });
         },
         getNodeData(data) {
@@ -275,11 +292,10 @@ export default {
         // },
         //点击添加 创建账号
         handleCreate() {
-            this.$router.push({path:'/admin/user/create_account'});
+            this.$router.push({path:'/admin/user/create_account', query: {type:'add'}});
         },
         //点击编辑 修改用户信息
         handleUpdate(row) {
-            console.log(row,'5555')
             var account_data = JSON.stringify(row);
             this.$router.push({path:'/admin/user/create_account', query: {type:'change',data:account_data}});
         },

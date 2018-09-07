@@ -4,40 +4,40 @@
             <span>产品历史详情</span>
         </div>
         <div class="mt20">
-        	<el-table :data="list" v-loading="false" element-loading-text="给我一点时间" fit highlight-current-row style="width: 100%">
+        	<el-table :data="list" v-loading="loading" element-loading-text="给我一点时间" fit highlight-current-row style="width: 100%">
 
                 <el-table-column align="center" label="产品类型">
-                    <template slot-scope="scope"><span>{{scope.row.companyCode}}</span></template>
+                    <template slot-scope="scope"><span>{{scope.row.productType}}</span></template>
                 </el-table-column>
 
-                <el-table-column align="center" label="产品详情">
-                    <template slot-scope="scope"><span>{{scope.row.companyCode}}</span></template>
+                <el-table-column align="center" label="产品名称">
+                    <template slot-scope="scope"><span>{{scope.row.productName}}</span></template>
                 </el-table-column>
 
                 <el-table-column align="center" label="消费单价(元/条)">
-                    <template slot-scope="scope"><span>{{scope.row.companyAddress}}</span></template>
+                    <template slot-scope="scope"><span class="table_primary">{{scope.row.productPrice}}</span></template>
                 </el-table-column>
 
                 <el-table-column align="center" label="现消费单价(元/条)">
-                    <template slot-scope="scope"><span>{{scope.row.companyAddress}}</span></template>
+                    <template slot-scope="scope"><span class="table_primary">{{scope.row.productReprice}}</span></template>
                 </el-table-column>
 
                 <el-table-column align="center" label="操作时间">
-                    <template slot-scope="scope"><span>{{scope.row.companyProvince}}</span></template>
+                    <template slot-scope="scope"><span>{{scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}')}}</span></template>
                 </el-table-column>
 
                 <el-table-column align="center" label="状态">
-                    <template slot-scope="scope"><span>{{scope.row.industryType}}</span></template>
+                    <template slot-scope="scope"><span :class="scope.row.delFlag == 0 ? 'table_success' : 'table_fail'">{{scope.row.delFlag == 0 ? '有效' : '无效'}}</span></template>
                 </el-table-column>
 
                 <el-table-column align="center" label="操作人">
-                    <template slot-scope="scope"><span>{{scope.row.orgSize}}</span></template>
+                    <template slot-scope="scope"><span>{{scope.row.createBy}}</span></template>
                 </el-table-column>
 
             </el-table>
             <div class="page clearfix mt20 box">
                 <el-col :span="24">
-                    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[10, 20, 30, 40, 50]" :page-size="10" layout="total, sizes, prev, pager, next, jumper" :total="50"></el-pagination>
+                    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="listQuery.page" :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total"></el-pagination>
                 </el-col>
             </div>
         </div>
@@ -45,56 +45,61 @@
 </template>
 
 <script>
+import request from "@/router/axios"
 export default {
+    props: ['product_id','productType_list'],
     data () {
         return {
         	list:[],			//查询列表
-        	currentPage:1,		//当前页面为1
-            dialog:false,
-            form:{
-                region:''
+            listQuery: {
+                page: 1,                        //当前页数
+                limit: 10                      //一页显示数据量
             },
-            select_list: [{
-                    value: 'HTML',
-                    label: 'HTML'
-                }, {
-                    value: 'CSS',
-                    label: 'CSS'
-                }, {
-                    value: 'JavaScript',
-                    label: 'JavaScript'
-                }],
-            select_data: [],
-            rules: {
-                product_type: [
-                    {required: true, trigger: 'blur', message: '请选择产品类型',}
-                ]
-            },
-            checkList:[],
+            total:null,
+            loading:false
         }
     },
     created(){
-        
+        this.get_historyData();
     },
     methods: {
-        //选择省份信息核验
-        check(e){
-            console.log(e)
+        //查看产品历史详情
+        get_historyData(){
+            this.loading = true;
+            this.listQuery.productId = this.product_id;
+            request({
+                url: "/admin/productHistory/productHistoryPage",
+                method: "get",
+                params:this.listQuery
+            }).then(res => {
+                this.loading = false;
+                this.list = res.data.records
+                this.total = res.data.total
+                for(var i in this.productType_list){
+                    for(var j in this.list){
+                        if(this.productType_list[i].value == this.list[j].productType){
+                            this.list[j].productType = this.productType_list[i].label
+                        }
+                    }
+                }
+            }).catch(() => {})
         },
-    	//当前页码
-        handleCurrentChange(val){
-            console.log(val,'111');
+    	//页码修改
+        handleSizeChange(val) {
+            this.listQuery.limit = val;
+            this.get_historyData();
         },
-        //每页显示多少天数据
-        handleSizeChange(val){
-            console.log(val,'222')
-        },
-        //点击确定
-        submit(){
-            this.$refs['form'].validate(valid => {
-                console.log(valid,'111')
-            })
+        //页码修改
+        handleCurrentChange(val) {
+            this.listQuery.page = val;
+            this.get_historyData();
         }
+    },
+    watch:{
+        product_id:function(val){
+            console.log(11111)
+            this.get_historyData();
+        },
     }
 }
 </script>

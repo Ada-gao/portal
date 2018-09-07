@@ -39,10 +39,22 @@ const validEmail = (rule, value, callback) => {
         callback()
     }
 }
+//验证数字
+const validNumber = (rule, value, callback) => {
+    var reg = /^(?!0+(?:\.0+)?$)(?:[1-9]\d*|0)(?:\.\d{1,2})?$/;
+    if (!value) {
+        callback(new Error('请输入金额'))
+    } else if (!reg.test(value)) {
+        callback(new Error('请您输入正确的金额'))
+    } else {
+        callback()
+    }
+}
 //调用
 module.exports = {
   isvalidateMobile: isvalidateMobile,
   validatePass: validatePass,
   numberPass: numberPass,
-  validEmail:validEmail
+  validEmail:validEmail,
+  validNumber:validNumber
 }

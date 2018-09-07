@@ -7,7 +7,7 @@
             </div>
             <!--一键导出-->
             <div class="common_btn tr">
-                <button class="disable" @click="get_excel"><i class="iconfont icon-xiazai"></i>一键导出</button>
+                <button :class="{'disable':list.length == 0}" @click="get_excel"><i class="iconfont icon-xiazai"></i>一键导出</button>
             </div>
             <div class="table_style" v-if="list.length">
                 <el-table id="login-table" :data="list" :key='0' element-loading-text="给我一点时间" fit highlight-current-row style="width: 100%">
@@ -105,7 +105,6 @@ export default {
         },
         //导出
         get_excel(){
-            this.list
             if(!this.list.length) return;
             getExcel('login-table','登录记录.xlsx');
         },

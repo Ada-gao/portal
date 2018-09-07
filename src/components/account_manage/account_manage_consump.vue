@@ -7,7 +7,7 @@
             </div>
             <!--一键导出-->
             <div class="common_btn tr">
-                <button @click="get_excel"><i class="iconfont icon-xiazai"></i>一键导出</button>
+                <button @click="get_excel" :class="{'disable':list.length == 0}"><i class="iconfont icon-xiazai"></i>一键导出</button>
             </div>
             <div class="table_style" v-if="list.length">
                 <el-table id="out-table" :data="list" :key='0' element-loading-text="给我一点时间" fit highlight-current-row style="width: 100%">
@@ -49,7 +49,7 @@
                 </el-table>
                 <div class="page clearfix mt20 box">
                     <el-col :span="18">
-                        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[10, 20, 30, 40, 50]" :page-size="10" layout="total, sizes, prev, pager, next, jumper" :total="50"></el-pagination>
+                        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="listQuery.page" :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total"></el-pagination>
                     </el-col>
                     <el-col :span="6" class="tr">
                         <div class="tip pr in_b">
@@ -73,27 +73,12 @@ import { getExcel } from '@/util/auth'
 export default {
     data () {
         return {
-            list:[
-                {
-                    "id":1,
-                    "value":"0",
-                    "label":"1-49人",
-                    "type":"org_size",
-                    "description":"公司规模",
-                    "sort":0,
-                    "remarks":"企业规模"
-                },
-                {
-                    "id":1,
-                    "value":"0",
-                    "label":"1-49人",
-                    "type":"org_size",
-                    "description":"公司规模",
-                    "sort":1,
-                    "remarks":"企业规模"
-                }
-            ],
-            currentPage:1
+            list:[],
+            listQuery: {
+                page: 1,                //当前页数
+                limit: 10,              //一页显示数据量
+            },
+            total:null
         }
     },
     mounted(){
@@ -105,6 +90,7 @@ export default {
     methods: {
         //导出
         get_excel(){
+            if(this.list.length == 0) return;
             getExcel('out-table','消费记录.xlsx');
         },
         //当前页码

@@ -37,5 +37,5 @@ import Alert from 'components/alert/alert.vue'
 			$vm.show = false
 		}
 	}
-	}
+}
 export default Toast;

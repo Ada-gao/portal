@@ -8,7 +8,7 @@
         </div>
         <!--公司详情-->
         <div>
-            <el-form class="company_details pt20" label-width="100px">
+            <el-form class="company_details pt20" label-width="100px" v-loading="loading" element-loading-text="给我一点时间">
 
                 <el-row :gutter="20">
                     <el-col :span="8">
@@ -31,7 +31,7 @@
                         <el-form-item label="所属行业："><span>{{details_data.industryType + details_data.industry}}</span></el-form-item>
                     </el-col>
                     <el-col :span="8">
-                        <el-form-item label="公司规模："><span>{{details_data.orgSize}}</span></el-form-item>
+                        <el-form-item label="公司规模："><span>{{details_data.orgSizeName}}</span></el-form-item>
                     </el-col>
                     <el-col :span="8">
                         <el-form-item label="公司邮箱："><span>{{details_data.companyEmail}}</span></el-form-item>
@@ -43,7 +43,7 @@
                         <el-form-item label="联系人："><span>{{details_data.contact}}</span></el-form-item>
                     </el-col>
                     <el-col :span="8">
-                        <el-form-item label="职务："><span>{{details_data.occupation}}</span></el-form-item>
+                        <el-form-item label="职务："><span>{{details_data.position}}</span></el-form-item>
                     </el-col>
                     <el-col :span="8">
                         <el-form-item label="联系手机："><span>{{details_data.contactMobile}}</span></el-form-item>
@@ -102,7 +102,8 @@ export default {
             autoplay:false,         //轮播图不制动滚动
             index:0,                //轮播图默认展示第一张
             swiper_img:false,       //查看大图 默认隐藏
-            details_data:{}         //公司详情数据
+            details_data:{},         //公司详情数据
+            loading:false
         }
     },
     created() {
@@ -129,15 +130,17 @@ export default {
         },
         //获取公司详情
         get_companyDetails(id,type){
+            this.loading = true;
             request({
                 url: "/admin/company/" + this.companyId,
                 method: "get"
             }).then(response => {
+                this.loading = false;
                 this.details_data = response.data;
                 this.details_data.companyQualification = response.data.companyQualification.split(',');
                 for(var j in this.orgSizeData){
                    if(this.orgSizeData[j].value == this.details_data.orgSize){
-                        this.details_data.orgSize = this.orgSizeData[j].label
+                        this.details_data.orgSizeName = this.orgSizeData[j].label
                     } 
                 }
             })

@@ -69,8 +69,8 @@
 
                 <el-form-item label="状态" v-if="dialogStatus == 'update' && sys_user_del " prop="delFlag">
                     <el-select class="filter-item" v-model="form.delFlag" placeholder="请选择">
-                    <el-option v-for="item in statusOptions" :key="item" :label="item | statusFilter" :value="item"> </el-option></el-select>
-                </el-form-item>
+                        <el-option v-for="item in statusOptions" :key="item" :label="item | statusFilter" :value="item"> </el-option></el-select>
+                    </el-form-item>
             </el-form>
 
             <div slot="footer" class="dialog-footer">

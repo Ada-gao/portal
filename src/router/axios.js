@@ -3,7 +3,6 @@
  * http配置
  *
  */
-
 import axios from 'axios'
 import store from '../store'
 import router from '../router/router'
@@ -13,7 +12,7 @@ import errorCode from '@/const/errorCode'
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css'// progress bar style
 // 超时时间
-axios.defaults.timeout = 30000
+axios.defaults.timeout = 15000
 // 跨域请求，允许保存cookie
 axios.defaults.withCredentials = true
 NProgress.configure({ showSpinner: false })// NProgress Configuration
@@ -22,7 +21,7 @@ let msg
 axios.interceptors.request.use(config => {
     NProgress.start() // start progress bar
     if (store.getters.access_token) {
-        config.headers['Authorization'] = 'Bearer ' + getToken() // 让每个请求携带token--['X-Token']为自定义key 请根据实际情况自行修改
+        config.headers['Authorization'] = 'Bearer ' + getToken()
     }
     return config
     }, error => {
@@ -30,44 +29,47 @@ axios.interceptors.request.use(config => {
     }
 )
 // HTTPresponse拦截
-axios.interceptors.response.use(data => {
+axios.interceptors.response.use(response => {
     NProgress.done()
-    return data
-}, error => {
+    const res = response.data
+    if (res.code === 1) {
+        Message({
+            message: res.msg,
+            type: 'error'
+        })
+        return Promise.reject(res)
+    }
+    return response
+},error => {
     NProgress.done()
     let errMsg = error.toString()
     let code = errMsg.substr(errMsg.indexOf('code') + 5)
-    let res = error.data
-    //错误处理
-    if (code === 400) {
+    const res = error.response
+    if (!res || res.status === undefined) {
+        router.replace({path: '/login'})
+        return
+    }
+    if (code === 401) {
         Message({
-            message: res.data.msg,
+            message: '登录时间过期，请重新登录',
             type: 'error'
         })
-    } else if (code === 401) {
-        Message({
-            message:'登录时间过期，请重新登录',
-            type: 'error'
-        })
-        removeToken()
-        router.replace({ path: '/login' })
+      removeToken()
+      router.replace({ path: '/login' })
     } else if (code === 403) {
         Message({
-            message:'管理权限不足，请联系管理员',
+            message: '管理权限不足，请联系管理员',
             type: 'error'
         })
         router.replace({path: '/login'})
-    } else if (code === 404 || code === 504) {
-        Message({
-            message:'服务器被吃了⊙﹏⊙∥',
-            type: 'error'
-        })
+    } else if (code === 500) {
+        message(res.data.message || res.data.error, 'error')
     } else {
         Message({
-            message: res.data.msg,
+            message: res.data.msg || res.data.error_description || '服务器被吃了⊙﹏⊙∥',
             type: 'error'
         })
     }
-    return Promise.reject(new Error(error))
+    return Promise.reject(error)
 })
 export default axios

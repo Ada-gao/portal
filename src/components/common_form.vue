@@ -63,7 +63,7 @@
                 </el-col>
                 <el-col :span="12">
                     <el-form-item label="职务">
-                        <el-input v-model="form.occupation" placeholder="请输入职务"></el-input>
+                        <el-input v-model="form.position" placeholder="请输入职务"></el-input>
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -184,7 +184,7 @@ export default {
                 contact:'',                         //联系人姓名
                 contactMobile:'',                   //联系电话
                 companyEmail:'',                     //公司邮箱
-                occupation:'',                      //职务
+                position:'',                      //职务
                 orgSize:''                          //公司规模
             },
             rules: {    //表单验证

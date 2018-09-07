@@ -28,7 +28,7 @@
                     <el-row :gutter="20">
                         <el-col :span="8">
                             <el-form-item label="Account ID：">
-                                <span>shuxiangxinxikeji</span>
+                                <span>{{userInfo.username}}</span>
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
@@ -112,8 +112,8 @@ export default {
         },
         get_basicInfo(){
             request({
-                url: "/admin/user/baseUserInfo/" + this.userInfo.userId,
-                method: "get",
+                url: "/admin/user/baseUserInfo",
+                method: "get"
             }).then(res => {
                 this.basic_info = res.data;
                 for(var i in this.userType_list){

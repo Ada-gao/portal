@@ -1,40 +1,41 @@
 <template>
     <div>
-        <el-form class="company_details pt20" label-width="100px">
+        <div class="modify" @click="for_company_change"><i class="iconfont icon-xiugai"></i>修改</div>
+        <el-form class="company_details pt20" label-width="100px" v-loading="loading" element-loading-text="给我一点时间">
 
             <el-row :gutter="20">
                 <el-col :span="8">
-                    <el-form-item label="公司名称：" class="omit1"><span>数赟信息科技有限公司</span></el-form-item>
+                    <el-form-item label="公司名称：" class="omit1"><span>{{details_data.companyName}}</span></el-form-item>
                 </el-col>
                 <el-col :span="8">
-                    <el-form-item label="所在地：" class="omit1"><span>上海市-浦东新区</span></el-form-item>
+                    <el-form-item label="所在地：" class="omit1"><span>{{details_data.companyProvince}} - {{details_data.companyCity}}</span></el-form-item>
                 </el-col>
                 <el-col :span="8">
-                    <el-form-item label="公司地址：" class="omit1"><span>上海市浦东新区陆家嘴</span></el-form-item>
+                    <el-form-item label="公司地址：" class="omit1"><span>{{details_data.companyAddress}}</span></el-form-item>
                 </el-col>
             </el-row>
 
             <el-row :gutter="20">
                 <el-col :span="8">
-                    <el-form-item label="所属行业："><span>IT/互联网-金融科技</span></el-form-item>
+                    <el-form-item label="所属行业："><span>{{details_data.industryType}} - {{details_data.companyCity}}</span></el-form-item>
                 </el-col>
                 <el-col :span="8">
-                    <el-form-item label="公司规模："><span>1000以上</span></el-form-item>
+                    <el-form-item label="公司规模："><span>{{details_data.orgSizeName}}</span></el-form-item>
                 </el-col>
                 <el-col :span="8">
-                    <el-form-item label="公司邮箱："><span>wangxiuming@163.com</span></el-form-item>
+                    <el-form-item label="公司邮箱："><span>{{details_data.companyEmail}}</span></el-form-item>
                 </el-col>
             </el-row>
 
             <el-row :gutter="20">
                 <el-col :span="8">
-                    <el-form-item label="联系人："><span>王秀明</span></el-form-item>
+                    <el-form-item label="联系人："><span>{{details_data.contact}}</span></el-form-item>
                 </el-col>
                 <el-col :span="8">
-                    <el-form-item label="职务："><span>总经理</span></el-form-item>
+                    <el-form-item label="职务："><span>{{details_data.position}}</span></el-form-item>
                 </el-col>
                 <el-col :span="8">
-                    <el-form-item label="联系手机："><span>13333333333</span></el-form-item>
+                    <el-form-item label="联系手机："><span>{{details_data.contactMobile}}</span></el-form-item>
                 </el-col>
             </el-row>
 
@@ -42,16 +43,16 @@
                 <el-col :span="24">
                     <el-form-item label="公司资质：" style="margin-bottom: 0;">
                         <ul class="img_list in_b clearfix">
-                            <li class="pr fl" @click="swiper_img = true"><img src="/static/img/bg/bg1.jpg"><span class="pa in_b none">查看图片</span></li>
+                            <li class="pr fl" @click="swiper_img = true" v-for="(img,index) in details_data.companyQualification" :key="index"><img :src="img"><span class="pa in_b none">查看图片</span></li>
                         </ul>
                     </el-form-item>
                 </el-col>
             </el-row>
 
-            <el-row :gutter="20">
+            <el-row :gutter="20" v-if="details_data.remark">
                 <el-col :span="24">
                     <el-form-item label="备注：">
-                        <span>2018.7.1 对接需求，开测试帐号，后期继续跟进。</span>
+                        <span>{{details_data.remark}}</span>
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -74,97 +75,66 @@
                 </div>
             </div>
         </div>
-        <!--修改密码-->
-        <!--修改密码 弹框-->
-        <el-dialog title="修改登录密码" :visible.sync="checkPass">
-            <el-form :model="form" ref="form" :rules="rules">
-                <el-row>
-                    <el-col :span="24">
-                        <el-form-item label="新密码" label-width="80px" prop="password">
-                            <el-input v-model="form.password" placeholder="输入新密码" maxlength="12"></el-input>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-            </el-form>
-            <span slot="footer">
-                <el-button @click="checkPass = false">取 消</el-button>
-                <el-button type="primary" @click="submit_pass">确 定</el-button>
-            </span>
-        </el-dialog>
-        <!--修改余额提醒-->
-        <el-dialog title="修改余额提醒" :visible.sync="checkBalance">
-            <el-form :model="form" ref="form" :rules="rules">
-                <el-row :gutter="10">
-                    <el-col :span="17">
-                        <el-form-item label="余额低于" label-width="80px" prop="password">
-                            <el-input v-model="form.password" placeholder="请输入最低余额提醒"></el-input>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="6">
-                        <el-form-item>
-                            <em>元,进行余额提醒</em>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-            </el-form>
-            <span slot="footer">
-                <el-button @click="checkBalance = false">取 消</el-button>
-                <el-button type="primary" @click="submit_balance">确 定</el-button>
-            </span>
-        </el-dialog>
     </div>
 </template>
 
 <script>
-import Validate from '@/util/filter_rules'
+import request from "@/router/axios"
 export default {
     data () {
         return {          
-            restart:false,          //是否启用
-            checkPass:false,        //修改密码
-            checkBalance:false,     //修改余额提醒
-            autoplay:false,         //轮播图不制动滚动
-            index:0,                //轮播图默认展示第一张
-            swiper_img:false,       //查看大图 默认隐藏
-            form:{
-                password:''         //新密码
-            },
-            rules: {
-                password: [
-                    {required: true, trigger: 'blur', validator: Validate.validatePass }
-                ]
-            },
+            deptId:this.$route.query.deptId,         //部门id
+            details_data:{},                        //公司信息数据
+            restart:false,                          //是否启用
+            autoplay:false,                         //轮播图不制动滚动
+            index:0,                                //轮播图默认展示第一张
+            swiper_img:false,                       //查看大图 默认隐藏
+            loading:false
         }
     },
     mounted(){
-        
+        this.get_orgSizeData();
     },
     methods: {
-        //重置key
-        check_key(){
-            this.$confirm('确定重置key吗?', '取消', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(() => {
-                
-            }).catch(() => {
-                          
-            });
+        //获取公司规模
+        get_orgSizeData(){
+            request({
+                url: "/admin/dict/type/" + 'org_size',
+                method: "get",
+            }).then(response => {
+                if(response.status == 200){
+                   this.orgSizeData = response.data;
+                   this.get_companyId();
+                }
+            }).catch(()=>{
+
+            })
         },
-        //启用停用
-        check_restart(e){
-            if(!this.restart){
-               this.$confirm('确定停用吗?', '取消', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    this.restart = false;
-                }).catch(() => {
-                     this.restart = true;         
-                }); 
-            }
+        //通过部门获取公司id
+        get_companyId(){
+            request({
+                url: "/admin/dept/" + this.deptId,
+                method: "get"
+            }).then(res => {
+                this.get_companyDetails(res.data.companyId)
+            })
+        },
+        //获取公司详情
+        get_companyDetails(id){
+            this.loading = true;
+            request({
+                url: "/admin/company/" + id,
+                method: "get"
+            }).then(response => {
+                this.loading = false;
+                this.details_data = response.data;
+                this.details_data.companyQualification = response.data.companyQualification.split(',');
+                for(var j in this.orgSizeData){
+                   if(this.orgSizeData[j].value == this.details_data.orgSize){
+                        this.details_data.orgSizeName = this.orgSizeData[j].label
+                    } 
+                }
+            })
         },
         //轮播图切换
         switch_index:function(type){
@@ -181,21 +151,17 @@ export default {
         setActiveItem:function(index){
             this.$refs.carousel.setActiveItem(index);
         },
-        //修改密码 确认
-        submit_pass(){
-            this.$refs['form'].validate(valid => {
-                console.log(valid,'111')
-            })
-        },
-        //修改余额
-        submit_balance(){
-
+        //点击修改
+        for_company_change(){
+            this.$router.push({path:'/admin/company/change', query: {type:'change',details_data:JSON.stringify(this.details_data)}});
         }
     }
 }
 </script>
 
 <style lang="scss" scoped>
+.modify{ line-height: 24px; color: #1A8CE1; cursor: pointer; position: absolute; right: 25px; top: 20px;}
+.modify i{ color: #1A8CE1; margin-right: 5px;}
 .company_details i,.company_details em{ color: #1A8CE1;}
 .img_list li{ width: 120px; height: 80px; margin-right: 10px; cursor: pointer; }
 .img_list li:hover span{ display: block;}

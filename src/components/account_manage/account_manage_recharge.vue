@@ -7,13 +7,25 @@
             </div>
             <!--一键导出-->
             <div class="common_btn tr">
-                <button><i class="iconfont icon-xiazai"></i>一键导出</button>
+                <button @click="get_excel" :class="{'disable':list.length == 0}"><i class="iconfont icon-xiazai"></i>一键导出</button>
             </div>
             <div class="table_style">
-                <el-table :data="list" :key='0' element-loading-text="给我一点时间" fit highlight-current-row style="width: 100%">
+                <el-table :data="list" v-if="list.length" :key='0' element-loading-text="给我一点时间" fit highlight-current-row style="width: 100%">
 
                     <el-table-column align="center" label="充值流水号">
                         <template slot-scope="scope"><span>{{scope.row.rechargeCode}}</span></template>
+                    </el-table-column>
+
+                    <el-table-column align="center" label="所属公司">
+                        <template slot-scope="scope"><span>{{scope.row.companyName}}</span></template>
+                    </el-table-column>
+
+                    <el-table-column align="center" label="充值账号">
+                        <template slot-scope="scope"><span>{{scope.row.username}}</span></template>
+                    </el-table-column>
+
+                    <el-table-column align="center" label="充值类型">
+                        <template slot-scope="scope"><span>{{scope.row.rechargeName}}</span></template>
                     </el-table-column>
 
                     <el-table-column align="center" label="充值金额(元)">
@@ -39,7 +51,7 @@
                     </el-table-column>
 
                 </el-table>
-                <div class="page clearfix mt20 box">
+                <div class="page clearfix mt20 box" v-if="list.length">
                     <el-col :span="18">
                         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="listQuery.page" :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total"></el-pagination>
                     </el-col>
@@ -61,31 +73,49 @@
 </template>
 
 <script>
-import request from "@/router/axios";
+import { getExcel } from '@/util/auth'
+import request from "@/router/axios"
 export default {
     data () {
         return {
             list:[],            //充值记录列表
-            currentPage:1,      //当前页面为1
             listQuery: {
                 page: 1,                //当前页数
-                limit: 20,              //一页显示数据量
+                limit: 10,              //一页显示数据量
             },
             total:null
         }
     },
     mounted(){
-        this.get_rechargeData();
+        this.get_rechargeType();
     },
     methods: {
+        //获取充值类型
+        get_rechargeType() {
+            request({
+                url: "/admin//dict/type/" + 'user_type',
+                method: "get",
+            }).then(res => {
+                this.recharge_data = res.data;
+                this.get_rechargeData();
+            }).catch(() => {})
+        },
         //获取充值记录
         get_rechargeData() {
             request({
-                url: "/admin/rechargeRecord/rechargeRecordPage",
+                url: "/admin/rechargeRecord/rechargeRecordUserPage",
                 method: "get",
+                params:this.listQuery
             }).then(res => {
                 this.list = res.data.records;
                 this.total = res.data.total;
+                for(var i in this.list){
+                    for(var j in this.recharge_data){
+                        if(this.list[i].rechargeType == this.recharge_data[j].value){
+                            this.list[i].rechargeName = this.recharge_data[j].label;
+                        }
+                    }
+                }
             }).catch(() => {})
         },
         //当前页码
@@ -97,7 +127,12 @@ export default {
         handleSizeChange(val){
             this.listQuery.limit = val;
             this.get_rechargeData();
-        }
+        },
+        //导出
+        get_excel(){
+            if(this.list.length == 0) return;
+            getExcel('out-table','消费记录.xlsx');
+        },
     }
 }
 </script>

@@ -143,3 +143,4 @@ textarea{resize:none}
 /*颜色*/
 .table_primary{ color: #1A8CE1; }
 .table_success{ color: #17C263; }
+.table_fail{ color: #FF4949; }

@@ -13,7 +13,8 @@ export default [
             { path: 'index', name: '首页', component: _import('wel')},
             {path: '/wel/system_details',name: '系统详情',component: _import('system_manage/system_details', 'views')},
             {path: '/wel/company_details_change',name: '系统详情修改',component: _import('system_manage/company_details_change', 'views')},
-            {path: '/wel/account_recharge', name: '账户充值',component: _import('system_manage/account_recharge', 'views')}
+            {path: '/wel/account_recharge', name: '账户充值',component: _import('system_manage/account_recharge', 'views')},
+            {path: '/wel/set_product', name: '产品设定',component: _import('system_manage/set_product', 'views')}
         ]
     }, {
         path: '*',
