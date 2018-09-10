@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import recharge_recode from 'components/system_details/recharge_recode'
+import recharge_recode from 'components/company_details/recharge_recode'
 import request from "@/router/axios";
 import { getExcel } from '@/util/auth'
 import { mapState } from "vuex";

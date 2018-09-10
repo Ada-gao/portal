@@ -172,6 +172,7 @@ export default {
                 product:[],                        //产品设定
                 role:[],                        //角色
                 delFlag:'',                     //公司状态
+                roleList:[]
             },
             rules: {    //表单验证
                 deptName: [

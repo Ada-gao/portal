@@ -51,7 +51,7 @@
 
 <script>
 import Validate from '@/util/filter_rules'
-import product_history_details from 'components/system_details/product_history_details'
+import product_history_details from 'components/company_details/product_history_details'
 import request from "@/router/axios"
 export default {
 	components: { product_history_details },
@@ -117,7 +117,7 @@ export default {
             this.productId = item.productId;
         },
         set_product(){
-            this.$router.push({path:'/wel/set_product', query: {userId:this.$route.query.userId}});
+            this.$router.push({path:'/account/handle/set_product', query: {userId:this.$route.query.userId}});
         }
     }
 }

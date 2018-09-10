@@ -49,7 +49,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 230px;
+  // width: 230px;
   height: 64px;
   line-height: 64px;
   background: #002140;

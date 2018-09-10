@@ -36,9 +36,6 @@ export default {
       type: Boolean
     }
   },
-  created() {},
-  mounted() {},
-  computed: {},
   methods: {
     filterPath(path, index) {
       return path == null ? index + "" : path;
@@ -49,7 +46,17 @@ export default {
         query: item.query
       });
     }
-  }
+  },
+  // watch:{
+  //     $route: function(){
+  //       for(var i in this.menu){
+  //         console.log(this.menu[i],'5555')
+  //         if(this.$route.path.match(this.menu[i].path)){
+  //           //this.open(this.menu[i])
+  //         }
+  //       }
+  //     }
+  // },
 };
 </script>
 <style lang="scss" scoped>

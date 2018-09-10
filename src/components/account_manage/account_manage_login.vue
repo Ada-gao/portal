@@ -10,7 +10,7 @@
                 <button :class="{'disable':list.length == 0}" @click="get_excel"><i class="iconfont icon-xiazai"></i>一键导出</button>
             </div>
             <div class="table_style" v-if="list.length">
-                <el-table id="login-table" :data="list" :key='0' element-loading-text="给我一点时间" fit highlight-current-row style="width: 100%">
+                <el-table id="login-table" :data="list" :key='0' v-loading="loading" element-loading-text="给我一点时间" fit highlight-current-row style="width: 100%">
 
                     <el-table-column align="center" label="登录账号">
                         <template slot-scope="scope"><span>{{scope.row.loginName}}</span></template>
@@ -73,7 +73,8 @@ export default {
                 page: 1,                //当前页数
                 limit: 10,              //一页显示数据量
             },
-            total: null            //数据总页码
+            total: null,            //数据总页码
+            loading:false
         }
     },
     mounted(){
@@ -87,6 +88,7 @@ export default {
                 method: "get",
                 params: this.listQuery
             }).then(response => {
+                this.loading = false;
                 this.list = response.data.records;
                 this.total = response.data.total;
             }).catch(()=>{
@@ -96,11 +98,13 @@ export default {
         //页码修改
         handleSizeChange(val) {
             this.listQuery.limit = val;
+            this.loading = true;
             this.login_data();
         },
         //页码修改
         handleCurrentChange(val) {
             this.listQuery.page = val;
+            this.loading = true;
             this.login_data();
         },
         //导出

@@ -4,10 +4,7 @@
     		<div class="check pt20">
 	    		<span>核验类型</span>
 	    		<el-radio-group v-model="type" @change="check_type">
-				    <el-radio :label="1">二要素</el-radio>
-				    <el-radio :label="2" disabled>银行卡三要素</el-radio>
-				    <el-radio :label="3">手机三要素</el-radio>
-				    <el-radio :label="4">四要素</el-radio>
+				    <el-radio :disabled="list.status == 1" v-for="(list,index) in verif_Type" :key="index" :label="index">{{list.productName}}</el-radio>
 				</el-radio-group>
 				<div class="common_btn fr"><button @click="dialogVisible = true"><i class="iconfont icon-xiazai"></i>批量上传</button></div>
 			</div>
@@ -84,14 +81,17 @@
 <script>
 import Validate from '@/util/filter_rules'
 import query_condit from 'components/infor_verif/query_condit'
-import UploadExcelComponent from '@/components/uploadExcel.vue';
+import UploadExcelComponent from '@/components/uploadExcel.vue'
+import request from "@/router/axios"
+import { mapState } from "vuex"
 export default {
 	components: { query_condit, UploadExcelComponent },
     data () {
         return {
+            verif_Type:[],          //核验类型数据
             dialogVisible:false,    //点击开始导入弹框默认为false
             begin:false,             //开始导入弹框默认为false
-            type:1,		           //核验类型 默认为1 选择可用的第一个 
+            type:0,		           //核验类型 默认为1 选择可用的第一个 
             form:{
             	name:'',		     //姓名
             	tel:'',			     //手机号码
@@ -115,10 +115,35 @@ export default {
             }
         }
     },
+    computed: {
+        ...mapState({
+            userInfo: state => state.user.userInfo
+        }),
+    },
     mounted(){
-        
+        this.get_verifType();
     },
     methods: {
+        //获取所有类型类型
+        get_verifType(){
+            request({
+                url: "/admin/product/productList",
+                method: "get",
+                params:{
+                    userId:this.userInfo.userId
+                },
+            }).then(res => {
+                this.verif_Type = res.data;
+                //设置 默认选中
+                for(var i in this.verif_Type){
+                    if(this.verif_Type[i].status == 0){
+                        this.type = Number(i) + 1;
+                        return;
+                    }
+                }
+
+            }).catch(() => {})
+        },
     	//选择核验类型
     	check_type(type){
     		this.type = type;

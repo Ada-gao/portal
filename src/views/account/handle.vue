@@ -12,7 +12,7 @@ import get_account_handle from 'components/get_account/get_account_handle'
 import account_list from 'components/get_account/account_list'
 import recharge_list from 'components/get_account/recharge_list'
 export default {
-    name: "home",
+    name: "handle",
     components: { get_account_handle, account_list, recharge_list },
     data () {
         return {          

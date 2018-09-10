@@ -152,7 +152,7 @@ export default {
         },
         //账号 查看详情
         for_system_details(item){
-            this.$router.push({path:'/wel/system_details', query: {type:'1',userId:item.userId,deptId:item.deptId,username:item.username}});
+            this.$router.push({path:'/account/handle/company_details', query: {type:'1',userId:item.userId,deptId:item.deptId,username:item.username}});
         }
     }
 }

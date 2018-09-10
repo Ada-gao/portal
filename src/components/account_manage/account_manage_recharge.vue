@@ -10,7 +10,7 @@
                 <button @click="get_excel" :class="{'disable':list.length == 0}"><i class="iconfont icon-xiazai"></i>一键导出</button>
             </div>
             <div class="table_style">
-                <el-table :data="list" v-if="list.length" :key='0' element-loading-text="给我一点时间" fit highlight-current-row style="width: 100%">
+                <el-table :data="list" v-if="list.length" :key='0' v-loading="loading" element-loading-text="给我一点时间" fit highlight-current-row style="width: 100%">
 
                     <el-table-column align="center" label="充值流水号">
                         <template slot-scope="scope"><span>{{scope.row.rechargeCode}}</span></template>
@@ -83,7 +83,8 @@ export default {
                 page: 1,                //当前页数
                 limit: 10,              //一页显示数据量
             },
-            total:null
+            total:null,
+            loading:false
         }
     },
     mounted(){
@@ -107,6 +108,7 @@ export default {
                 method: "get",
                 params:this.listQuery
             }).then(res => {
+                this.loading = false;
                 this.list = res.data.records;
                 this.total = res.data.total;
                 for(var i in this.list){
@@ -121,11 +123,13 @@ export default {
         //当前页码
         handleCurrentChange(val){
             this.listQuery.page = val;
+            this.loading = true;
             this.get_rechargeData();
         },
         //每页显示多少天数据
         handleSizeChange(val){
             this.listQuery.limit = val;
+            this.loading = true;
             this.get_rechargeData();
         },
         //导出

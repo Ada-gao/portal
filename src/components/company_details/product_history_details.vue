@@ -97,7 +97,6 @@ export default {
     },
     watch:{
         product_id:function(val){
-            console.log(11111)
             this.get_historyData();
         },
     }

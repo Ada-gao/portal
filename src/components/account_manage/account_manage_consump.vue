@@ -10,7 +10,7 @@
                 <button @click="get_excel" :class="{'disable':list.length == 0}"><i class="iconfont icon-xiazai"></i>一键导出</button>
             </div>
             <div class="table_style" v-if="list.length">
-                <el-table id="out-table" :data="list" :key='0' element-loading-text="给我一点时间" fit highlight-current-row style="width: 100%">
+                <el-table id="out-table" :data="list" :key='0' v-loading="loading" element-loading-text="给我一点时间" fit highlight-current-row style="width: 100%">
 
                     <el-table-column align="center" label="消费流水号">
                         <template slot-scope="scope"><span>{{scope.row.label}}</span></template>
@@ -70,6 +70,7 @@
 
 <script>
 import { getExcel } from '@/util/auth'
+import request from "@/router/axios"
 export default {
     data () {
         return {
@@ -78,28 +79,38 @@ export default {
                 page: 1,                //当前页数
                 limit: 10,              //一页显示数据量
             },
-            total:null
+            total:null,
+            loading:false
         }
     },
     mounted(){
-        // this.$toast.show({
-        //     text: '12344',
-        //     type: 'error',
-        // })
+        this.get_consumpList();
     },
     methods: {
+        //获取消费记录
+        get_consumpList(){
+            request({
+                url: "/admin//dict/type/" + 'user_type',
+                method: "get",
+            }).then(res => {
+                this.loading = false;
+                this.recharge_data = res.data;
+            }).catch(() => {})
+        },
+        //当前页码
+        handleCurrentChange(val){
+            this.loading = true;
+            this.get_consumpList();
+        },
+        //每页显示多少天数据
+        handleSizeChange(val){
+            this.loading = true;
+            this.get_consumpList();
+        },
         //导出
         get_excel(){
             if(this.list.length == 0) return;
             getExcel('out-table','消费记录.xlsx');
-        },
-        //当前页码
-        handleCurrentChange(val){
-            console.log(val,'111');
-        },
-        //每页显示多少天数据
-        handleSizeChange(val){
-            console.log(val,'222')
         }
     }
 }

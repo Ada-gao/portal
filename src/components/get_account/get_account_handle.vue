@@ -3,12 +3,12 @@
     	<div class="clearfix tc">
 	    	<el-col :span="12" class="bort">
 	            <div class="get_account clearfix in_b">
-	                <router-link :to="{path:'/admin/user/create_account'}" tag="div" class="spicle fl"><i class='iconfont icon-kaitong vm'></i>开通账号</router-link>
+	                <router-link :to="{path:'/admin/user/create_account',query:{type:'add'}}" tag="div" class="spicle fl"><i class='iconfont icon-kaitong vm'></i>开通账号</router-link>
 	            </div>
 	        </el-col>
 	        <el-col :span="12">
 	            <div class="account_recharge clearfix in_b">
-	                <router-link :to="{path:'/wel/account_recharge'}" tag="div" class="spicle fl"><i class='iconfont icon-recharge vm'></i>账号充值</router-link>
+	                <router-link :to="{path:'/account/handle/recharge'}" tag="div" class="spicle fl"><i class='iconfont icon-recharge vm'></i>账号充值</router-link>
 	            </div>
 	        </el-col>
 	    </div>

@@ -92,19 +92,16 @@
 </template>
 
 <script>
-import waves from "@/directive/waves/index.js"; // 水波纹指令
 import { mapGetters } from "vuex";
 import { provinceAndCityData } from 'element-china-area-data' // 省市区数据
 import request from "@/router/axios";
 export default {
-    name: "company_index",
-    directives: { waves },
     data() {
         return {
             provinceData: provinceAndCityData,      //省份数据
             orgSizeData:[],                         //公司规模
             industryData:[],                        //行业
-            list: null,             //公司管理列表数据
+            list: [],             //公司管理列表数据
             account_status:[],      //账户状态 数据
             total: null,            //数据总页码
             listLoading: true,      //加载列表数据loading

@@ -3,18 +3,18 @@ import Layout from '@/page/index/'
 export default [
     {
         path: '/',
-        name: '主页',
+        name: '首页',
         redirect: '/wel'
     }, {
         path: '/wel',
         component: Layout,
         redirect: '/wel/index',
         children: [
-            { path: 'index', name: '首页', component: _import('wel')},
-            {path: '/wel/system_details',name: '系统详情',component: _import('system_manage/system_details', 'views')},
-            {path: '/wel/company_details_change',name: '系统详情修改',component: _import('system_manage/company_details_change', 'views')},
-            {path: '/wel/account_recharge', name: '账户充值',component: _import('system_manage/account_recharge', 'views')},
-            {path: '/wel/set_product', name: '产品设定',component: _import('system_manage/set_product', 'views')}
+            { path: 'index', name: '首页', component: _import('account/handle','views')},
+            
+            {path: '/account/handle/company_details',name: '公司详情',component: _import('account/company_details', 'views')},
+            {path: '/account/handle/set_product', name: '产品设定',component: _import('account/set_product', 'views')},
+            {path: '/account/handle/recharge', name: '账户充值',component: _import('account/recharge', 'views')},
         ]
     }, {
         path: '*',
@@ -46,12 +46,12 @@ export default [
             {path: '/admin/user/create_account', name: '创建账户',component: _import('admin/user/create_account', 'views')}
         ]
     }, {
-        path: '/admin/company',
+        path: '/admin',
         component: Layout,
         children: [
-            { path: 'detail', name: '公司信息', component: _import('admin/company/detail', 'views')},
-            { path: 'create', name: '新建公司', component: _import('admin/company/create', 'views')},
-            { path: 'change', name: '修改公司信息', component: _import('admin/company/change', 'views')}
+            { path: '/admin/company/detail', name: '公司信息', component: _import('admin/company/detail', 'views')},
+            { path: '/admin/company/create', name: '新建公司', component: _import('admin/company/create', 'views')},
+            { path: '/admin/company/change', name: '修改公司信息', component: _import('admin/company/change', 'views')}
         ]
     }, {
         path: '/404',
