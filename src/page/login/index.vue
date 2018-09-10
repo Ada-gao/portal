@@ -9,9 +9,9 @@
           <el-tab-pane label="用户密码" name="user">
             <userLogin></userLogin>
           </el-tab-pane>
-          <el-tab-pane label="短信验证码" name="code">
+          <!-- <el-tab-pane label="短信验证码" name="code">
             <codeLogin></codeLogin>
-          </el-tab-pane>
+          </el-tab-pane> -->
         </el-tabs>
         <div class="forget_btn font14 cursor tr mt10" @click="login_status = 2">忘记密码</div>
       </div>
