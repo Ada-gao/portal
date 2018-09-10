@@ -38,7 +38,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="排序" prop="orderNum">
-              <el-input v-model="form.orderNum" :disabled="formEdit" placeholder="请输入排序"></el-input>
+              <el-input v-model="form.orderNum" @change="validNum" :disabled="formEdit" placeholder="请输入排序"></el-input>
             </el-form-item>
             <el-form-item v-if="formStatus == 'update'">
               <el-button type="primary" @click="update">更新</el-button>
@@ -116,6 +116,11 @@
         'permissions'
       ])
     },
+    watch:{
+      'form.orderNum':function(){
+        this.clearNoNum(this.form.orderNum)
+      }
+    },
     methods: {
       //获取公司
       get_company() {
@@ -138,6 +143,19 @@
       filterNode(value, data) {
         if (!value) return true
         return data.label.indexOf(value) !== -1
+      },
+      clearNoNum(val){ 
+          val = val.replace(/\.{2,}/g,"."); //只保留第一个. 清除多余的  
+          val = val.replace(".","$#$").replace(/\./g,"").replace("$#$","."); 
+          val = val.replace(/^(\-)*(\d+)\.().*$/,'$1$2.$3');//只能输入两个小数 
+          val = val.replace(/[^\d]/g,"");  //清除“数字”和“.”以外的字符 
+          if(val.indexOf(".")< 0 && val !=""){//以上已经过滤，此处控制的是如果没有小数点，首位不能为类似于 01、02的金额  
+              val = parseFloat(val)
+          } 
+          return val
+      },
+      validNum(e){
+        this.form.orderNum = this.clearNoNum(e)
       },
       getNodeData(data) {
         if (!this.formEdit) {

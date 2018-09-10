@@ -29,7 +29,7 @@
                 </el-col>
                 <el-col :span="12">
                     <el-form-item label="充值金额(元)" prop="rechargeamount">
-                        <el-input type="text" v-model="form.rechargeamount" placeholder="输入充值金额"></el-input>
+                        <el-input type="text" @change="validMoney()" v-model="form.rechargeamount" placeholder="输入充值金额"></el-input>
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -37,7 +37,7 @@
             <el-row>
                 <el-col :span="12">
                     <el-form-item label="确认金额(元)" prop="rechargeamount1">
-                        <el-input type="text" v-model="form.rechargeamount1" placeholder="再次输入充值金额"></el-input>
+                        <el-input type="text" @change="validMoney1()" v-model="form.rechargeamount1" placeholder="再次输入充值金额"></el-input>
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -119,6 +119,22 @@ export default {
         }
     },
     methods: {
+        clearNoNum(price){ 
+            price = price.replace(/[^\d.]/g,"");  //清除“数字”和“.”以外的字符  
+            price = price.replace(/\.{2,}/g,"."); //只保留第一个. 清除多余的  
+            price = price.replace(".","$#$").replace(/\./g,"").replace("$#$","."); 
+            price = price.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3');//只能输入两个小数 
+            if(price.indexOf(".")< 0 && price !=""){//以上已经过滤，此处控制的是如果没有小数点，首位不能为类似于 01、02的金额  
+                price = parseFloat(price)
+            } 
+            return price
+        },
+        validMoney(e){
+            this.form.rechargeamount = this.clearNoNum(this.form.rechargeamount)
+        },
+        validMoney1(e){
+            this.form.rechargeamount1 = this.clearNoNum(this.form.rechargeamount1)
+        },
         //获取所有类型
         get_allType(){
             request({
@@ -167,13 +183,8 @@ export default {
         },
         //提交
         submit(){
-            var reg = /^(?!0+(?:\.0+)?$)(?:[1-9]\d*|0)(?:\.\d{1,2})?$/;
-            if(this.form.rechargeamount != this.form.rechargeamount1){
+            if(Number(this.form.rechargeamount) != Number(this.form.rechargeamount1)){
                 this.$message.error('两次金额输入不一致');
-                return
-            }
-            if(!reg.test(this.form.rechargeamount) || !reg.test(this.form.rechargeamount1)){
-                this.$message.error('请输入有效金额');
                 return
             }
         	this.$refs['form'].validate(valid => {

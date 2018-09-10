@@ -116,7 +116,7 @@ export default {
         },
     	//跳转到账号充值
     	for_account_recharge(type){
-            this.$router.push({path:'/wel/account_recharge',query: {deptId:this.deptId,username:this.username}});
+            this.$router.push({path:'/account/handle/recharge',query: {deptId:this.deptId,username:this.username}});
     	},
     	//当前页码
         handleCurrentChange(val){

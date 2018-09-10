@@ -29,7 +29,7 @@
                 <el-row :gutter="20">
                     <el-col :span="12">
                         <el-form-item label="余额提醒" prop="warningAmount">
-                            <el-input v-model="form.warningAmount" maxlength="4" placeholder="请输入余额提醒"></el-input>
+                            <el-input @change="validWarn" v-model="form.warningAmount" maxlength="5" placeholder="请输入余额提醒"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
@@ -91,10 +91,7 @@
                         </el-form-item>
                     </el-col>
                 </el-row>
-            </el-form>
 
-            <!--产品设定-->
-            <el-form class="mt20">
                 <div v-if="type == 'add'" class="product_set">产品设定</div>
                 <el-row v-if="type == 'add'">
                     <el-col :span="12">
@@ -106,6 +103,8 @@
                     </el-col>
                 </el-row>
             </el-form>
+
+            <!--产品设定-->
             <div class="select_con" v-if="type == 'add'" v-for="(plist,key) in product_info" :key="key">
                 <p>{{plist[0].productTypeName}}</p>
                 <el-form class="form-border style"> <!--数据  :model="list"-->
@@ -341,6 +340,9 @@ export default {
         validNum(index,key,item){
             this.product_info[key][index].productPrice = this.clearNoNum(item.productPrice)
         },
+        validWarn(){
+            this.form.warningAmount = this.clearNoNum(this.form.warningAmount)
+        },
         //选择 勾选
         change_product(key,index,item){
             if(item.checked){
@@ -357,11 +359,6 @@ export default {
             for(var i=0; i< this.product_info.length;i++){
                 for(var j=0; j< this.product_info[i].length;j++){
                     this.form.product.push(this.product_info[i][j])
-                    var reg = /^[1-9]\d{0,2}\.\d{0,2}$|^[0-9]*$/;
-                    if(!reg.test(this.form.product[i].productPrice)){
-                        this.$message.error('请输入有效数字');
-                        return
-                    }
                     if(this.form.product[i].status == 0 && !this.form.product[i].productPrice){
                         this.$message.error('选中产品价格不能为零或空');
                         return
@@ -381,11 +378,6 @@ export default {
         },
         //点击修改用户信息
         updata(){
-            var reg = /^[1-9]\d{0,2}\.\d{0,2}$|^[0-9]*$/;
-            if(!reg.test(this.form.warningAmount)){
-                this.$message.error('请输入有效的余额');
-                return
-            }
            this.$refs['form'].validate(valid => {
                 if(valid){
                     putObj(this.form).then(() => {

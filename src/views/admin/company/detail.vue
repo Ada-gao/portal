@@ -70,7 +70,7 @@
             </el-form>
             <!--图片滚动-->
             <div class="img_tk" v-if="swiper_img == true">
-                <div class="swiper">
+                <div class="swiper animated fadeIn">
                     <el-carousel arrow='never' :initial-index="index" :autoplay="autoplay" ref="carousel" indicator-position="none" width="560px">
                         <el-carousel-item name="index" v-for="(img,index) in details_data.companyQualification" :key="index">
                             <h3><img class="block" :src="img"></h3>
