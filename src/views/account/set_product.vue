@@ -25,7 +25,7 @@
                         <el-checkbox-group v-model="checkList">
                             <el-col :span="6" v-for="(item,index) in product_info" :key="index" v-if="item.productType == plist">
                                 <el-form-item>
-                                    <el-checkbox :label="item.productId" :key="item.productId" @change="change_product(key,index,item)"><span>{{item.productName}}</span><input type="text" :value="item.productPrice" :disabled="item.status == 0 ? false : true" v-model="item.productPrice"><em>元</em></el-checkbox>
+                                    <el-checkbox :label="item.productId" :key="item.productId" @change="change_product(key,index,item)"><span>{{item.productName}}</span><input type="text" :value="item.productPrice" @keyup="validNum(key,index,item)" :disabled="item.status == 0 ? false : true" v-model="item.productPrice"><em>元</em></el-checkbox>
                                 </el-form-item>
                             </el-col>
                         </el-checkbox-group>
@@ -140,12 +140,30 @@ export default {
                 }).catch(() => {})
             }
         },
+        clearNoNum(price){ 
+            price = price.replace(/[^\d.]/g,"");  //清除“数字”和“.”以外的字符  
+            price = price.replace(/\.{2,}/g,"."); //只保留第一个. 清除多余的  
+            price = price.replace(".","$#$").replace(/\./g,"").replace("$#$","."); 
+            price = price.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3');//只能输入两个小数 
+            if(price.indexOf(".")< 0 && price !=""){//以上已经过滤，此处控制的是如果没有小数点，首位不能为类似于 01、02的金额  
+                price = parseFloat(price)
+            } 
+            return price
+        },
+        validNum(index,key,item){
+            this.product_info[key][index].productPrice = this.clearNoNum(item.productPrice)
+        },
         //修改提交
         updata(){
             var reg = /^[1-9]\d{0,2}\.\d{0,2}$|^[0-9]*$/;
             for(var i in this.product_info){
                 if(!reg.test(this.product_info[i].productPrice)){
                     this.$message.error('请输入有效数字');
+                    return
+                }
+                if(this.product_info[i].status == 0 && !this.product_info[i].productPrice){
+                    this.$message.error('选中产品价格不能为零或空');
+                    return
                 }
                 if(this.product_info[i].userId == null){
                     this.product_info[i].userId = Number(this.userId);
