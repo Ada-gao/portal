@@ -75,6 +75,7 @@
 <script>
 import { getExcel } from '@/util/auth'
 import request from "@/router/axios"
+import { mapState } from "vuex"
 export default {
     data () {
         return {
@@ -87,20 +88,15 @@ export default {
             loading:false
         }
     },
+    computed: {
+        ...mapState({
+            dic: state => state.dic
+        }),
+    },
     mounted(){
-        this.get_rechargeType();
+        this.get_rechargeData();
     },
     methods: {
-        //获取充值类型
-        get_rechargeType() {
-            request({
-                url: "/admin//dict/type/" + 'user_type',
-                method: "get",
-            }).then(res => {
-                this.recharge_data = res.data;
-                this.get_rechargeData();
-            }).catch(() => {})
-        },
         //获取充值记录
         get_rechargeData() {
             request({
@@ -112,9 +108,9 @@ export default {
                 this.list = res.data.records;
                 this.total = res.data.total;
                 for(var i in this.list){
-                    for(var j in this.recharge_data){
-                        if(this.list[i].rechargeType == this.recharge_data[j].value){
-                            this.list[i].rechargeName = this.recharge_data[j].label;
+                    for(var j in this.dic.userType){
+                        if(this.list[i].rechargeType == this.dic.userType[j].value){
+                            this.list[i].rechargeName = this.dic.userType[j].label;
                         }
                     }
                 }

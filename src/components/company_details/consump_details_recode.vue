@@ -6,7 +6,7 @@
 		</div>
 		<!--table 列表-->
         <div class="mt20">
-        	<el-table id="out-table" :data="list" v-if="list.length" v-loading="false" element-loading-text="给我一点时间" fit highlight-current-row style="width: 100%">
+        	<el-table id="out-table" :data="list" v-if="list.length" v-loading="loading" element-loading-text="给我一点时间" fit highlight-current-row style="width: 100%">
 
                 <el-table-column align="center" label="消费流水号">
                     <template slot-scope="scope">
@@ -86,6 +86,7 @@
 import request from "@/router/axios"
 import { getExcel } from '@/util/auth'
 export default {
+    props: ['batchId'],
     data () {
         return {
         	list:[],			//查询列表
@@ -93,25 +94,48 @@ export default {
                 page: 1,                        //当前页数
                 limit: 10                      //一页显示数据量
             },
+            loading:false,
             total:null,
         }
     },
     created(){
-        
+        this.get_consumpDetailsData();
     },
     methods: {
+        //获取消费批次详情列表
+        get_consumpDetailsData(){
+            this.listQuery.batchId = this.batchId;
+            request({
+                url: "/admin/consumerInfo/consumerInfoPage",
+                method: "get",
+                params:this.listQuery
+            }).then(res => {
+                this.loading = false;
+                this.list = res.data.records;
+                this.total = res.data.total;
+            })
+        },
     	//当前页码
         handleCurrentChange(val){
-            console.log(val,'111');
+            this.listQuery.page = val;
+            this.loading = true;
+            this.get_consumpDetailsData();
         },
         //每页显示多少天数据
         handleSizeChange(val){
-            console.log(val,'222')
+            this.listQuery.limit = val;
+            this.loading = true;
+            this.get_consumpDetailsData();
         },
         //导出
         get_excel(){
             if(this.list.length == 0) return;
             getExcel('out-table','消费记录.xlsx');
+        },
+    },
+    watch:{
+        batchId:function(val){
+            this.get_consumpDetailsData();
         },
     }
 }

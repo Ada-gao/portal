@@ -27,7 +27,9 @@ export default {
         }
     },
     mounted(){
-        
+        if(this.$route.query.type){
+            this.type = this.$route.query.type;
+        }
     },
     methods: {
     	//tab 切换

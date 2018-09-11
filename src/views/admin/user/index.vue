@@ -122,7 +122,7 @@ import Validate from '@/util/filter_rules'
 import { fetchList, getObj, addObj, putObj, delObj } from "@/api/user";
 import { deptRoleList, fetchDeptTree } from "@/api/role";
 import waves from "@/directive/waves/index.js"; // 水波纹指令
-import { mapGetters } from "vuex";
+import { mapGetters,mapState } from "vuex";
 import ElRadioGroup from "element-ui/packages/radio/src/radio-group";
 import ElOption from "element-ui/packages/select/src/option";
 import request from "@/router/axios";
@@ -212,7 +212,10 @@ export default {
         };
     },
     computed: {
-        ...mapGetters(["permissions"])
+        ...mapGetters(["permissions"]),
+        ...mapState({
+            dic: state => state.dic
+        }),
     },
     filters: {
         statusFilter(status) {
@@ -228,19 +231,9 @@ export default {
         this.sys_user_add = this.permissions["sys_user_add"];
         this.sys_user_upd = this.permissions["sys_user_upd"];
         this.sys_user_del = this.permissions["sys_user_del"];
-        this.get_allType();
+        this.getList();
     },
     methods: {
-        //获取所有类型
-        get_allType(){
-            request({
-                url: "/admin/dict/type/" + 'user_type',
-                method: "get",
-            }).then(res => {
-                this.userType_list = res.data;
-                this.getList();
-            }).catch(() => {})
-        },
         getList() {
             this.listLoading = true;
             this.listQuery.isAsc = false;
@@ -248,10 +241,10 @@ export default {
                 this.list = response.data.records;
                 this.total = response.data.total;
                 this.listLoading = false;
-                for(var i in this.userType_list){
+                for(var i in this.dic.userType){
                     for(var j in this.list){
-                        if(this.list[j].userType == this.userType_list[i].value){
-                            this.list[j].userTypeName = this.userType_list[i].label
+                        if(this.list[j].userType == this.dic.userType[i].value){
+                            this.list[j].userTypeName = this.dic.userType[i].label
                         }
                     }
                 }

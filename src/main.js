@@ -25,6 +25,9 @@ import '@/util/filter'
 //引入公共组件
 import v_no_data from 'components/no_data/no_data.js'
 
+store.dispatch('get_productType');
+store.dispatch('get_userType');
+
 Vue.config.productionTip = false
 Vue.use(ElementUI)
 Vue.use(VueMoment)

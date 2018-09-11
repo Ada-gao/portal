@@ -11,24 +11,24 @@
 			<!--form 开始-->
 			<el-form :model="form" :rules="rules" ref="form" class="pt20">
 	            <el-row :gutter="20">
+	                <el-col :span="6">
+	                    <el-form-item prop="personName">
+	                        <el-input v-model="form.personName" placeholder="请输入姓名" maxlength="50"></el-input>
+	                    </el-form-item>
+	                </el-col>
+	                <el-col :span="6" v-if="type >= 0">
+	                    <el-form-item prop="mobile">
+	                        <el-input v-model="form.mobile" placeholder="请输入手机号码" maxlength="11"></el-input>
+	                    </el-form-item>
+	                </el-col>
 	                <el-col :span="6" v-if="type >= 1">
-	                    <el-form-item prop="name">
-	                        <el-input v-model="form.name" placeholder="输入姓名" maxlength="50"></el-input>
+	                    <el-form-item prop="idNumber">
+	                        <el-input v-model="form.idNumber" placeholder="请输入身份证号码"></el-input>
 	                    </el-form-item>
 	                </el-col>
 	                <el-col :span="6" v-if="type >= 2">
-	                    <el-form-item prop="tel">
-	                        <el-input v-model="form.tel" placeholder="输入手机号码" maxlength="11"></el-input>
-	                    </el-form-item>
-	                </el-col>
-	                <el-col :span="6" v-if="type >= 3">
-	                    <el-form-item prop="id_card">
-	                        <el-input v-model="form.id_card" placeholder="输入身份证号码"></el-input>
-	                    </el-form-item>
-	                </el-col>
-	                <el-col :span="6" v-if="type >= 4">
-	                    <el-form-item prop="bank_card">
-	                        <el-input v-model="form.bank_card" placeholder="输入银行卡号"></el-input>
+	                    <el-form-item prop="cardNo">
+	                        <el-input v-model="form.cardNo" placeholder="请输入银行卡号"></el-input>
 	                    </el-form-item>
 	                </el-col>
 	            </el-row>
@@ -42,7 +42,7 @@
     	</div>
     	<div class="query_result">
             <!--查询结果-->
-    		<query_condit></query_condit>
+    		<query_condit :list="list" :loading="loading"></query_condit>
     	</div>
         <!--点击批量导入-->
         <el-dialog title="批量上传" :visible.sync="dialogVisible" width="36%">
@@ -88,28 +88,39 @@ export default {
 	components: { query_condit, UploadExcelComponent },
     data () {
         return {
-            verif_Type:[],          //核验类型数据
-            dialogVisible:false,    //点击开始导入弹框默认为false
-            begin:false,             //开始导入弹框默认为false
-            type:0,		           //核验类型 默认为1 选择可用的第一个 
-            form:{
-            	name:'',		     //姓名
-            	tel:'',			     //手机号码
-            	id_card:'',		     //身份证
-            	bank_card:'',	     //银行卡
-                filename:''
+            verif_Type:[],              //核验类型数据
+            productType:'',             //核验类型
+            productName:'',             //核验类型名称
+            type:0,                     //核验类型 默认为0 选择可用的第一个 
+            list:[],        //所有消费批次清单
+            listQuery: {
+                page: 1,                //当前页数
+                limit: 10,              //一页显示数据量
             },
-            rules: {	//表单验证
-                name: [
+            total:null,
+            loading:false,
+            dialogVisible:false,        //点击开始导入弹框默认为false
+            begin:false,                //开始导入弹框默认为false
+            form:{
+            	personName:'',		     //姓名  personName/name
+            	mobile:'',			     //手机号码  mobile/mobileNo
+                mobileNo:'',
+            	idNumber:'',		     //身份证  idNumber/idCardNum
+                idCardNum:'',
+                cardNo:''                //银行卡  cardNo
+            },
+            params:[],                  //传给后台的数据
+            rules: {	                //表单验证
+                personName: [
                     {required: true, trigger: 'blur', message: '请输入姓名'}
                 ],
-                tel: [
+                mobile: [
                     {required: true, trigger: 'blur', validator: Validate.isvalidateMobile}
                 ],
-                id_card: [
+                idNumber: [
                     {required: true, trigger: 'blur', message: '请输入身份证号码'}
                 ],
-                bank_card: [
+                cardNo: [
                      {required: true, trigger: 'blur', message: '请输入银行卡号'}
                 ],
             }
@@ -117,13 +128,18 @@ export default {
     },
     computed: {
         ...mapState({
-            userInfo: state => state.user.userInfo
+            userInfo: state => state.user.userInfo,
+            dic: state => state.dic
         }),
     },
     mounted(){
         this.get_verifType();
     },
     methods: {
+        //选择核验类型
+        check_type(type){
+            this.type = type;
+        },
         //获取所有类型类型
         get_verifType(){
             request({
@@ -134,29 +150,55 @@ export default {
                 },
             }).then(res => {
                 this.verif_Type = res.data;
-                //设置 默认选中
+                //设置 默认选中 获取规格/名称
                 for(var i in this.verif_Type){
                     if(this.verif_Type[i].status == 0){
-                        this.type = Number(i) + 1;
-                        return;
+                        this.productType = this.verif_Type[i].productType;
+                        this.productName = this.verif_Type[i].productName;
+                        this.type = Number(i);
+                        return false;
                     }
                 }
-
-            }).catch(() => {})
+            })
         },
-    	//选择核验类型
-    	check_type(type){
-    		this.type = type;
-    	},
     	//点击重置
     	reset(){
     		this.$refs['form'].resetFields()
+            this.list = [];
     	},
     	//点击核验
     	verif(){
-    		this.$refs['form'].validate(valid => {
-    			console.log(valid,'111')
-    		})
+            this.params = [];
+            for(var i=0; i<1; i++){
+                var obj = {};
+                obj.personName = this.form.personName;
+                obj.mobile = this.form.mobile;
+                obj.mobileNo = this.form.mobileNo;
+                obj.idNumber = this.form.idNumber;
+                obj.idCardNum = this.form.idCardNum;
+                obj.cardNo = this.form.cardNo;
+                this.params.push(obj);
+            }
+            this.$refs['form'].validate(valid => {
+                if(valid){
+                    request({
+                        url: "/admin/consumerBatch?productType=" + this.productType + '&productName=' + this.productName,
+                        method: "post",
+                        data: this.params,
+                    }).then(res => {
+                        this.list = [];
+                        this.list.push(res.data.data);
+                        this.total = res.data.total;
+                        for(var i in this.list){
+                            for(var j in this.dic.productType){
+                                if(this.list[i].productType == this.dic.productType[j].value){
+                                    this.list[i].productType = this.dic.productType[j].label
+                                }
+                            }
+                        }
+                    })
+                }
+            })
     	},
         //开始导入
         selected(data){

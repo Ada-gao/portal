@@ -138,24 +138,15 @@ export default {
         }
     },
     mounted(){
-        this.get_allType();
+        this.get_basicInfo();
     },
     computed: {
         ...mapState({
-            userInfo: state => state.user.userInfo
+            userInfo: state => state.user.userInfo,
+            dic: state => state.dic
         }),
     },
     methods: {
-        //获取所有类型
-        get_allType(){
-            request({
-                url: "/admin/dict/type/" + 'user_type',
-                method: "get",
-            }).then(res => {
-                this.userType_list = res.data;
-                this.get_basicInfo();
-            }).catch(() => {})
-        },
         //获取账户信息
         get_basicInfo(){
             this.loading = true;
@@ -165,9 +156,9 @@ export default {
             }).then(res => {
                 this.loading = false;
                 this.basic_info = res.data;
-                for(var i in this.userType_list){
-                    if(this.userType_list[i].value == this.basic_info.userType){
-                        this.basic_info.userTypeName = this.userType_list[i].label;
+                for(var i in this.dic.userType){
+                    if(this.dic.userType[i].value == this.basic_info.userType){
+                        this.basic_info.userTypeName = this.dic.userType[i].label;
                     }
                 }
             }).catch(() => {})

@@ -63,6 +63,7 @@
 import Validate from '@/util/filter_rules'
 import request from "@/router/axios";
 import { fetchDeptTree } from "@/api/role";
+import { mapState } from "vuex"
 export default {
     data () {
         return {
@@ -71,7 +72,6 @@ export default {
         	company_list:[],		     //公司列表
             username_list:{},            //账号列表
         	type_list:[],			     //充值类型
-            all_type:[],
             again_click:false,
             form:{
             	companyName:'',			     //所属公司
@@ -100,9 +100,13 @@ export default {
             },
         }
     },
+    computed: {
+        ...mapState({
+            dic: state => state.dic
+        }),
+    },
     created() {
         this.handleDept();
-        this.get_allType();
         if(this.$route.query.deptId){
             this.deptId = this.$route.query.deptId;
             request({
@@ -135,15 +139,6 @@ export default {
         validMoney1(e){
             this.form.rechargeamount1 = this.clearNoNum(this.form.rechargeamount1)
         },
-        //获取所有类型
-        get_allType(){
-            request({
-                url: "/admin/dict/type/" + 'user_type',
-                method: "get",
-            }).then(res => {
-                this.all_type = res.data;
-            }).catch(() => {})
-        },
         //获取公司
         handleDept() {
             fetchDeptTree().then(response => {
@@ -174,9 +169,9 @@ export default {
                 method: "get",
             }).then(res => {
                 this.form.userType = res.data.userType;
-                for(var i in this.all_type){
-                    if(this.all_type[i].value == res.data.userType){
-                        this.form.userType = this.all_type[i].label
+                for(var i in this.dic.userType){
+                    if(this.dic.userType[i].value == res.data.userType){
+                        this.form.userType = this.dic.userType[i].label
                     }
                 }
             }).catch(() => {})
@@ -194,9 +189,9 @@ export default {
                         cancelButtonText: '取消',
                         type: 'warning'
                     }).then(()=> {
-                        for(var i in this.all_type){
-                            if(this.all_type[i].label == this.form.userType){
-                                this.form.userType = this.all_type[i].value
+                        for(var i in this.dic.userType){
+                            if(this.dic.userType[i].label == this.form.userType){
+                                this.form.userType = this.dic.userType[i].value
                             }
                         }
                         if(this.again_click) return;

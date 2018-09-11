@@ -5,7 +5,7 @@
 		</div>
 		<!--table 列表-->
         <div class="mt20">
-        	<el-table :data="list" v-if="list.length" v-loading="false" element-loading-text="给我一点时间" fit highlight-current-row style="width: 100%">
+        	<el-table :data="list" v-if="list.length" v-loading="loading" element-loading-text="给我一点时间" fit highlight-current-row style="width: 100%">
 
                 <el-table-column align="center" label="产品类型">
                     <template slot-scope="scope"><span>{{scope.row.productType}}</span></template>
@@ -44,7 +44,7 @@
             <!--产品列表为空-->
             <v_no_data v-if="list.length == 0"></v_no_data>
             <!--查看历史详情-->
-            <product_history_details v-if="history" :productType_list="productType_list" :product_id="productId"></product_history_details>
+            <product_history_details v-if="history" :product_id="productId"></product_history_details>
         </div>
     </div>
 </template>
@@ -53,6 +53,7 @@
 import Validate from '@/util/filter_rules'
 import product_history_details from 'components/company_details/product_history_details'
 import request from "@/router/axios"
+import { mapState } from "vuex"
 export default {
 	components: { product_history_details },
     data () {
@@ -65,24 +66,20 @@ export default {
                 userId:this.$route.query.userId
             },
             total:null,                         //总页数
+            loading:false,
             history:false,                      //查看产品历史详情 是否显示   false为隐藏   true为显示
             productId:''                       //查看产品历史详情  produceId默认为空
         }
     },
+    computed: {
+        ...mapState({
+            dic: state => state.dic
+        }),
+    },
     created(){
-        this.get_produceType();
+        this.get_productList();
     },
     methods: {
-        //获取产品类型
-        get_produceType(){
-            request({
-                url: "/admin/dict/type/" + 'product_type',
-                method: "get",
-            }).then(res => {
-                this.productType_list = res.data;
-                this.get_productList();
-            }).catch(() => {})
-        },
         //获取产品管理列表
         get_productList(){
             request({
@@ -90,24 +87,27 @@ export default {
                 method: "get",
                 params:this.listQuery
             }).then(res => {
+                this.loading = false
                 this.list = res.data.records
-                for(var i in this.productType_list){
-                    for(var j in this.list){
-                        if(this.productType_list[i].value == this.list[j].productType){
-                            this.list[j].productType = this.productType_list[i].label
+                for(var i in this.list){
+                    for(var j in this.dic.productType){
+                        if(this.list[i].productType == this.dic.productType[j].value){
+                            this.list[i].productType = this.dic.productType[j].label
                         }
                     }
                 }
                 this.total = res.data.total;
-            }).catch(() => {})
+            })
         },
     	//页码修改
         handleSizeChange(val) {
+            this.loading = true;
             this.listQuery.limit = val;
             this.get_productList();
         },
         //页码修改
         handleCurrentChange(val) {
+            this.loading = true;
             this.listQuery.page = val;
             this.get_productList();
         },

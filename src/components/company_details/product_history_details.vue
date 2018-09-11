@@ -46,8 +46,9 @@
 
 <script>
 import request from "@/router/axios"
+import { mapState } from "vuex"
 export default {
-    props: ['product_id','productType_list'],
+    props: ['product_id'],
     data () {
         return {
         	list:[],			//查询列表
@@ -58,6 +59,11 @@ export default {
             total:null,
             loading:false
         }
+    },
+    computed: {
+        ...mapState({
+            dic: state => state.dic
+        }),
     },
     created(){
         this.get_historyData();
@@ -75,23 +81,25 @@ export default {
                 this.loading = false;
                 this.list = res.data.records
                 this.total = res.data.total
-                for(var i in this.productType_list){
-                    for(var j in this.list){
-                        if(this.productType_list[i].value == this.list[j].productType){
-                            this.list[j].productType = this.productType_list[i].label
+                for(var i in this.list){
+                    for(var j in this.dic.productType){
+                        if(this.list[i].productType == this.dic.productType[j].value){
+                            this.list[i].productType = this.dic.productType[j].label
                         }
                     }
                 }
-            }).catch(() => {})
+            })
         },
     	//页码修改
         handleSizeChange(val) {
             this.listQuery.limit = val;
+            this.loading = true;
             this.get_historyData();
         },
         //页码修改
         handleCurrentChange(val) {
             this.listQuery.page = val;
+            this.loading = true;
             this.get_historyData();
         }
     },
