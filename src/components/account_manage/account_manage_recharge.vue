@@ -114,7 +114,7 @@ export default {
                         }
                     }
                 }
-            }).catch(() => {})
+            })
         },
         //当前页码
         handleCurrentChange(val){

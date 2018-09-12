@@ -22,7 +22,6 @@ const dic = {
                 url: "/admin/dict/type/" + 'user_type',
                 method: "get",
             }).then(res => {
-                console.log(res.data)
                 commit('set_userType',res.data)
             })
         },

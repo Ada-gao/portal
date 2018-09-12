@@ -51,7 +51,7 @@
                 </el-table-column>
 
                 <el-table-column align="center" label="账户余额(元)">
-                    <template slot-scope="scope"><span class="table_primary">{{scope.row.amount}}</span></template>
+                    <template slot-scope="scope"><span class="table_primary">{{scope.row.amount | formatMoney}}</span></template>
                 </el-table-column>
 
                 <el-table-column align="center" label="查询条数">
@@ -72,13 +72,8 @@
 
             </el-table>
             <div class="page clearfix mt20 box">
-                <el-col :span="18">
+                <el-col :span="24">
                     <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="listQuery.page" :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total"></el-pagination>
-                </el-col>
-                <el-col :span="6">
-                    <div class="tip pr">
-                        <p class="tr"><em class="in_b" ref="title"><i></i>累着查询次数：100次</em></p>
-                    </div>
                 </el-col>
             </div>
         </div>
@@ -100,7 +95,7 @@ export default {
                     label:'停用',
                     value:1
                 },
-            ],			//账户状态 数据
+            ],			                //账户状态 数据
         	list:[],					//账号列表数据
         	currentPage:1,				//默认为第一页
             listQuery: {

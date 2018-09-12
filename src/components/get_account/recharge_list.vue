@@ -48,7 +48,7 @@
                 </el-table-column>
 
                 <el-table-column align="center" label="充值金额(元)">
-                    <template slot-scope="scope"><span class="table_primary">{{scope.row.rechargeAmount}}</span></template>
+                    <template slot-scope="scope"><span class="table_primary">{{scope.row.rechargeAmount | formatMoney}}</span></template>
                 </el-table-column>
 
                 <el-table-column align="center" label="充值时间">
@@ -69,13 +69,8 @@
 
             </el-table>
             <div class="page clearfix mt20 box">
-                <el-col :span="18">
+                <el-col :span="24">
                     <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="listQuery.page" :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total"></el-pagination>
-                </el-col>
-                <el-col :span="6">
-                    <div class="tip pr">
-                        <p class="tr"><em class="in_b" ref="title"><i></i>累着查询金额：100元</em></p>
-                    </div>
                 </el-col>
             </div>
         </div>

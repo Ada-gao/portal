@@ -45,7 +45,7 @@
             <el-row>
                 <el-col :span="24">
                     <el-form-item label="充值备注">
-                        <el-input type="textarea" rows="3" v-model="form.remark" placeholder="请输入备注内容" maxlength="12"></el-input>
+                        <el-input type="textarea" rows="3" v-model="form.remark" placeholder="请输入备注内容"></el-input>
                     </el-form-item>
                 </el-col>
             </el-row>

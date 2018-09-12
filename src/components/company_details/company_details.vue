@@ -59,7 +59,7 @@
         </el-form>
         <!--图片滚动-->
         <div class="img_tk" v-if="swiper_img == true">
-            <div class="swiper">
+            <div class="swiper animated fadeIn">
                 <el-carousel arrow='never' :initial-index="index" :autoplay="autoplay" ref="carousel" indicator-position="none" width="560px">
                     <el-carousel-item name="index">
                         <h3><img class="block" src="/static/img/bg/bg1.jpg"></h3>

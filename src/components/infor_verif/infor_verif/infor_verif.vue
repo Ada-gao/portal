@@ -104,9 +104,7 @@ export default {
             form:{
             	personName:'',		     //姓名  personName/name
             	mobile:'',			     //手机号码  mobile/mobileNo
-                mobileNo:'',
             	idNumber:'',		     //身份证  idNumber/idCardNum
-                idCardNum:'',
                 cardNo:''                //银行卡  cardNo
             },
             params:[],                  //传给后台的数据
@@ -118,10 +116,10 @@ export default {
                     {required: true, trigger: 'blur', validator: Validate.isvalidateMobile}
                 ],
                 idNumber: [
-                    {required: true, trigger: 'blur', message: '请输入身份证号码'}
+                    {required: true, trigger: 'blur', validator: Validate.validIdCart}
                 ],
                 cardNo: [
-                     {required: true, trigger: 'blur', message: '请输入银行卡号'}
+                     {required: true, trigger: 'blur', validator: Validate.validCardNo}
                 ],
             }
         }
@@ -172,10 +170,11 @@ export default {
             for(var i=0; i<1; i++){
                 var obj = {};
                 obj.personName = this.form.personName;
+                obj.name = this.form.personName;
                 obj.mobile = this.form.mobile;
-                obj.mobileNo = this.form.mobileNo;
+                obj.mobileNo = this.form.mobile;
                 obj.idNumber = this.form.idNumber;
-                obj.idCardNum = this.form.idCardNum;
+                obj.idCardNum = this.form.idNumber;
                 obj.cardNo = this.form.cardNo;
                 this.params.push(obj);
             }

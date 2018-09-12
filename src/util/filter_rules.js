@@ -50,11 +50,36 @@ const validNumber = (rule, value, callback) => {
         callback()
     }
 }
+//验证省份证号
+const validIdCart = (rule, value, callback) => {
+    var reg = /(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{2}[0-9Xx]$)/;
+    if (!value) {
+        callback(new Error('请输入身份证号'))
+    } else if (!reg.test(value)) {
+        callback(new Error('请您输入正确的身份证号'))
+    } else {
+        callback()
+    }
+}
+//验证银行卡号
+//var pattern = /^([1-9]{1})(\d{14}|\d{18})$/
+const validCardNo = (rule, value, callback) => {
+    var reg = /^([1-9]{1})(\d{14}|\d{18})$/;
+    if (!value) {
+        callback(new Error('请输入银行卡号'))
+    } else if (!reg.test(value)) {
+        callback(new Error('请您输入正确的银行卡号'))
+    } else {
+        callback()
+    }
+}
 //调用
 module.exports = {
   isvalidateMobile: isvalidateMobile,
   validatePass: validatePass,
   numberPass: numberPass,
   validEmail:validEmail,
-  validNumber:validNumber
+  validNumber:validNumber,
+  validIdCart:validIdCart,
+  validCardNo:validCardNo
 }

@@ -127,7 +127,6 @@ export default {
         this.sys_company_upd = this.permissions["sys_company_upd"];
         this.getList();
         this.get_orgSizeData();
-        this.get_industryData(0);
     },
     methods: {
         //获取公司规模
@@ -138,6 +137,7 @@ export default {
             }).then(response => {
                 if(response.status == 200){
                    this.orgSizeData = response.data;
+                   this.get_industryData(0);
                 }
             }).catch(()=>{
 

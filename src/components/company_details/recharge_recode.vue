@@ -26,7 +26,7 @@
 
                 <el-table-column align="center" label="充值金额/元">
                     <template slot-scope="scope">
-                        <span class="table_primary">{{scope.row.rechargeAmount}}</span>
+                        <span class="table_primary">{{scope.row.rechargeAmount | formatMoney}}</span>
                     </template>
                 </el-table-column>
 

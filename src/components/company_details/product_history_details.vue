@@ -15,11 +15,11 @@
                 </el-table-column>
 
                 <el-table-column align="center" label="消费单价(元/条)">
-                    <template slot-scope="scope"><span class="table_primary">{{scope.row.productPrice}}</span></template>
+                    <template slot-scope="scope"><span class="table_primary">{{scope.row.productPrice | formatMoney}}</span></template>
                 </el-table-column>
 
                 <el-table-column align="center" label="现消费单价(元/条)">
-                    <template slot-scope="scope"><span class="table_primary">{{scope.row.productReprice}}</span></template>
+                    <template slot-scope="scope"><span class="table_primary">{{scope.row.productReprice | formatMoney}}</span></template>
                 </el-table-column>
 
                 <el-table-column align="center" label="操作时间">

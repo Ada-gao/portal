@@ -42,6 +42,10 @@ iconfontVersion.forEach(ele => {
   loadStyle(iconfontUrl.replace('$key', ele))
 })
 
+if (store.getters.access_token) {
+    store.dispatch('get_productType');
+    store.dispatch('get_userType');
+}
 
 export function createApp() {
   const app = new Vue({

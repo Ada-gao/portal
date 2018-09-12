@@ -38,7 +38,10 @@
                 </el-table-column>
 
                 <el-table-column align="center" label="消费金额/元">
-                    <template slot-scope="scope"><span :class="{'table_primary':scope.row.monetary != null}">{{scope.row.monetary | setdefault('--')}}</span></template>
+                    <template slot-scope="scope">
+                        <span v-if="scope.row.monetary == null">{{scope.row.monetary | setdefault('--')}}</span>
+                        <span v-else class="table_primary">{{scope.row.monetary | formatMoney}}</span>
+                    </template>
                 </el-table-column>
 
                 <el-table-column align="center" label="消费时间">

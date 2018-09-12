@@ -51,12 +51,12 @@
             <el-row :gutter="20">
                 <el-col :span="8">
                     <el-form-item label="账户余额：">
-                        <span>{{userInfo.amount}}元</span>
+                        <span>{{userInfo.amount | formatMoney}}元</span>
                     </el-form-item>
                 </el-col>
                 <el-col :span="8">
                     <el-form-item label="余额提醒：">
-                        <span>{{userInfo.warningAmount}}元</span>
+                        <span>{{userInfo.warningAmount | formatMoney}}元</span>
                     </el-form-item>
                 </el-col>
             </el-row>
