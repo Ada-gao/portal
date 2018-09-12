@@ -1,10 +1,13 @@
 <template>
     <div>
+        <div class="down fr">
+            <a :href="downloadUrl">下载模版</a>
+        </div>
     	<div class="infor_head">
     		<div class="check pt20">
 	    		<span>核验类型</span>
-	    		<el-radio-group v-model="type" @change="check_type">
-				    <el-radio :disabled="list.status == 1" v-for="(list,index) in verif_Type" :key="index" :label="index">{{list.productName}}</el-radio>
+	    		<el-radio-group v-model="type" @change="check_type"><!--  :disabled="list.status == 1"  -->
+				    <el-radio  v-for="(list,index) in verif_Type" :key="index" :label="index">{{list.productName}}</el-radio>
 				</el-radio-group>
 				<div class="common_btn fr"><button @click="dialogVisible = true"><i class="iconfont icon-xiazai"></i>批量上传</button></div>
 			</div>
@@ -26,7 +29,7 @@
 	                        <el-input v-model="form.idNumber" placeholder="请输入身份证号码"></el-input>
 	                    </el-form-item>
 	                </el-col>
-	                <el-col :span="6" v-if="type >= 2">
+	                <el-col :span="6" v-if="type >= 3">
 	                    <el-form-item prop="cardNo">
 	                        <el-input v-model="form.cardNo" placeholder="请输入银行卡号"></el-input>
 	                    </el-form-item>
@@ -107,6 +110,7 @@ export default {
             	idNumber:'',		     //身份证  idNumber/idCardNum
                 cardNo:''                //银行卡  cardNo
             },
+            downloadUrl: '',            //下载对应的模板
             params:[],                  //传给后台的数据
             rules: {	                //表单验证
                 personName: [
@@ -154,10 +158,23 @@ export default {
                         this.productType = this.verif_Type[i].productType;
                         this.productName = this.verif_Type[i].productName;
                         this.type = Number(i);
+                        this.down_switch(i);
                         return false;
                     }
+
                 }
             })
+        },
+        down_switch(item){
+            if(item == 0){
+                this.downloadUrl = '/static/excel/二要素模版.xlsx'
+            }else if(item == 1){
+                this.downloadUrl = '/static/excel/银行三要素模版.xlsx'
+            }else if(item == 2){
+                this.downloadUrl = '/static/excel/手机三要素模版.xlsx'
+            }else if(item == 3){
+                this.downloadUrl = '/static/excel/四要素模版.xlsx'
+            }
         },
     	//点击重置
     	reset(){
@@ -208,6 +225,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.down{ position: absolute; top: 20px; right: 30px;}
+.down>a{ color: #1A8CE1}
 .check{ line-height: 32px;}
 .check>span{ padding-right: 30px; color: #1F2D3D;}
 .query_result_head>span{ line-height: 32px;}
