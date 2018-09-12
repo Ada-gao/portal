@@ -130,3 +130,17 @@ export function toThousandslsFilter(num) {
   return (+num || 0).toString().replace(/^-?\d+/g, m => m.replace(/(?=(?!\b)(\d{3})+$)/g, ','))
 }
 
+//设置默认值
+export function setdefault(item,val) {
+  if(typeof item == 'undefined' || item == '' || item == null){
+      return val
+  }
+  return item
+}
+
+//保留两位有效数字
+export function formatMoney(value) {
+  if(value == 'undefined' || value === '' || value == null) return 0;
+  value = parseFloat(value)
+  return value.toFixed(2)
+}

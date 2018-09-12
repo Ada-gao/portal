@@ -20,13 +20,8 @@ import Toast from 'components/alert/alert.js'
 //引入自定义图标 初始样式
 import './styles/basic.css'
 import './styles/iconfont.css'
-//全局过滤器
-import '@/util/filter'
 //引入公共组件
 import v_no_data from 'components/no_data/no_data.js'
-
-store.dispatch('get_productType');
-store.dispatch('get_userType');
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)

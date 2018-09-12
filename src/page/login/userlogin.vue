@@ -93,10 +93,10 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.$store.dispatch("LoginByUsername", this.loginForm).then(res => {
-            //GetMenu().then((res) => {
               this.$store.commit("ADD_TAG", this.tagWel);
+              this.$store.dispatch('get_productType');
+              this.$store.dispatch('get_userType');
               this.$router.push({ path: this.tagWel.value });
-            //})
           },error => {
               this.refreshCode();
             }
