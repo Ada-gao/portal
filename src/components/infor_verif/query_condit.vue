@@ -32,9 +32,9 @@
                     </template>
                 </el-table-column>
 
-                <el-table-column align="center" label="消费数量">
+                <el-table-column align="center" label="核验成功">
                     <template slot-scope="scope">
-                        <span>{{scope.row.batchCount}}</span>
+                        <span>{{scope.row.succCount | setdefault('--')}}</span>
                     </template>
                 </el-table-column>
 
@@ -45,7 +45,10 @@
                 </el-table-column>
 
                 <el-table-column align="center" label="消费金额/元">
-                    <template slot-scope="scope"><span :class="{'table_primary':scope.row.monetary != null}">{{scope.row.monetary | setdefault('--')}}</span></template>
+                    <template slot-scope="scope">
+                        <span v-if="scope.row.monetary === null">--</span>
+                        <span v-else class="table_primary">{{scope.row.monetary | formatMoney}}</span>
+                    </template>
                 </el-table-column>
 
                 <el-table-column align="center" label="核验状态">
@@ -85,8 +88,8 @@
         <!--没有数据-->
         <v_no_data v-if="list.length == 0"></v_no_data>
         <!--本批次详细核验日志-->
-        <div v-if="details">
-            <details_record :batchId="batchId"></details_record>
+        <div v-if="details && list.length">
+            <details_record :batchId="batchId" :type_status="type_status"></details_record>
         </div>
 	</div>
 </template>
@@ -96,7 +99,7 @@ import Validate from '@/util/filter_rules'
 import details_record from 'components/infor_verif/details_record'
 import { getExcel } from '@/util/auth'
 export default {
-    props:['list','listQuery','total','loading'],
+    props:['list','listQuery','total','loading','type_status'],
 	components: { details_record },
     data () {
         return {
@@ -126,9 +129,16 @@ export default {
         //导出
         get_excel(){
             if(this.list.length == 0) return;
-            getExcel('out-table','消费记录.xlsx');
+            getExcel('out-table','核验记录.xlsx');
         }
     },
+    watch:{
+        list:function(val){
+            if(this.list.length == 0){
+                this.details = false;
+            }
+        }
+    }
 }
 </script>
 <style lang="scss" scoped>

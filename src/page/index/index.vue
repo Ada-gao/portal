@@ -8,7 +8,7 @@
           <tags></tags>
         </div>
         <div class="main">
-          <div class="router">
+          <div class="router pr">
             <keep-alive>
               <router-view v-if="$route.meta.keepAlive"></router-view>
             </keep-alive>

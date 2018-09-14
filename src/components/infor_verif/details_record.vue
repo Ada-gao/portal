@@ -5,12 +5,12 @@
 			<div class="common_btn fr"><button @click="get_excel" :class="{'disable':list.length == 0}"><i class="iconfont icon-xiazai"></i>一键导出</button></div>
 		</div>
         <!--搜索条件 开始-->
-        <div v-if="list.length">
+        <div>
             <el-form :model="form" :rules="rules" ref="form" class="pt20">
                 <el-row :gutter="20">
                     <el-col :span="6">
-                        <el-form-item prop="tel">
-                            <el-input v-model="form.tel" placeholder="输入手机号" maxlength="11"></el-input>
+                        <el-form-item prop="phone">
+                            <el-input v-model="form.phone" placeholder="输入手机号" maxlength="11"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="6">
@@ -19,13 +19,13 @@
                         </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                        <el-form-item prop="id_card">
-                            <el-input v-model="form.id_card" placeholder="输入身份证号码"></el-input>
+                        <el-form-item prop="idCard">
+                            <el-input v-model="form.idCard" placeholder="输入身份证号码"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                        <el-form-item prop="bank_card">
-                            <el-input v-model="form.bank_card" placeholder="输入银行卡号"></el-input>
+                        <el-form-item prop="bankCard">
+                            <el-input v-model="form.bankCard" placeholder="输入银行卡号"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="6">
@@ -54,60 +54,64 @@
 
                 <el-table-column align="center" label="消费批次号">
                     <template slot-scope="scope">
-                        <span>C000001</span>
+                        <span>{{scope.row.infoNo}}</span>
                     </template>
                 </el-table-column>
 
                 <el-table-column align="center" label="核验类型" class-name="left">
                     <template slot-scope="scope">
-                        <span>二要素</span>
+                        <span>{{scope.row.productName}}</span>
                     </template>
                 </el-table-column>
 
                 <el-table-column align="center" label="姓名">
                     <template slot-scope="scope">
-                        <span>张三</span>
+                        <span>{{scope.row.name}}</span>
                     </template>
                 </el-table-column>
 
-                <el-table-column align="center" label="手机号码">
+                <el-table-column align="center" label="手机号码" v-if="type_staus == 2 || type_staus == 3">
                     <template slot-scope="scope">
-                        <span>13386182259</span>
+                        <span>{{scope.row.phone}}</span>
                     </template>
                 </el-table-column>
 
                 <el-table-column align="center" label="身份证号码" show-overflow-tooltip>
                     <template slot-scope="scope">
-                        <span>12334552323232323</span>
+                        <span>{{scope.row.idCard}}</span>
                     </template>
                 </el-table-column>
 
                 <el-table-column align="center" label="核验结果">
-                    <template slot-scope="scope"><span>信息一致/信息不一致</span></template>
+                    <template slot-scope="scope"><span>{{scope.row.result == 1 ? '信息一致' : '信息不一致'}}</span></template>
                 </el-table-column>
 
                 <el-table-column align="center" label="查询时间">
-                    <template slot-scope="scope"><span>2018-8-29 14:50:24</span></template>
+                    <template slot-scope="scope"><span>{{scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}')}}</span></template>
                 </el-table-column>
 
                 <el-table-column align="center" label="核验状态">
-                    <template slot-scope="scope"><span>{{scope.row.orgSize}}</span></template>
+                    <template slot-scope="scope">
+                        <span v-if="scope.row.status == 0" class="table_primary">正在核验</span>
+                        <span v-if="scope.row.status == 1" class="table_success">核验成功</span>
+                        <span v-if="scope.row.status == 2" class="table_fail">核验失败</span>
+                    </template>
                 </el-table-column>
 
                 <el-table-column align="center" label="核验方式">
-                    <template slot-scope="scope"><span>API</span></template>
+                    <template slot-scope="scope"><span>{{scope.row.mode}}</span></template>
                 </el-table-column>
 
                 <el-table-column align="center" label="消费金额(元)">
-                    <template slot-scope="scope"><span>0.2</span></template>
+                    <template slot-scope="scope"><span>{{scope.row.amount | formatMoney}}</span></template>
                 </el-table-column>
 
                 <el-table-column align="center" label="查询人">
-                    <template slot-scope="scope"><span>ABC</span></template>
+                    <template slot-scope="scope"><span>{{scope.row.createBy}}</span></template>
                 </el-table-column>
 
                 <el-table-column align="center" label="所属公司">
-                    <template slot-scope="scope"><span>数赟科技</span></template>
+                    <template slot-scope="scope"><span>{{scope.row.company}}</span></template>
                 </el-table-column>
 
             </el-table>
@@ -128,7 +132,7 @@ import request from "@/router/axios"
 import { getExcel } from '@/util/auth'
 import { mapState } from "vuex"
 export default {
-    props:['batchId'],
+    props:['batchId','type_staus'],
     data () {
         return {
             type:this.$route.query.type,             // 1为信息核验    2为历史结果查询
@@ -142,30 +146,30 @@ export default {
             loading:false,
             form:{
                 name:'',                            //姓名
-                tel:'',                             //手机号码
-                id_card:'',                         //身份证
-                bank_card:'',                       //银行卡
-                result:'',                          //核验结果
-                time:''                             //选择的日期
+                phone:'',                           //手机号码
+                idCard:'',                          //身份证
+                bankCard:'',                        //银行卡
+                time:'',                            //选择的日期
+                result:''                           //核验结果
             },
             rules: {    //表单验证
                 name: [
                     {required: false, trigger: 'blur', message: '请输入姓名'}
                 ],
-                tel: [
-                    {required: false, trigger: 'blur', validator: Validate.isvalidateMobile}
+                phone: [
+                    {required: false, trigger: 'blur', message: '请输入手机号码'}
                 ],
-                id_card: [
-                    {required: false, trigger: 'blur', message: '请输入身份证号码'}
+                idCard: [
+                    {required: false, trigger: 'blur', message: '请输入身份证号'}
                 ],
-                bank_card: [
+                bankCard: [
                      {required: false, trigger: 'blur', message: '请输入银行卡号'}
                 ],
                 time: [
                      {required: false, trigger: 'blur', message: '请选择时间'}
                 ],
                 result_type: [
-                     {required: false, trigger: 'blur', message: '请输入银行卡号'}
+                     {required: false, trigger: 'blur', message: '请选择核验结果'}
                 ],
             }
         }
@@ -182,6 +186,12 @@ export default {
     methods: {
         //获取消费批次详情列表
         get_consumpDetailsData(){
+            this.listQuery.name = this.form.name;
+            this.listQuery.phone = this.form.phone;
+            this.listQuery.idCard = this.form.idCard;
+            this.listQuery.bankCard = this.form.bankCard;
+            this.listQuery.startTime = this.form.name[0];
+            this.listQuery.endTime = this.form.name[1];
             this.listQuery.batchId = this.batchId;
             request({
                 url: "/admin/consumerInfo/consumerInfoPage",
@@ -191,13 +201,6 @@ export default {
                 this.loading = false;
                 this.list = res.data.records;
                 this.total = res.data.total;
-                for(var i in this.list){
-                    for(var j in this.dic.productType){
-                        if(this.list[i].productType == this.dic.productType[j].value){
-                            this.list[i].productType = this.dic.productType[j].label
-                        }
-                    }
-                }
             })
         },
         //选择核验结果
@@ -212,7 +215,9 @@ export default {
         //查询
         get_data(){
             this.$refs['form'].validate(valid => {
-                console.log(valid,'111')
+                if(valid){
+                    this.get_consumpDetailsData();
+                }
             })
         },
     	//当前页码
@@ -230,7 +235,7 @@ export default {
         //导出
         get_excel(){
             if(this.list.length == 0) return;
-            getExcel('out-table','消费记录.xlsx');
+            getExcel('out-table','核验批次详情记录.xlsx');
         }
     },
     watch:{

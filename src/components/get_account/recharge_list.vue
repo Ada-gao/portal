@@ -87,7 +87,16 @@ import { mapState } from "vuex"
 export default {
     data () {
         return {
-            recharge_data:[],           //充值类型数据					
+            recharge_data:[
+                {
+                    label:'充值失败',
+                    value:0
+                },
+                {
+                    label:'充值成功',
+                    value:1
+                }
+            ],           //充值类型数据					
             list:[],                    //账号列表数据
             listQuery: {
                 page: 1,                //当前页数

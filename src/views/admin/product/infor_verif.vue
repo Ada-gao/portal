@@ -1,5 +1,5 @@
 <template>
-    <div class="basic_info common_style box_adorn pr">
+    <div class="basic_info common_style box_adorn">
     	<div class="tab_head clearfix">
     		<ul class="fl clearfix">
     			<li class="fl" :class="{'current':type == 1}" @click="check_type(1)"><a class="in_b font16" href="javascript:void(0);">信息核验</a></li>

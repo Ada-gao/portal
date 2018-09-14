@@ -62,7 +62,6 @@ const validIdCart = (rule, value, callback) => {
     }
 }
 //验证银行卡号
-//var pattern = /^([1-9]{1})(\d{14}|\d{18})$/
 const validCardNo = (rule, value, callback) => {
     var reg = /^([1-9]{1})(\d{14}|\d{18})$/;
     if (!value) {

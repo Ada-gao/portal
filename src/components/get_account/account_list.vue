@@ -100,7 +100,7 @@ export default {
         	currentPage:1,				//默认为第一页
             listQuery: {
                 page: 1,
-                limit: 20,
+                limit: 10,
                 deptName:'',            //公司名
                 name:'',                //联系人姓名
                 delFlag:'',             //账户状态
@@ -125,7 +125,7 @@ export default {
     	reset(){
             this.listQuery = {
                 page: 1,
-                limit: 20,
+                limit: 10,
                 deptName:'',            //公司名
                 name:'',                //联系人姓名
                 delFlag:'',             //账户状态

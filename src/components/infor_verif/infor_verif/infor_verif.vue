@@ -1,94 +1,67 @@
 <template>
     <div>
-        <div class="down fr">
-            <a :href="downloadUrl">下载模版</a>
-        </div>
-    	<div class="infor_head">
-    		<div class="check pt20">
-	    		<span>核验类型</span>
-	    		<el-radio-group v-model="type" @change="check_type"><!--  :disabled="list.status == 1"  -->
-				    <el-radio  v-for="(list,index) in verif_Type" :key="index" :label="index">{{list.productName}}</el-radio>
-				</el-radio-group>
-				<div class="common_btn fr"><button @click="dialogVisible = true"><i class="iconfont icon-xiazai"></i>批量上传</button></div>
-			</div>
-			<!--form 开始-->
-			<el-form :model="form" :rules="rules" ref="form" class="pt20">
-	            <el-row :gutter="20">
-	                <el-col :span="6">
-	                    <el-form-item prop="personName">
-	                        <el-input v-model="form.personName" placeholder="请输入姓名" maxlength="50"></el-input>
-	                    </el-form-item>
-	                </el-col>
-	                <el-col :span="6" v-if="type >= 0">
-	                    <el-form-item prop="mobile">
-	                        <el-input v-model="form.mobile" placeholder="请输入手机号码" maxlength="11"></el-input>
-	                    </el-form-item>
-	                </el-col>
-	                <el-col :span="6" v-if="type >= 1">
-	                    <el-form-item prop="idNumber">
-	                        <el-input v-model="form.idNumber" placeholder="请输入身份证号码"></el-input>
-	                    </el-form-item>
-	                </el-col>
-	                <el-col :span="6" v-if="type >= 3">
-	                    <el-form-item prop="cardNo">
-	                        <el-input v-model="form.cardNo" placeholder="请输入银行卡号"></el-input>
-	                    </el-form-item>
-	                </el-col>
-	            </el-row>
-	        </el-form>
+        <div v-if="!upload_dialog">
+            <div class="down fr">
+                <a :href="downloadUrl">下载模版</a>
+            </div>
+        	<div class="infor_head">
+        		<div class="check pt20">
+    	    		<span>核验类型</span>
+    	    		<el-radio-group v-model="type" @change="check_type"><!--  :disabled="list.status == 1"  -->
+    				    <el-radio  v-for="(list,index) in verif_Type" :key="index" :label="index">{{list.productName}}</el-radio>
+    				</el-radio-group>
+    				<div class="common_btn fr"><button @click="upload_dialog = true"><i class="iconfont icon-xiazai"></i>批量上传</button></div>
+    			</div>
+    			<!--form 开始-->
+    			<el-form :model="form" :rules="rules" ref="form" class="pt20">
+    	            <el-row :gutter="20">
+    	                <el-col :span="6">
+    	                    <el-form-item prop="personName">
+    	                        <el-input v-model="form.personName" placeholder="请输入姓名" maxlength="50"></el-input>
+    	                    </el-form-item>
+    	                </el-col>
+                        <el-col :span="6" v-if="type == 2 || type == 3">
+                            <el-form-item prop="mobile">
+                                <el-input v-model="form.mobile" placeholder="请输入手机号码" maxlength="11"></el-input>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="6">
+                            <el-form-item prop="idNumber">
+                                <el-input v-model="form.idNumber" placeholder="请输入身份证号码"></el-input>
+                            </el-form-item>
+                        </el-col>
+    	                <el-col :span="6" v-if="type == 1 || type == 3">
+    	                    <el-form-item prop="cardNo">
+    	                        <el-input v-model="form.cardNo" placeholder="请输入银行卡号"></el-input>
+    	                    </el-form-item>
+    	                </el-col>
+    	            </el-row>
+    	        </el-form>
 
-	        <div class="common_btn tc">
-	        	<button @click="reset"><i class="iconfont icon-zhongzhi"></i>重置</button>
-	        	<button @click="verif"><i class="iconfont icon-heyan"></i>立即核验</button>
-	        </div>
+    	        <div class="common_btn tc">
+    	        	<button @click="reset"><i class="iconfont icon-zhongzhi"></i>重置</button>
+    	        	<button @click="verif('one')"><i class="iconfont icon-heyan"></i>立即核验</button>
+    	        </div>
 
-    	</div>
-    	<div class="query_result">
+        	</div>
             <!--查询结果-->
-    		<query_condit :list="list" :loading="loading"></query_condit>
-    	</div>
-        <!--点击批量导入-->
-        <el-dialog title="批量上传" :visible.sync="dialogVisible" width="36%">
-            <span>请选择需要导入的文件</span>
-            <div class="upload_file pr">
-                <el-input style="display: none" v-model="form.filename"></el-input>
-                <upload-excel-component class="pa selected cursor" @on-selected-file='selected'></upload-excel-component>
-                <a class="in_b" href="javascript:void(0);">上传附件</a>
-                <span>支持上传xls、xlsx文件</span>
-                <em class="block"><i class="el-icon-document"></i>附件.信息核验.excel</em>
-            </div>
-            <span slot="footer" class="dialog-footer">
-                <el-button @click="dialogVisible = false">取 消</el-button>
-                <el-button type="primary" @click="dialogVisible = false">开始导入</el-button>
-            </span>
-        </el-dialog>
-        <!--点击开始导入-->
-        <el-dialog title="批量上传" :visible.sync="begin" width="36%">
-            <div class="status">
-                <div class="status_type"><i class="iconfont icon-chenggong"></i></div>
-                <div class="status_con">
-                    <h3>导入完成</h3>
-                    <p class="con mt10">共导入<em>100</em>条，失败<i>5</i>条</p>
-                    <h4 class="mt10">下载错误报告，查看失败原因</h4>
-                    <a class="in_b mt10" href="javascript:void(0);"><i class="iconfont icon-xiazai"></i>错误报告20180807.txt</a>
-                </div>
-            </div>
-            <span slot="footer" class="dialog-footer">
-                <el-button @click="begin = false">取 消</el-button>
-                <el-button type="primary" @click="begin = false">开始导入</el-button>
-            </span>
-        </el-dialog>
+        	<div class="query_result">
+        		<query_condit :list="list" :loading="loading" :type_status="type"></query_condit>
+        	</div>
+        </div>
+        <!--上传文件核验-->
+        <upload_excel :type="type" v-if="upload_dialog" @changeStatus="upload_dialog = false" @upload_verif="for_verif"></upload_excel>
     </div>
 </template>
 
 <script>
 import Validate from '@/util/filter_rules'
 import query_condit from 'components/infor_verif/query_condit'
-import UploadExcelComponent from '@/components/uploadExcel.vue'
+import upload_excel from './upload_excel.vue'
 import request from "@/router/axios"
 import { mapState } from "vuex"
 export default {
-	components: { query_condit, UploadExcelComponent },
+	components: { query_condit,upload_excel },
     data () {
         return {
             verif_Type:[],              //核验类型数据
@@ -100,18 +73,21 @@ export default {
                 page: 1,                //当前页数
                 limit: 10,              //一页显示数据量
             },
+            click_again:false,
+            upload_dialog:false,        //批量上传弹框
             total:null,
             loading:false,
-            dialogVisible:false,        //点击开始导入弹框默认为false
-            begin:false,                //开始导入弹框默认为false
             form:{
             	personName:'',		     //姓名  personName/name
             	mobile:'',			     //手机号码  mobile/mobileNo
             	idNumber:'',		     //身份证  idNumber/idCardNum
                 cardNo:''                //银行卡  cardNo
             },
+            form2:{                     //传给后台数据
+                batchs:[],
+                vo:{}
+            },                   
             downloadUrl: '',            //下载对应的模板
-            params:[],                  //传给后台的数据
             rules: {	                //表单验证
                 personName: [
                     {required: true, trigger: 'blur', message: '请输入姓名'}
@@ -141,6 +117,7 @@ export default {
         //选择核验类型
         check_type(type){
             this.type = type;
+            this.down_switch(type);
         },
         //获取所有类型类型
         get_verifType(){
@@ -157,6 +134,7 @@ export default {
                     if(this.verif_Type[i].status == 0){
                         this.productType = this.verif_Type[i].productType;
                         this.productName = this.verif_Type[i].productName;
+                        this.form2.vo = this.verif_Type[i];
                         this.type = Number(i);
                         this.down_switch(i);
                         return false;
@@ -181,44 +159,111 @@ export default {
     		this.$refs['form'].resetFields()
             this.list = [];
     	},
+        replaceKey (target, change) {
+            for (let key in target) {
+                target[change[key]] = target[key]
+                delete target[key]
+            }
+            return target
+        },
+        for_verif(data){
+            if(this.type == 0){
+                var keyMap = {
+                    姓名: 'personName',
+                    身份证: 'idNumber'
+                }
+            }else if(this.type == 1){
+                var keyMap = {
+                    姓名: 'name',
+                    手机号码: 'mobile',
+                    身份证: 'idCardNum'
+                }
+            }else if(this.type == 2){
+                var keyMap = {
+                    姓名: 'personName',
+                    身份证: 'idNumber',
+                    银行卡号: 'cardNo'
+                }
+            }else{
+                let keyMap = {
+                    姓名: 'personName',
+                    身份证: 'idNumber',
+                    手机号码: 'mobileNo',
+                    银行卡号: 'cardNo'
+                }
+            }
+            let table = JSON.parse(JSON.stringify(data))
+            table.forEach(item => {
+                this.replaceKey(item, keyMap)
+            })
+            this.verif('list',table)
+        },
     	//点击核验
-    	verif(){
-            this.params = [];
-            for(var i=0; i<1; i++){
+    	verif(type,item){
+            if(type == 'one'){
+                this.$refs['form'].validate(valid => {
+                    if(valid){
+                        this.get_common_data(type);
+                    }
+                })
+            }else{
+                this.get_common_data(type,item);
+            }
+    	},
+        //请求数据
+        get_common_data(type,item){
+            if(this.click_again) return;
+            this.click_again = true;
+            this.form2.batchs = [];
+            if(type == 'one'){
                 var obj = {};
                 obj.personName = this.form.personName;
-                obj.name = this.form.personName;
-                obj.mobile = this.form.mobile;
-                obj.mobileNo = this.form.mobile;
                 obj.idNumber = this.form.idNumber;
-                obj.idCardNum = this.form.idNumber;
-                obj.cardNo = this.form.cardNo;
-                this.params.push(obj);
-            }
-            this.$refs['form'].validate(valid => {
-                if(valid){
-                    request({
-                        url: "/admin/consumerBatch?productType=" + this.productType + '&productName=' + this.productName,
-                        method: "post",
-                        data: this.params,
-                    }).then(res => {
-                        this.list = [];
-                        this.list.push(res.data.data);
-                        this.total = res.data.total;
-                        for(var i in this.list){
-                            for(var j in this.dic.productType){
-                                if(this.list[i].productType == this.dic.productType[j].value){
-                                    this.list[i].productType = this.dic.productType[j].label
-                                }
-                            }
+                this.form2.batchs.push(obj);
+            }else{
+                this.form2.batchs = item;
+            } 
+            request({
+                url: "/admin/consumerBatch",
+                method: "post",
+                data: this.form2,
+            }).then(res => {
+                this.click_again = false;
+                this.list = [];
+                this.list.push(res.data.data);
+                this.total = res.data.total;
+                for(var i in this.list){
+                    for(var j in this.dic.productType){
+                        if(this.list[i].productType == this.dic.productType[j].value){
+                            this.list[i].productType = this.dic.productType[j].label
                         }
-                    })
+                    }
+                }
+                if(type == 'list'){
+                    this.upload_dialog = false;
+                }
+                //查看结果
+                this.for_verif_result(res.data.data)
+            })
+        },
+        for_verif_result(item){
+            this.form2.batch = item;
+            request({
+                url: "/admin/consumerBatch",
+                method: "put",
+                data: this.form2,
+            }).then(res => {
+                this.list = [];
+                this.list.push(res.data.data);
+                this.total = res.data.total;
+                for(var i in this.list){
+                    for(var j in this.dic.productType){
+                        if(this.list[i].productType == this.dic.productType[j].value){
+                            this.list[i].productType = this.dic.productType[j].label
+                        }
+                    }
                 }
             })
-    	},
-        //开始导入
-        selected(data){
-
         }
     }
 }
@@ -233,21 +278,4 @@ export default {
 .infor_head>.common_btn>button{ margin:0 15px; height: 32px; }
 .infor_head>.common_btn>button:last-child{ background-color: #1A8CE1; color: #fff;}
 .infor_head>.common_btn>button:last-child i{ color: #fff;}
-
-/*弹框样式*/
-.upload_file{ margin-top: 25px;}
-.upload_file>em{ color: #475669; margin-top: 25px;}
-.upload_file>span{ font-size: 12px; color: #9B9B9B; margin-left: 10px;}
-.upload_file>a{ width: 74px; height: 30px; line-height: 30px; text-align: center; border: 1px solid #E4E4E4; border-radius: 2px; -webkit-border-radius: 2px; color: #1A8CE1;}
-.selected{ top: 0; left: 0; width: 74px; height: 30px; opacity: 0;}
-
-.status{ display: flex;}
-.status .status_con{ margin-left: 15px; flex:1; }
-.status_type i{ font-size: 60px; color: #13CE66;}
-.status_con h3{ font-size: 16px; color: #000;}
-.status_con .con em{ color: #1A8CE1; margin:0 5px; }
-.status_con .con i{ color: red; margin: 0 5px; }
-.status_con h4{ color: #4A4A4A}
-.status_con>a{ color: #1A8CE1;}
-.status_con>a i{ color: #1A8CE1;}
 </style>

@@ -132,7 +132,7 @@ export function toThousandslsFilter(num) {
 
 //设置默认值
 export function setdefault(item,val) {
-  if(typeof item == 'undefined' || item == '' || item == null){
+  if(typeof item === 'undefined' || item === '' || item === null){
       return val
   }
   return item

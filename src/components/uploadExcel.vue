@@ -70,9 +70,10 @@ export default {
       const R = range.s.r /* start in the first row */
       for (C = range.s.c; C <= range.e.c; ++C) { /* walk every column in the range */
         var cell = sheet[XLSX.utils.encode_cell({ c: C, r: R })] /* find the cell in the first row */
-        var hdr = 'UNKNOWN ' + C // <-- replace with your desired default
+        //var hdr = 'UNKNOWN ' + C // <-- replace with your desired default
+        var hdr = ''
         if (cell && cell.t) hdr = XLSX.utils.format_cell(cell)
-        headers.push(hdr)
+        if(hdr != '') headers.push(hdr)
       }
       return headers
     }
