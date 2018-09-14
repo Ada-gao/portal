@@ -21,7 +21,7 @@ function hasPermission(roles, permissionRoles) {
   if (!permissionRoles) return true
   return roles.some(role => permissionRoles.indexOf(role) >= 0)
 }
-const whiteList = ['/login', '/404', '/401', '/lock']
+const whiteList = ['/login', '/401', '/lock']
 const lockPage = '/lock'
 
 router.beforeEach((to, from, next) => {
@@ -121,7 +121,7 @@ router.afterEach((to, from) => {
   NProgress.done()
   setTimeout(() => {
     const tag = store.getters.tag
-    setTitle(tag.label)
+    //setTitle(tag.label)
     store.commit('SET_TAG_CURRENT', findMenuParent(tag))
   }, 0)
 })

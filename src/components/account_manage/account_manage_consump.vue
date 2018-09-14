@@ -28,16 +28,19 @@
                         <template slot-scope="scope"><span>{{scope.row.batchCount}}</span></template>
                     </el-table-column>
 
-                    <el-table-column align="center" label="消费数量">
-                        <template slot-scope="scope"><span>{{scope.row.batchCount}}</span></template>
+                    <el-table-column align="center" label="核验成功">
+                        <template slot-scope="scope"><span class="table_success">{{scope.row.succCount}}</span></template>
                     </el-table-column>
 
                     <el-table-column align="center" label="核验失败">
-                        <template slot-scope="scope"><span>{{scope.row.failCount | setdefault('--')}}</span></template>
+                        <template slot-scope="scope"><span class="table_fail">{{scope.row.failCount | setdefault('--')}}</span></template>
                     </el-table-column>
 
                     <el-table-column align="center" label="消费金额/元">
-                        <template slot-scope="scope"><span :class="{'table_primary':scope.row.monetary != null}">{{scope.row.monetary | setdefault('--')}}</span></template>
+                        <template slot-scope="scope">
+                            <span v-if="scope.row.monetary == null">--</span>
+                            <span class="table_primary" v-else>{{scope.row.monetary | formatMoney}}</span>
+                        </template>
                     </el-table-column>
 
                     <el-table-column align="center" label="消费时间">
@@ -62,10 +65,10 @@
 
                 </el-table>
                 <div class="page clearfix mt20 box">
-                    <el-col :span="18">
+                    <el-col :span="24">
                         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="listQuery.page" :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total"></el-pagination>
                     </el-col>
-                    <el-col :span="6" class="tr">
+                    <!-- <el-col :span="6" class="tr">
                         <div class="tip pr in_b">
                             <p class="tr"><em class="in_b cursor" ref="title"><i></i>累计充值金额：100000元</em></p>
                             <div class="tip_title tc pa none">
@@ -73,7 +76,7 @@
                                 <em>试用消费50元，付费消费9995元</em>
                             </div>
                         </div>
-                    </el-col>
+                    </el-col> -->
                 </div>
             </div>
             <!--没有数据-->
@@ -109,7 +112,11 @@ export default {
     },
     methods: {
         //获取消费列表
-        get_consumpData(){
+        get_consumpData(type){
+            if(type){
+                this.limit = this.listQuery.limit;
+                this.listQuery.limit = this.total
+            }
             this.listQuery.createBy = this.userInfo.userId;
             request({
                 url: "/admin/consumerBatch/consumerBatch",
@@ -117,16 +124,21 @@ export default {
                 params:this.listQuery
             }).then(res => {
                 this.loading = false;
-                this.list = res.data.records;
                 this.total = res.data.total;
-                for(var i in this.list){
+                for(var i in res.data.records){
                     for(var j in this.dic.productType){
-                        if(this.list[i].productType == this.dic.productType[j].value){
-                            this.list[i].productType = this.dic.productType[j].label
+                        if(res.data.records[i].productType == this.dic.productType[j].value){
+                            res.data.records[i].productType = this.dic.productType[j].label
                         }
                     }
                 }
-            }).catch(() => {})
+                if(type){
+                    this.listQuery.limit = this.limit
+                    this.data_proces(res.data.records)
+                }else{
+                    this.list = res.data.records;
+                }
+            })
         },
         //当前页码
         handleCurrentChange(val){
@@ -143,7 +155,40 @@ export default {
         //导出
         get_excel(){
             if(this.list.length == 0) return;
-            getExcel('out-table','消费记录.xlsx');
+            var num = Math.ceil(this.total/this.listQuery.limit);
+            if(num == 1){
+                this.data_proces(this.list);
+            }else{
+                this.get_consumpData('excel')
+            }
+        },
+        //导出数据处理
+        data_proces(data){
+            let list = []
+            data.forEach((item,index) => {
+                let obj = new Object()
+                if (item.status == 0){
+                    item.status = '正在核验'
+                } else if (item.status == 1){
+                    item.status = '核验成功'
+                }else{
+                    item.status = '核验失败'
+                }
+                let date = new Date(item.createTime)
+                item.createTime = date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate() + ' ' +date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
+                obj.消费批次号 = item.batchNo
+                obj.消费产品 = item.productType
+                obj.产品名称 = item.productName
+                obj.申请条数 = item.batchCount
+                obj.核验成功 = item.succCount
+                obj.核验失败 = item.failCount
+                obj.消费金额 = item.monetary.toFixed(2)
+                obj.消费时间 = item.createTime
+                obj.核验状态 = item.status
+                obj.操作人 = item.createName
+                list[index] = obj
+            })
+            getExcel(list,'消费记录.xlsx');
         },
         //查看消费详情
         get_consump_details(item){

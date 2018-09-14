@@ -185,7 +185,7 @@ export default {
     },
     methods: {
         //获取消费批次详情列表
-        get_consumpDetailsData(){
+        get_consumpDetailsData(type){
             this.listQuery.name = this.form.name;
             this.listQuery.phone = this.form.phone;
             this.listQuery.idCard = this.form.idCard;
@@ -193,14 +193,23 @@ export default {
             this.listQuery.startTime = this.form.name[0];
             this.listQuery.endTime = this.form.name[1];
             this.listQuery.batchId = this.batchId;
+            if(type){
+                this.limit = this.listQuery.limit;
+                this.listQuery.limit = this.total
+            }
             request({
                 url: "/admin/consumerInfo/consumerInfoPage",
                 method: "get",
                 params:this.listQuery
             }).then(res => {
                 this.loading = false;
-                this.list = res.data.records;
                 this.total = res.data.total;
+                if(type){
+                    this.listQuery.limit = this.limit
+                    this.data_proces(res.data.records)
+                }else{
+                    this.list = res.data.records;
+                }
             })
         },
         //选择核验结果
@@ -235,7 +244,36 @@ export default {
         //导出
         get_excel(){
             if(this.list.length == 0) return;
-            getExcel('out-table','核验批次详情记录.xlsx');
+            var num = Math.ceil(this.total/this.listQuery.limit);
+            if(num == 1){
+                this.data_proces(this.list);
+            }else{
+                this.get_consumpDetailsData('excel')
+            }
+        },
+        //导出数据处理
+        data_proces(data){
+            let list = []
+            data.forEach((item,index) => {
+                let obj = new Object()
+                if (item.status){
+                    item.status = '充值成功'
+                } else{
+                    item.status = '充值失败'
+                }
+                let date = new Date(item.createTime)
+                item.createTime = date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate() + ' ' +date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
+                obj.充值流水号 = item.companyCode
+                obj.产品名称 = item.companyName
+                obj.申请条数 = item.username
+                obj.消费数量 = item.rechargeName
+                obj.核验失败 = item.rechargeAmount.toFixed(2)
+                obj.消费金额 = item.createTime
+                obj.消费时间 = item.status
+                obj.操作人 = item.username
+                list[index] = obj
+            })
+            getExcel(list,'核验批次详情记录.xlsx');
         }
     },
     watch:{

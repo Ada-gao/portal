@@ -95,24 +95,34 @@ export default {
             }).catch(() => {})
         },
         //获取充值记录
-        get_rechargeData() {
+        get_rechargeData(type) {
             this.loading = true;
+            if(type){
+                this.limit = this.listQuery.limit;
+                this.listQuery.limit = this.total
+            }
             request({
                 url: "/admin/rechargeRecord/rechargeRecordPage",
                 method: "get",
                 params:this.listQuery
             }).then(res => {
                 this.loading = false;
-                this.list = res.data.records;
                 this.total = res.data.total;
-                for(var i in this.list){
+                for(var i in res.data.records){
                     for(var j in this.recharge_data){
-                        if(this.list[i].rechargeType == this.recharge_data[j].value){
-                            this.list[i].rechargeName = this.recharge_data[j].label;
+                        if(res.data.records[i].rechargeType == this.recharge_data[j].value){
+                            res.data.records[i].rechargeName = this.recharge_data[j].label;
                         }
                     }
                 }
-            }).catch(() => {})
+                //导出文件判断
+                if(type){
+                    this.listQuery.limit = this.limit
+                    this.data_proces(res.data.records)
+                }else{
+                    this.list = res.data.records;
+                }
+            })
         },
     	//跳转到账号充值
     	for_account_recharge(type){
@@ -121,18 +131,50 @@ export default {
     	//当前页码
         handleCurrentChange(val){
             this.listQuery.page = val;
+            this.loading = true;
             this.get_rechargeData();
         },
         //每页显示多少天数据
         handleSizeChange(val){
             this.listQuery.limit = val;
+            this.loading = true;
             this.get_rechargeData();
         },
         //导出
         get_excel(){
-            if(!this.list.length) return;
-            getExcel('out-table','充值记录记录.xlsx');
+            if(this.list.length == 0) return;
+            var num = Math.ceil(this.total/this.listQuery.limit);
+            if(num == 1){
+                this.data_proces(this.list);
+            }else{
+                this.get_rechargeData('excel')
+            }
         },
+        //导出数据处理
+        data_proces(data){
+            let list = []
+            data.forEach((item,index) => {
+                let obj = new Object()
+                if (item.status){
+                    item.status = '充值成功'
+                } else{
+                    item.status = '充值失败'
+                }
+                let date = new Date(item.createTime)
+                item.createTime = date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate() + ' ' +date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
+                obj.充值流水号 = item.rechargeCode
+                obj.所属公司 = item.companyName
+                obj.充值账号 = item.username
+                obj.充值类型 = item.rechargeName
+                obj.充值金额 = item.rechargeAmount.toFixed(2)
+                obj.充值时间 = item.createTime
+                obj.充值状态 = item.status
+                obj.充值备注 = item.remark
+                obj.操作人 = item.username
+                list[index] = obj
+            })
+            getExcel(list,'充值记录.xlsx');
+        }
     }
 }
 </script>

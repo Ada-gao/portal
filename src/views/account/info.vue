@@ -23,7 +23,7 @@ export default {
     components: { account_manage_our, account_manage_basic_infor, account_manage_consump, account_manage_recharge, account_manage_login },
     data () {
         return {
-        
+
         }
     },
 }

@@ -51,7 +51,7 @@
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
-                            <el-form-item label="职位：">
+                            <el-form-item label="职务：">
                                 <span>{{basic_info.position}}</span>
                             </el-form-item>
                         </el-col>

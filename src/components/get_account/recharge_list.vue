@@ -119,20 +119,30 @@ export default {
     },
     methods: {
         //获取充值记录
-        get_rechargeData() {
+        get_rechargeData(type) {
+            if(type){
+                this.limit = this.listQuery.limit;
+                this.listQuery.limit = this.total
+            }
             request({
                 url: "/admin/rechargeRecord/rechargeRecordPage",
                 method: "get",
                 params:this.listQuery
             }).then(res => {
-                this.list = res.data.records;
                 this.total = res.data.total;
-                for(var i in this.list){
+                for(var i in res.data.records){
                     for(var j in this.dic.userType){
-                        if(this.list[i].rechargeType == this.dic.userType[j].value){
-                            this.list[i].rechargeName = this.dic.userType[j].label;
+                        if(res.data.records[i].rechargeType == this.dic.userType[j].value){
+                            res.data.records[i].rechargeName = this.dic.userType[j].label;
                         }
                     }
+                }
+                //导出文件判断
+                if(type){
+                    this.listQuery.limit = this.limit
+                    this.data_proces(res.data.records)
+                }else{
+                    this.list = res.data.records;
                 }
             })
         },
@@ -163,7 +173,37 @@ export default {
         //导出
         get_excel(){
             if(this.list.length == 0) return;
-            getExcel('out-table','充值列表.xlsx');
+            var num = Math.ceil(this.total/this.listQuery.limit);
+            if(num == 1){
+                this.data_proces(this.list);
+            }else{
+                this.get_rechargeData('excel')
+            }
+        },
+        //导出数据处理
+        data_proces(data){
+            let list = []
+            data.forEach((item,index) => {
+                let obj = new Object()
+                if (item.status){
+                    item.status = '充值成功'
+                } else{
+                    item.status = '充值失败'
+                }
+                let date = new Date(item.createTime)
+                item.createTime = date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate() + ' ' +date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
+                obj.充值流水号 = item.rechargeCode
+                obj.所属公司 = item.companyName
+                obj.充值账号 = item.username
+                obj.充值类型 = item.rechargeName
+                obj.充值金额 = item.rechargeAmount.toFixed(2)
+                obj.充值时间 = item.createTime
+                obj.充值状态 = item.status
+                obj.充值备注 = item.remark
+                obj.操作人 = item.username
+                list[index] = obj
+            })
+            getExcel(list,'充值记录.xlsx');
         }
     }
 }

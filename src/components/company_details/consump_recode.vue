@@ -29,7 +29,7 @@
 
                 <el-table-column align="center" label="消费数量">
                     <template slot-scope="scope">
-                        <span>{{scope.row.batchCount}}</span>
+                        <span>{{scope.row.succCount}}</span>
                     </template>
                 </el-table-column>
 
@@ -58,14 +58,14 @@
 
             </el-table>
             <div class="page clearfix mt20 box" v-if="list.length">
-                <el-col :span="18">
+                <el-col :span="24">
                     <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="listQuery.page" :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total"></el-pagination>
                 </el-col>
-                <el-col :span="6">
+                <!-- <el-col :span="6">
                     <div class="tip pr">
                         <p class="tr"><em class="in_b" ref="title"><i></i>累计消费金额：10000元</em></p>
                     </div>
-                </el-col>
+                </el-col> -->
             </div>
             <v_no_data v-if="list.length == 0"></v_no_data>
         </div>
@@ -92,7 +92,8 @@ export default {
             },
             loading:false,
             total:null,
-            details:false            //展示消费详情  false为隐藏
+            details:false,            //展示消费详情  false为隐藏
+            batchId:null
         }
     },
     computed: {
@@ -121,7 +122,7 @@ export default {
                         }
                     }
                 }
-            }).catch(() => {})
+            })
         },
         //查看消费详情
         get_consump_details(item){

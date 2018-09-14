@@ -46,14 +46,14 @@
 
                 </el-table>
                 <div class="page clearfix mt20 box">
-                    <el-col :span="18">
+                    <el-col :span="24">
                         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="listQuery.page" :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total"></el-pagination>
                     </el-col>
-                    <el-col :span="6">
+                    <!-- <el-col :span="6">
                         <div class="tip pr">
                             <p class="tr"><em class="in_b cursor" ref="title"><i></i>累计登录次数：3次</em></p>
                         </div>
-                    </el-col>
+                    </el-col> -->
                 </div>
             </div>
             <!--没有数据-->
@@ -82,17 +82,24 @@ export default {
     },
     methods: {
         //获取登录信息
-        login_data(){
+        login_data(type){
+            if(type){
+                this.limit = this.listQuery.limit;
+                this.listQuery.limit = this.total
+            }
             request({
-                url: "/admin//sysLoginLog/logPage",
+                url: "/admin/sysLoginLog/logPage",
                 method: "get",
                 params: this.listQuery
-            }).then(response => {
+            }).then(res => {
                 this.loading = false;
-                this.list = response.data.records;
-                this.total = response.data.total;
-            }).catch(()=>{
-
+                this.total = res.data.total;
+                if(type){
+                    this.listQuery.limit = this.limit
+                    this.data_proces(res.data.records)
+                }else{
+                    this.list = res.data.records;
+                }
             })
         },
         //页码修改
@@ -109,8 +116,37 @@ export default {
         },
         //导出
         get_excel(){
-            if(!this.list.length) return;
-            getExcel('login-table','登录记录.xlsx');
+            if(this.list.length == 0) return;
+            var num = Math.ceil(this.total/this.listQuery.limit);
+            if(num == 1){
+                this.data_proces(this.list);
+            }else{
+                this.login_data('excel')
+            }
+        },
+        //导出数据处理
+        data_proces(data){
+            let list = []
+            data.forEach((item,index) => {
+                let obj = new Object()
+                if (item.status == 0){
+                    item.status = '成功'
+                } else{
+                    item.status = '失败'
+                }
+                let date = new Date(item.loginTime)
+                item.loginTime = date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate() + ' ' +date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
+                obj.登录账号 = item.loginName
+                obj.登录IP地址 = item.ipaddr
+                obj.登录地点 = item.loginLocation
+                obj.浏览器 = item.browser
+                obj.操作系统 = item.os
+                obj.登录状态 = item.status
+                obj.操作信息 = item.message
+                obj.登录时间 = item.loginTime
+                list[index] = obj
+            })
+            getExcel(list,'登录记录.xlsx');
         },
     }
 }

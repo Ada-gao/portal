@@ -2,7 +2,7 @@
 	<div>
         <div class="query_result_head clearfix pt25">
             <span>{{type == 1 ? '本次查询结果' : '所有消费批次清单'}}</span>
-            <div class="common_btn fr" v-if="list.length"><button @click="get_excel" :class="{'disable':list.length == 0}"><i class="iconfont icon-xiazai"></i>一键导出</button></div>
+            <div class="common_btn fr"><button @click="get_excel" :class="{'disable':list.length == 0}"><i class="iconfont icon-xiazai"></i>一键导出</button></div>
         </div>
         <!--table 列表-->
         <div class="mt20" v-if="list.length">
@@ -99,7 +99,7 @@ import Validate from '@/util/filter_rules'
 import details_record from 'components/infor_verif/details_record'
 import { getExcel } from '@/util/auth'
 export default {
-    props:['list','listQuery','total','loading','type_status'],
+    props:['list','listQuery','total','loading','type_status','excel','excel_list'],
 	components: { details_record },
     data () {
         return {
@@ -129,13 +129,61 @@ export default {
         //导出
         get_excel(){
             if(this.list.length == 0) return;
-            getExcel('out-table','核验记录.xlsx');
+            if(this.type == 1){
+                this.data_proces(this.list);
+            }else{
+                var num = Math.ceil(this.total/this.listQuery.limit);
+                if(num == 1){
+                    this.data_proces(this.list);
+                }else{
+                    this.$emit("change",'all')
+                }
+            }
+            
+        },
+        //导出数据处理
+        data_proces(data){
+            let list = []
+            data.forEach((item,index) => {
+                let obj = new Object()
+                if (item.status == 0){
+                    item.status = '正在核验'
+                } else if (item.status == 1){
+                    item.status = '核验成功'
+                } else{
+                    item.status = '充值失败'
+                }
+                let date = new Date(item.createTime)
+                item.createTime = date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate() + ' ' +date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
+                obj.消费批次号 = item.batchNo
+                obj.产品类型 = item.productType
+                obj.核验类型 = item.productName
+                obj.申请条数 = item.batchCount
+                obj.核验成功 = item.succCount
+                obj.核验失败 = item.failCount
+                obj.消费金额 = item.monetary.toFixed(2)
+                obj.核验状态 = item.status
+                obj.消费时间 = item.createTime
+                obj.操作人 = item.createName
+                list[index] = obj
+            })
+            this.$emit("changeExcel")
+            if(this.type == 1){
+                getExcel(list,'本次查询结果.xlsx');
+            }else{
+                getExcel(list,'所有消费批次清单.xlsx');
+            }
         }
     },
     watch:{
         list:function(val){
             if(this.list.length == 0){
                 this.details = false;
+            }
+        },
+        excel:function(){
+            if(this.excel){
+                this.data_proces(this.excel_list);
             }
         }
     }

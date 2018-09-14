@@ -7,7 +7,7 @@
                     <div class="spicle fl"><i class='iconfont icon-yue-copy'></i></div>
                     <div class="fl con pr">
                         <div class="stat_tit">账户余额</div>
-                        <div class="price omit1 mt20"><em>{{0 | formatMoney}}<small>元</small></em><span><i class="iconfont icon-tishi"></i>余额不足，请尽快充值!</span></div>
+                        <div class="price omit1 mt20"><em>{{info.balance | formatMoney}}<small>元</small></em><span v-show="info.warning == 1"><i class="iconfont icon-tishi"></i>余额不足，请尽快充值!</span></div>
                     </div>
                 </div>
             </el-col>
@@ -16,7 +16,7 @@
                     <div class="spicle fl"><i class='iconfont icon-leiji'></i></div>
                     <div class="fl con pr">
                         <div class="stat_tit">累计消费金额</div>
-                        <div class="price mt20"><em>0.00<small>元</small></em></div>
+                        <div class="price mt20"><em>{{info.countAmount | formatMoney}}<small>元</small></em></div>
                     </div>
                 </div>
             </el-col>
@@ -25,14 +25,25 @@
 </template>
 
 <script>
+import request from "@/router/axios";
 export default {
     data () {
         return {
-        
+            info:{},        //基本信息
         }
     },
+    created() {
+        this.get_infoData();
+    },
     methods: {
-    
+        get_infoData(){
+            request({
+                url: "/admin/user/statistics",
+                method: "get",
+            }).then(res => {
+                this.info = res.data.data
+            })
+        },
     }
 }
 </script>
