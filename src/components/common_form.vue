@@ -31,9 +31,9 @@
                 <el-col :span="12">
                     <el-form-item label="所属行业" prop="industry">
                         <el-select v-model="form.industryType" placeholder="请选择行业大类" @change="changeIndustry" style="width: 47%!important;">
-                            <el-option v-for="item in coInfo.industryType" :key="item.industryName" :label="item.industryName" :value="item.industryName""></el-option>
+                            <el-option v-for="item in coInfo.industryType" :key="item.industryName" :label="item.industryName" :value="item.industryName"></el-option>
                         </el-select>
-                        <el-select class="fr" v-model="form.industry" placeholder="请选择行业小类" style="width: 47%!important;">
+                        <el-select class="fr" v-model="form.industry" placeholder="请选择行业小类" style="width: 47%!important;" @click.native="get_industry">
                             <el-option v-for="item in coInfo.industry" :key="item.industryName" :label="item.industryName" :value="item.industryName"></el-option>
                         </el-select>
                     </el-form-item>
@@ -225,6 +225,8 @@ export default {
         }
     },
     created(){
+        //获取一级行业
+        this.get_industryData(0)
         if(this.$route.query.type){
             this.type = this.$route.query.type;
         }
@@ -235,14 +237,20 @@ export default {
             this.img_list = JSON.parse(details_data).companyQualification;
         }
         this.get_orgSizeData();
-        //获取一级行业
-        this.get_industryData(0)
         //当存在省份  获取省份下的市
         if(this.form.companyProvince){
             this.changeProvince(this.form.companyProvince,'init')
         }
     },
     methods: {
+        get_industry(){
+            if(this.coInfo.industry.length) return;
+            for(var i in this.coInfo.industryType){
+                if(this.coInfo.industryType[i].industryName == this.form.industryType){
+                    this.get_industryData(this.coInfo.industryType[i].industryId,'industry')
+                }
+            }
+        },
         //获取公司规模
         get_orgSizeData(){
             request({

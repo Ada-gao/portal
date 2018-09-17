@@ -60,7 +60,7 @@
                 </el-table-column>
 
                 <el-table-column align="center" label="消费金额(元)">
-                    <template slot-scope="scope"><span>{{scope.row..amount | formatMoney}}</span></template>
+                    <template slot-scope="scope"><span>{{scope.row.amount | formatMoney}}</span></template>
                 </el-table-column>
 
                 <el-table-column align="center" label="查询人">
