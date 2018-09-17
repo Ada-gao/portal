@@ -22,9 +22,13 @@ const navs = {
     state: {
         tagList: getStore({ name: 'tagList' }) || [],
         tag: getStore({ name: 'tag' }) || tagObj,
+        // tagWel: {
+        //     label: "首页",
+        //     value: "/wel/index"
+        // },
         tagWel: {
-            label: "首页",
-            value: "/wel/index"
+            label: "操作管理",
+            value: "/account/handle"
         },
         tagCurrent: getStore({ name: 'tagCurrent' }) || [],
     },

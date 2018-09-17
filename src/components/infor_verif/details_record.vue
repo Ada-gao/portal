@@ -58,7 +58,7 @@
                     </template>
                 </el-table-column>
 
-                <el-table-column align="center" label="核验类型" class-name="left">
+                <el-table-column align="center" label="核验类型">
                     <template slot-scope="scope">
                         <span>{{scope.row.productName}}</span>
                     </template>
@@ -256,21 +256,34 @@ export default {
             let list = []
             data.forEach((item,index) => {
                 let obj = new Object()
-                if (item.status){
-                    item.status = '充值成功'
+                if (item.result == 1){
+                    item.result = '信息一致'
                 } else{
-                    item.status = '充值失败'
+                    item.result = '信息不一致'
+                }
+                if (item.status == 0){
+                    item.status = '正在核验'
+                } else if (item.status == 1){
+                    item.status = '核验成功'
+                } else {
+                    item.status = '核验失败'
                 }
                 let date = new Date(item.createTime)
                 item.createTime = date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate() + ' ' +date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
-                obj.充值流水号 = item.companyCode
-                obj.产品名称 = item.companyName
-                obj.申请条数 = item.username
-                obj.消费数量 = item.rechargeName
-                obj.核验失败 = item.rechargeAmount.toFixed(2)
-                obj.消费金额 = item.createTime
-                obj.消费时间 = item.status
-                obj.操作人 = item.username
+                obj.消费批次号 = item.infoNo
+                obj.核验类型 = item.productName
+                obj.姓名 = item.name
+                if(this.type_staus == 2 || this.type_staus == 3){
+                    obj.手机号码 = item.phone
+                }
+                obj.身份证号码 = item.idCard
+                obj.核验结果 = item.result
+                obj.查询时间 = item.createTime
+                obj.核验状态 = item.status
+                obj.核验方式 = item.mode
+                obj.消费金额 = item.amount.toFixed(2)
+                obj.查询人 = item.createBy
+                obj.所属公司 = item.company
                 list[index] = obj
             })
             getExcel(list,'核验批次详情记录.xlsx');

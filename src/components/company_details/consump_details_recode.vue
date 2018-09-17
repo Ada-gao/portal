@@ -2,7 +2,7 @@
     <div>
     	<div class="query_result_head clearfix pt25">
 			<span>消费批次详情</span>
-			<div class="common_btn fr"><button @click="get_excel"><i class="iconfont icon-xiazai"></i>一键导出</button></div>
+			<div class="common_btn fr"><button @click="get_excel" :class="{'disable':list.length == 0}"><i class="iconfont icon-xiazai"></i>一键导出</button></div>
 		</div>
 		<!--table 列表-->
         <div class="mt20">

@@ -33,11 +33,12 @@
 </template>
 
 <script>
-import { randomLenNum } from "@/util/util";
+import { randomLenNum,initMenu } from "@/util/util";
 import {
   GetMenu
 } from '@/api/menu'
 import { mapGetters } from "vuex";
+import { validatenull } from "@/util/validate";
 export default {
   name: "userlogin",
   data() {
@@ -75,7 +76,7 @@ export default {
   },
   mounted() {},
   computed: {
-    ...mapGetters(["tagWel"])
+    ...mapGetters(["menu","tagWel"])
   },
   props: [],
   methods: {
@@ -92,15 +93,19 @@ export default {
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
-          this.$store.dispatch("LoginByUsername", this.loginForm).then(res => {
-              this.$store.commit("ADD_TAG", this.tagWel);
-              this.$store.dispatch('get_productType');
-              this.$store.dispatch('get_userType');
-              this.$router.push({ path: this.tagWel.value });
-          },error => {
-              this.refreshCode();
-            }
-          );
+            this.$store.dispatch("LoginByUsername", this.loginForm).then(res => {
+                this.$store.commit("ADD_TAG", this.tagWel);
+                this.$store.dispatch('get_productType');
+                this.$store.dispatch('get_userType');
+                if (validatenull(this.menu)) {
+                    this.$store.dispatch("GetMenu").then(data => {
+                        initMenu(this.$router, data);
+                        this.$router.push({ path: this.tagWel.value });
+                    });
+                }
+            },error => {
+                this.refreshCode();
+            });
         }
       });
     }
