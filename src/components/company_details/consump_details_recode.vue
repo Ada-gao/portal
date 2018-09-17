@@ -171,7 +171,7 @@ export default {
                 let date = new Date(item.createTime)
                 item.createTime = date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate() + ' ' +date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
                 obj.消费批次号 = item.infoNo
-                obj.核验类型 = item.productName
+                obj.产品名称 = item.productName
                 obj.姓名 = item.name
                 if(this.type_staus == 2 || this.type_staus == 3){
                     obj.手机号码 = item.phone
