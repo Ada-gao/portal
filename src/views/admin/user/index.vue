@@ -10,7 +10,7 @@
 
             <el-table-column align="center" label="用户名">
                 <template slot-scope="scope">
-                    <span><img v-if="scope.row.avatar" class="user-avatar vm" style="width: 20px; height: 20px; border-radius: 50%;" :src="scope.row.avatar+'?imageView2/1/w/20/h/20'"> <em class="vm"> {{scope.row.username}}</em></span>
+                    <span style="display: flex;"><img v-if="scope.row.avatar" class="user-avatar vm" style="width: 20px; height: 20px; border-radius: 50%; margin:auto;" :src="scope.row.avatar+'?imageView2/1/w/20/h/20'"> <em class="vm" style="flex: 1;"> {{scope.row.username}}</em></span>
                 </template>
             </el-table-column>
 
