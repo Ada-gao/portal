@@ -32,7 +32,7 @@
 
                 <el-table-column align="center" label="充值时间" >
                     <template slot-scope="scope">
-                        <span>{{scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}')}}</span>
+                        <span>{{scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span>
                     </template>
                 </el-table-column>
 

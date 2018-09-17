@@ -20,10 +20,10 @@
                     <el-form-item label="所属公司：" class="omit1"><span>{{basic_info.deptName}}</span></el-form-item>
                 </el-col>
                 <el-col :span="8">
-                    <el-form-item label="账户创建时间：" class="omit1"><span>{{basic_info.updateTime | parseTime('{y}-{m}-{d} {h}:{i}')}}</span></el-form-item>
+                    <el-form-item label="账户创建时间：" class="omit1"><span>{{basic_info.updateTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span></el-form-item>
                 </el-col>
                 <el-col :span="8">
-                    <el-form-item label="账户到期时间：" class="omit1"><span>{{basic_info.expirationDate | parseTime('{y}-{m}-{d} {h}:{i}')}}</span></el-form-item>
+                    <el-form-item label="账户到期时间：" class="omit1"><span>{{basic_info.expirationDate | parseTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span></el-form-item>
                 </el-col>
             </el-row>
 

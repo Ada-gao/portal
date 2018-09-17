@@ -41,7 +41,7 @@
                     </el-table-column>
 
                     <el-table-column align="center" label="登录时间">
-                        <template slot-scope="scope"><span>{{scope.row.loginTime | parseTime('{y}-{m}-{d} {h}:{i}')}}</span></template>
+                        <template slot-scope="scope"><span>{{scope.row.loginTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span></template>
                     </el-table-column>
 
                 </el-table>

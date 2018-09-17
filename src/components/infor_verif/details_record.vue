@@ -87,7 +87,7 @@
                 </el-table-column>
 
                 <el-table-column align="center" label="查询时间">
-                    <template slot-scope="scope"><span>{{scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}')}}</span></template>
+                    <template slot-scope="scope"><span>{{scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}:{s}')}}</span></template>
                 </el-table-column>
 
                 <el-table-column align="center" label="核验状态">
