@@ -18,8 +18,8 @@
             </el-form-item>
             <el-form-item label="头像">
               <my-upload field="file" @crop-upload-success="cropUploadSuccess" v-model="show" :width="300" :height="300" url="/admin/user/upload" :headers="headers" img-format="png"></my-upload>
-              <img :src="ruleForm2.avatar" v-if="ruleForm2.avatar" class="user_img">
-              <el-button type="primary" @click="toggleShow" size="mini">选择
+              <img :src="ruleForm2.avatar" v-if="ruleForm2.avatar" class="user_img vm">
+              <el-button style="margin-left: 15px;" type="primary" @click="toggleShow" size="mini">选择
                 <i class="el-icon-upload el-icon--right"></i>
               </el-button>
             </el-form-item>
