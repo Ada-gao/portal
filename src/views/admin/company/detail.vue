@@ -54,7 +54,7 @@
                     <el-col :span="24">
                         <el-form-item label="公司资质：" style="margin-bottom: 0;">
                             <ul class="img_list in_b clearfix">
-                                <li class="pr fl" @click="swiper_img = true" v-for="(img,index) in details_data.companyQualification" :key="index"><img :src="img"><span class="pa in_b none">查看图片</span></li>
+                                <li class="pr fl" @click="set_swiper(index)" v-for="(img,index) in details_data.companyQualification" :key="index"><img :src="img"><span class="pa in_b none">查看图片</span></li>
                             </ul>
                         </el-form-item>
                     </el-col>
@@ -164,6 +164,10 @@ export default {
         setActiveItem:function(index){
             this.$refs.carousel.setActiveItem(index);
         },
+        set_swiper(index){
+            this.swiper_img = true;
+            this.index = index;
+        }
     }
 }
 </script>
