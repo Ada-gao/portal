@@ -54,14 +54,18 @@
                     <template slot-scope="scope"><span class="table_primary">{{scope.row.amount | formatMoney}}</span></template>
                 </el-table-column>
 
-                <el-table-column align="center" label="查询条数">
-                    <template slot-scope="scope"><span>{{scope.row.description}}</span></template>
-                </el-table-column>
-
                 <el-table-column align="center" label="手机号">
                     <template slot-scope="scope"><span>{{scope.row.phone}}</span></template>
                 </el-table-column>
 
+                <el-table-column align="center" label="邮箱">
+                    <template slot-scope="scope"><span>{{scope.row.email}}</span></template>
+                </el-table-column>
+
+                <el-table-column align="center" label="账户类型">
+                    <template slot-scope="scope"><span>{{scope.row.userTypeName}}</span></template>
+                </el-table-column>
+            
                 <el-table-column align="center" label="账户状态">
                     <template slot-scope="scope"><span :class="{'table_success':scope.row.delFlag == 0,'table_fail':scope.row.delFlag == 1}">{{scope.row.delFlag == 0 ? '启用' : '停用'}}</span></template>
                 </el-table-column>
@@ -82,6 +86,7 @@
 </template>
 
 <script>
+import { mapGetters,mapState } from "vuex";
 import { fetchList } from "@/api/user";
 export default {
     data () {
@@ -110,6 +115,11 @@ export default {
             rules: {}
         }
     },
+    computed: {
+        ...mapState({
+            dic: state => state.dic
+        }),
+    },
     mounted(){
         this.getList();
     },
@@ -119,6 +129,13 @@ export default {
             fetchList(this.listQuery).then(response => {
                 this.list = response.data.records;
                 this.total = response.data.total;
+                for(var i in this.dic.userType){
+                    for(var j in this.list){
+                        if(this.list[j].userType == this.dic.userType[i].value){
+                            this.list[j].userTypeName = this.dic.userType[i].label
+                        }
+                    }
+                }
             });
         },
     	//点击重置
