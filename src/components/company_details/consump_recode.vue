@@ -29,20 +29,21 @@
 
                 <el-table-column align="center" label="核验成功">
                     <template slot-scope="scope">
-                        <span class="table_success">{{scope.row.succCount}}</span>
+                        <span v-if="scope.row.succCount == null">--</span>
+                        <span v-else class="table_success">{{scope.row.succCount}}</span>
                     </template>
                 </el-table-column>
 
                 <el-table-column align="center" label="核验失败">
                     <template slot-scope="scope">
-                        <span v-if="scope.row.failCount == null">{{scope.row.failCount | setdefault('--')}}</span>
+                        <span v-if="scope.row.failCount == null">--</span>
                         <span v-else class="table_fail">{{scope.row.failCount}}</span>
                     </template>
                 </el-table-column>
 
                 <el-table-column align="center" label="消费金额/元">
                     <template slot-scope="scope">
-                        <span v-if="scope.row.monetary == null">{{scope.row.monetary | setdefault('--')}}</span>
+                        <span v-if="scope.row.monetary == null">--</span>
                         <span v-else class="table_primary">{{scope.row.monetary | formatMoney}}</span>
                     </template>
                 </el-table-column>

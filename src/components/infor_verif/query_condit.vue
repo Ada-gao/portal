@@ -34,13 +34,15 @@
 
                 <el-table-column align="center" label="核验成功">
                     <template slot-scope="scope">
-                        <span>{{scope.row.succCount | setdefault('--')}}</span>
+                        <span v-if="scope.row.succCount == null">--</span>
+                        <span v-else class="table_success">{{scope.row.succCount}}</span>
                     </template>
                 </el-table-column>
 
                 <el-table-column align="center" label="核验失败">
                     <template slot-scope="scope">
-                        <span>{{scope.row.failCount | setdefault('--')}}</span>
+                        <span v-if="scope.row.failCount == null">--</span>
+                        <span v-else class="table_fail">{{scope.row.failCount}}</span>
                     </template>
                 </el-table-column>
 
