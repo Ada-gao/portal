@@ -3,6 +3,7 @@
  * http配置
  *
  */
+import Vue from 'vue'
 import axios from 'axios'
 import store from '../store'
 import router from '../router/router'
@@ -11,6 +12,7 @@ import { Message } from 'element-ui'
 import errorCode from '@/const/errorCode'
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css'// progress bar style
+import Toast from '../components/alert/alert.js'
 // 超时时间
 axios.defaults.timeout = 15000
 // 跨域请求，允许保存cookie
@@ -50,24 +52,27 @@ axios.interceptors.response.use(response => {
         return
     }
     if (code === 401) {
-        Message({
-            message: '登录时间过期，请重新登录',
-            type: 'error'
+        Vue.prototype.$toast.show({
+            text:'登录时间过期，请重新登录',
+            type:'error'
         })
       removeToken()
       router.replace({ path: '/login' })
     } else if (code === 403) {
-        Message({
-            message: '管理权限不足，请联系管理员',
-            type: 'error'
+        Vue.prototype.$toast.show({
+            text:'管理权限不足，请联系管理员',
+            type:'error'
         })
         router.replace({path: '/login'})
     } else if (code === 500) {
-        message(res.data.message || res.data.error, 'error')
+        Vue.prototype.$toast.show({
+            text:res.data.message || res.data.error,
+            type:'error'
+        })
     } else {
-        Message({
-            message: res.data.msg || res.data.error_description || '服务器被吃了⊙﹏⊙∥',
-            type: 'error'
+        Vue.prototype.$toast.show({
+            text:res.data.msg || res.data.error_description || '服务器被吃了⊙﹏⊙∥',
+            type:'error'
         })
     }
     return Promise.reject(error)

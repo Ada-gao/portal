@@ -108,18 +108,27 @@ export default {
         get_code: function () {
             const pattern = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/
             if(!this.loginForm.mobile){
-                this.$message.error('请输入手机号码或邮箱')
+                this.$toast.show({
+                    text:'请输入手机号码或邮箱',
+                    type:'error'
+                })
                 return;
             }
             if (this.loginForm.mobile.split('.').length > 1) {
                 if (!pattern.test(this.loginForm.mobile)) {
-                    this.$message.error('邮箱格式不正确')
+                    this.$toast.show({
+                        text:'邮箱格式不正确',
+                        type:'error'
+                    })
                     return
                 }
                 this.code_request();
             } else {
                 if (!(/^1[34578]\d{9}$/.test(this.loginForm.mobile))) {
-                    this.$message.error('手机号格式不正确')
+                    this.$toast.show({
+                        text:'手机号格式不正确',
+                        type:'error'
+                    })
                     return
                 }
                 this.code_request();
@@ -140,8 +149,15 @@ export default {
                 if (response.data.data) {
                     this.count_down();
                     this.$message.success("验证码发送成功");
+                    this.$toast.show({
+                        text:'验证码发送成功',
+                        type:'success'
+                    })
                 } else {
-                    this.$message.error(response.data.msg);
+                    this.$toast.show({
+                        text:response.data.msg,
+                        type:'error'
+                    })
                 }
             }).catch(() => {
                 this.click_again = false;
@@ -180,7 +196,10 @@ export default {
                         if (response.data.code == 0) {
                             this.activeStep = 1
                         } else {
-                            this.$message.error(response.data.msg);
+                            this.$toast.show({
+                                text:response.data.msg,
+                                type:'error'
+                            })
                         }
                     }).catch(() => {
                         this.click_again = false;
@@ -204,7 +223,10 @@ export default {
         //修改密码
         for_submit(formName){
             if(this.loginForm.newPW != this.loginForm.newPW1){
-                this.$message.error('输入的两次密码不一致');
+                this.$toast.show({
+                    text:'输入的两次密码不一致',
+                    type:'error'
+                })
             }
             this.$refs[formName].validate(valid => {
                 if (valid) {
@@ -223,7 +245,10 @@ export default {
                         if (response.data.data) {
                             this.activeStep = 2
                         } else {
-                            this.$message.error(response.data.msg);
+                            this.$toast.show({
+                                text:response.data.msg,
+                                type:'error'
+                            })
                         }
                     }).catch(() => {
                         this.click_again = false;

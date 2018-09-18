@@ -179,7 +179,10 @@ export default {
         //提交
         submit(){
             if(Number(this.form.rechargeamount) != Number(this.form.rechargeamount1)){
-                this.$message.error('两次金额输入不一致');
+                this.$toast.show({
+                    text:'两次金额输入不一致',
+                    type:'error'
+                })
                 return
             }
         	this.$refs['form'].validate(valid => {

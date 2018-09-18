@@ -213,7 +213,10 @@ export default {
                     this.total = response.data.total
                     this.list = response.data.records
                 } else {
-                    this.$message.error(response.data.msg);
+                    this.$toast.show({
+                      text:response.data.msg,
+                      type:'error'
+                    })
                 }
             }).catch(() => {
                 this.listLoading = false;

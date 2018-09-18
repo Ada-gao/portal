@@ -131,7 +131,10 @@
               if (response.status == 200) {
                   this.company_list = response.data;
               } else {
-                  this.$message.error(response.data.msg);
+                  this.$toast.show({
+                      text:response.data.msg,
+                      type:'error'
+                  })
               }
           }).catch(() => {})
       },

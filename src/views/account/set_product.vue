@@ -158,11 +158,17 @@ export default {
             var reg = /^[1-9]\d{0,2}\.\d{0,2}$|^[0-9]*$/;
             for(var i in this.product_info){
                 if(!reg.test(this.product_info[i].productPrice)){
-                    this.$message.error('请输入有效数字');
+                    this.$toast.show({
+                        text:'请输入有效数字',
+                        type:'error'
+                    })
                     return
                 }
                 if(this.product_info[i].status == 0 && !this.product_info[i].productPrice){
-                    this.$message.error('选中产品价格不能为零或空');
+                    this.$toast.show({
+                        text:'选中产品价格不能为零或空',
+                        type:'error'
+                    })
                     return
                 }
                 if(this.product_info[i].userId == null){
@@ -176,9 +182,12 @@ export default {
                 method: "put",
                 data:this.params,
             }).then(res => {
-                this.$message.success('产品设定成功');
+                this.$toast.show({
+                    text:'产品设定成功',
+                    type:'success'
+                })
                 this.$router.back()
-            }).catch(() => {})
+            })
         }
     }
 }

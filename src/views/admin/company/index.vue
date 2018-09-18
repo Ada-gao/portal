@@ -189,9 +189,12 @@ export default {
                         } 
                     }
                 } else {
-                    this.$message.error(response.data.msg);
+                    this.$toast.show({
+                        text:response.data.msg,
+                        type:'error'
+                    })
                 }
-            }).catch(() => {})
+            })
         },
         //搜索
         handleFilter() {

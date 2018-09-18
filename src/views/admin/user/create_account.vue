@@ -360,7 +360,10 @@ export default {
                 for(var j=0; j< this.product_info[i].length;j++){
                     this.form.product.push(this.product_info[i][j])
                     if(this.form.product[i].status == 0 && !this.form.product[i].productPrice){
-                        this.$message.error('选中产品价格不能为零或空');
+                        this.$toast.show({
+                            text:'选中产品价格不能为零或空',
+                            type:'error'
+                        })
                         return
                     }
                 }
@@ -368,7 +371,10 @@ export default {
             this.$refs['form'].validate(valid => {
                 if(valid){
                     addObj(this.form).then(() => {
-                        this.$message.success('创建用户信息成功')
+                        this.$toast.show({
+                            text:'创建用户信息成功',
+                            type:'success'
+                        })
                         this.$router.back();
                     });
                 } else {
@@ -381,7 +387,10 @@ export default {
            this.$refs['form'].validate(valid => {
                 if(valid){
                     putObj(this.form).then(() => {
-                        this.$message.success('修改用户信息成功')
+                        this.$toast.show({
+                            text:'修改用户信息成功',
+                            type:'success'
+                        })
                         this.$router.back();
                     });
                 } else {

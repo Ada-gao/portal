@@ -48,10 +48,10 @@ export default {
     handleLogin() {
       if (this.passwd != this.lockPasswd) {
         this.passwd = "";
-        this.$message({
-          message: "解锁密码错误,请重新输入",
-          type: "error"
-        });
+        this.$toast.show({
+            text:'解锁密码错误,请重新输入',
+            type:'error'
+        })
         this.passwdError = true;
         setTimeout(() => {
           this.passwdError = false;

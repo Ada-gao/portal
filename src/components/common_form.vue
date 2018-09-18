@@ -264,14 +264,21 @@ export default {
         },
         //上传图片
         upload_img(){
+            return;
             var file_obj = this.$refs['img'].files[0]
             let supportedTypes = ['image/jpg', 'image/jpeg', 'image/png'];
             if (!file_obj && supportedTypes.indexOf(file_obj.type) == 0) {
-                this.$message.error('图片文件格式只支持：jpg、jpeg 和 png');
+                this.$toast.show({
+                    text:'图片文件格式只支持：jpg、jpeg和png',
+                    type:'error'
+                })
                 return;
             }
             if(file_obj.size > 1024000){
-                this.$message.error('图片过大');
+                this.$toast.show({
+                    text:'图片过大',
+                    type:'error'
+                })
                 return;
             }
             let formData = new FormData()
@@ -342,12 +349,18 @@ export default {
                         url: "/admin/company/add",
                         method: "post",
                         data: this.form,
-                    }).then(response => {
-                        if (response.data.code == 0) {
-                            this.$message({ showClose: true, message: '新建公司账号成功', type: 'success'})
+                    }).then(res => {
+                        if (res.data.code == 0) {
+                            this.$toast.show({
+                                text:'新建公司账号成功',
+                                type:'success'
+                            })
                             this.$router.back()
                         } else {
-                            this.$message.error(response.data.msg);
+                            this.$toast.show({
+                                text:res.data.msg,
+                                type:'error'
+                            })
                         }
                     }).catch(() => {})
                 }
@@ -367,14 +380,20 @@ export default {
                         url: "/admin/company/" + this.form.companyId,
                         method: "put",
                         data: this.form,
-                    }).then(response => {
-                        if (response.data.code == 0) {
-                            this.$message({ showClose: true, message: '新建公司账号成功', type: 'success'})
+                    }).then(res => {
+                        if (res.data.code == 0) {
+                            this.$toast.show({
+                                text:'新建公司账号成功',
+                                type:'success'
+                            })
                             this.$router.back()
                         } else {
-                            this.$message.error(response.data.msg);
+                            this.$toast.show({
+                                text:res.data.msg,
+                                type:'error'
+                            })
                         }
-                    }).catch(() => {})
+                    })
                 }
             })
         },

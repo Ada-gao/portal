@@ -93,25 +93,37 @@ export default {
             var regIdCart = /(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{2}[0-9Xx]$)/     //身份证
             if(this.type == 0){
                 if(this.tableHeader.length != 2 || this.tableHeader[0] != '姓名' || this.tableHeader[1] != '身份证'){
-                    this.$message.error('模板标题错误');
+                    this.$toast.show({
+                        text:'模板标题错误',
+                        type:'error'
+                    })
                     return
                 }
             }
             if(this.type == 1){
                 if(this.tableHeader.length != 3 || this.tableHeader[0] != '姓名' || this.tableHeader[1] != '身份证' || this.tableHeader[1] != '手机号码'){
-                    this.$message.error('模板标题错误');
+                    this.$toast.show({
+                        text:'模板标题错误',
+                        type:'error'
+                    })
                     return
                 }
             }
             if(this.type == 2){
                 if(this.tableHeader.length != 3 || this.tableHeader[0] != '姓名' || this.tableHeader[1] != '身份证' || this.tableHeader[1] != '银行卡号'){
-                    this.$message.error('模板标题错误');
+                    this.$toast.show({
+                        text:'模板标题错误',
+                        type:'error'
+                    })
                     return
                 }
             }
             if(this.type == 3){
                 if(this.tableHeader.length != 4 || this.tableHeader[0] != '姓名' || this.tableHeader[1] != '身份证' || this.tableHeader[1] != '手机号码' || this.tableHeader[1] != '银行卡号'){
-                    this.$message.error('模板标题错误');
+                    this.$toast.show({
+                        text:'模板标题错误',
+                        type:'error'
+                    })
                     return
                 }
             }

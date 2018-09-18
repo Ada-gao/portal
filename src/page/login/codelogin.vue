@@ -66,9 +66,15 @@ export default {
     handleSend() {
       if (this.msgKey) return;
       if (!this.loginForm.mobile) {
-        this.$message.error("请输入手机号码");
+        this.$toast.show({
+            text:'请输入手机号码',
+            type:'error'
+        })
       } else if (!/^1[34578]\d{9}$/.test(this.loginForm.mobile)) {
-        this.$message.error("手机号格式不正确");
+        this.$toast.show({
+            text:'手机号格式不正确',
+            type:'error'
+        })
       } else {
         request({
           url: "/admin/smsCode/" + this.loginForm.mobile,
@@ -76,9 +82,15 @@ export default {
         }).then(response => {
           if (response.data.data) {
             this.timer();
-            this.$message.success("验证码发送成功");
+            this.$toast.show({
+              text:'验证码发送成功',
+              type:'success'
+            })
           } else {
-            this.$message.error(response.data.msg);
+            this.$toast.show({
+              text:response.data.msg,
+              type:'error'
+            })
           }
         });
       }
