@@ -61,11 +61,8 @@
         <div class="img_tk" v-if="swiper_img == true">
             <div class="swiper animated fadeIn">
                 <el-carousel arrow='never' :initial-index="index" :autoplay="autoplay" ref="carousel" indicator-position="none" width="560px">
-                    <el-carousel-item name="index">
-                        <h3><img class="block" src="/static/img/bg/bg1.jpg"></h3>
-                    </el-carousel-item>
-                    <el-carousel-item name="index">
-                        <h3><img class="block" src="/static/img/bg/bg1.jpg"></h3>
+                    <el-carousel-item name="index" v-for="(img,index) in details_data.companyQualification" :key="index">
+                        <h3><img class="block" :src="img"></h3>
                     </el-carousel-item>
                 </el-carousel>
                 <a @click="swiper_img = false,index = 0" class="closed" href="javascript:void(0);"><i class="el-icon-close"></i></a>
@@ -177,5 +174,5 @@ export default {
 .handle>a.prev{ left:-60px;}
 .handle>a.next{ right:-60px;}
 
-.swiper img{ width: 560px; height: auto;}
+.swiper img{ width: 560px; max-height: 300px;}
 </style>
