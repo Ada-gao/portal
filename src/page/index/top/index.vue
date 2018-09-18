@@ -2,7 +2,7 @@
   <div class="top">
     <div class="top-button is-left">
       <div class="tags-breadcrumb">
-        <i class="iconfont" :class="[{ 'icon-zhankaicaidan': isCollapse, 'icon-shouqicaidan': !isCollapse }]" @click="showCollapse"></i>
+        <i class="iconfont cursor" style="font-size:20px!important" :class="[{ 'icon-zhankaicaidan': isCollapse, 'icon-shouqicaidan': !isCollapse }]" @click="showCollapse"></i>
       </div>
     </div>
     <h1 class="top-title" >
@@ -102,7 +102,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.tags-breadcrumb i{ font-size: 24px;}
 .top-title{ font-size: 14px; color: #333;}
 </style>
 
