@@ -1,7 +1,7 @@
 <template>
 	<div class="alertBox" v-if="show">
 		<div class="alert_mask" v-show="isShowMask"></div>
-		<div class="alert animated fadeIn" :class="position">
+		<div class="alert animated fadeIn">
 			<div class="icon" :class="type" :type="type">
 				<i v-if="type == 'success'" class="iconfont icon-chenggong"></i>
 				<i v-if="type == 'error'" class="iconfont icon-shibai"></i>
@@ -41,21 +41,10 @@ export default {
 			default: false
 		},
 		time: { // 显示时间
-			default: 1500
+			default: 2000
 		},
 		type:{ //显示状态
 			default: 'success'
-		}
-	},
-	computed: {
-		translate() { // 根据props，生成相对应的动画
-			if (this.position === 'top') {
-				return 'translate-top'
-			} else if (this.position === 'middle') {
-				return 'translate-middle'
-			} else if (this.position === 'bottom') {
-				return 'translate-bottom'
-			}
 		}
 	},
 	watch:{
