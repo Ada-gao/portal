@@ -30,7 +30,7 @@
         <img class="top-userImg" v-if="!userInfo.avatar" src="../../../assets/img/user.png">
       </el-tooltip>
       <el-dropdown>
-        <span class="el-dropdown-link">
+        <span class="el-dropdown-link cursor">
           {{userInfo.username}}
           <i class="el-icon-arrow-down el-icon--right"></i>
         </span>

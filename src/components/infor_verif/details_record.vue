@@ -35,7 +35,7 @@
                     </el-col>
                     <el-col :span="6">
                         <el-form-item prop="result_type">
-                            <el-select style="width: 100%" v-model="form.result" placeholder="选择核验结果" clearable @change="check_resule">
+                            <el-select style="width: 100%" v-model="form.result" placeholder="选择核验结果" clearable>
                                 <el-option v-for="item in resule_list" :key="item.value" :label="item.label" :value="item.label"></el-option>
                            </el-select>
                         </el-form-item>
@@ -103,7 +103,7 @@
                 </el-table-column>
 
                 <el-table-column align="center" label="消费金额(元)">
-                    <template slot-scope="scope"><span>{{scope.row.amount | formatMoney}}</span></template>
+                    <template slot-scope="scope"><span class="table_primary">{{scope.row.amount | formatMoney}}</span></template>
                 </el-table-column>
 
                 <el-table-column align="center" label="查询人">
@@ -137,7 +137,16 @@ export default {
         return {
             type:this.$route.query.type,             // 1为信息核验    2为历史结果查询
         	list:[],			                     //查询列表
-            resule_list:[],                          //核验列表数据
+            resule_list:[
+                {
+                    label:'信息一致',
+                    value:1
+                },
+                {
+                    label:'信息不一致',
+                    value:2
+                }
+            ],                          //核验列表数据
         	listQuery: {
                 page: 1,                        //当前页数
                 limit: 10                      //一页显示数据量
@@ -190,8 +199,9 @@ export default {
             this.listQuery.phone = this.form.phone;
             this.listQuery.idCard = this.form.idCard;
             this.listQuery.bankCard = this.form.bankCard;
-            this.listQuery.startTime = this.form.name[0];
-            this.listQuery.endTime = this.form.name[1];
+            this.listQuery.startTime = this.form.time[0];
+            this.listQuery.endTime = this.form.time[1];
+            this.listQuery.result = this.form.result;
             this.listQuery.batchId = this.batchId;
             if(type){
                 this.limit = this.listQuery.limit;
@@ -211,10 +221,6 @@ export default {
                     this.list = res.data.records;
                 }
             })
-        },
-        //选择核验结果
-        check_resule(type){
-
         },
         //点击重置
         reset(){
