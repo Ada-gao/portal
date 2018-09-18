@@ -265,6 +265,15 @@ export default {
         //上传图片
         upload_img(){
             var file_obj = this.$refs['img'].files[0]
+            let supportedTypes = ['image/jpg', 'image/jpeg', 'image/png'];
+            if (!file_obj && supportedTypes.indexOf(file_obj.type) == 0) {
+                this.$message.error('图片文件格式只支持：jpg、jpeg 和 png');
+                return;
+            }
+            if(file_obj.size > 1024000){
+                this.$message.error('图片过大');
+                return;
+            }
             let formData = new FormData()
             formData.append('file', file_obj)
             request({
@@ -274,11 +283,10 @@ export default {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
-            }).then(response => {
-                this.img_list.push(response.data)
-                this.form.companyQualification = this.img_list.join(",");
-
-            }).catch(() => {})
+            }).then(res => {
+                this.img_list.push(res.data)
+                this.form.companyQualification = this.img_list.join(","); 
+            })
             
         },
         //删除图片
