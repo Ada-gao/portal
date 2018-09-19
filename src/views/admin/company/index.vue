@@ -125,7 +125,6 @@ export default {
         this.sys_company_del = this.permissions["sys_company_del"];
         this.sys_company_add = this.permissions["sys_company_add"];
         this.sys_company_upd = this.permissions["sys_company_upd"];
-        this.getList();
         this.get_orgSizeData();
     },
     methods: {
@@ -138,6 +137,7 @@ export default {
                 if(response.status == 200){
                    this.orgSizeData = response.data;
                    this.get_industryData(0);
+                   this.getList();
                 }
             }).catch(()=>{
 
