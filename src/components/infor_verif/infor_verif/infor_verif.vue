@@ -8,7 +8,7 @@
         		<div class="check pt20">
     	    		<span>核验类型</span>
     	    		<el-radio-group v-model="type" @change="check_type">
-    				    <el-radio  v-for="(list,index) in verif_Type" :disabled="list.status == 1" :key="index" :label="index">{{list.productName}}</el-radio>
+    				    <el-radio  v-for="(list,index) in verif_Type" :disabled="list.status == 2" :key="index" :label="index">{{list.productName}}</el-radio>
     				</el-radio-group>
     				<div class="common_btn fr"><button @click="upload_dialog = true"><i class="iconfont icon-xiazai"></i>批量上传</button></div>
     			</div>
@@ -174,15 +174,15 @@ export default {
                 }
             }else if(this.type == 1){
                 var keyMap = {
-                    姓名: 'name',
-                    手机号码: 'mobile',
-                    身份证: 'idCardNum'
-                }
-            }else if(this.type == 2){
-                var keyMap = {
                     姓名: 'personName',
                     身份证: 'idNumber',
                     银行卡号: 'cardNo'
+                }
+            }else if(this.type == 2){
+                var keyMap = {
+                    姓名: 'name',
+                    手机号码: 'mobile',
+                    身份证: 'idCardNum'
                 }
             }else{
                 let keyMap = {
@@ -217,12 +217,29 @@ export default {
             this.form2.batchs = [];
             if(type == 'one'){
                 var obj = {};
-                obj.personName = this.form.personName;
-                obj.idNumber = this.form.idNumber;
+                if(this.type == 0){
+                    obj.personName = this.form.personName
+                    obj.idNumber = this.form.idNumber
+                }else if(this.type == 1){
+                    obj.personName = this.form.personName
+                    obj.idNumber = this.form.idNumber
+                    obj.cardNo = this.form.cardNo
+                }else if(this.type == 2){
+                    obj.name = this.form.personName
+                    obj.idCardNum = this.form.idNumber
+                    obj.mobile = this.form.mobile
+                }else if(this.type == 3){
+                    obj.personName = this.form.personName
+                    obj.idNumber = this.form.idNumber
+                    obj.mobileNo = this.form.mobile
+                    obj.cardNo = this.form.cardNo
+                }
+                
                 this.form2.batchs.push(obj);
             }else{
                 this.form2.batchs = item;
             } 
+            this.form2.vo = this.verif_Type[this.type];
             request({
                 url: "/admin/consumerBatch",
                 method: "post",

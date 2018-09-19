@@ -35,8 +35,11 @@
                     </el-col>
                     <el-col :span="6">
                         <el-form-item prop="result_type">
-                            <el-select style="width: 100%" v-model="form.result" placeholder="选择核验结果" clearable>
+                            <el-select style="width: 100%" v-model="form.result" placeholder="选择核验结果" clearable v-if="type_status != 2">
                                 <el-option v-for="item in resule_list" :key="item.value" :label="item.label" :value="item.label"></el-option>
+                           </el-select>
+                           <el-select style="width: 100%" v-model="form.result" placeholder="选择核验结果" clearable v-if="type_status == 2">
+                                <el-option v-for="item in resule_list2" :key="item.value" :label="item.label" :value="item.label"></el-option>
                            </el-select>
                         </el-form-item>
                     </el-col>
@@ -70,7 +73,7 @@
                     </template>
                 </el-table-column>
 
-                <el-table-column align="center" label="手机号码" v-if="type_staus == 2 || type_staus == 3">
+                <el-table-column align="center" label="手机号码" v-if="type_status == 2 || type_status == 3">
                     <template slot-scope="scope">
                         <span>{{scope.row.phone}}</span>
                     </template>
@@ -83,7 +86,16 @@
                 </el-table-column>
 
                 <el-table-column align="center" label="核验结果">
-                    <template slot-scope="scope"><span>{{scope.row.result == 1 ? '信息一致' : '信息不一致'}}</span></template>
+                    <template slot-scope="scope">
+                        <span v-if="type_status == 0">{{scope.row.result == 0 ? '信息一致' : '信息不一致'}}</span>
+                        <span v-if="(type_status == 1 || type_status == 3)">{{scope.row.result == 0 ? '信息不一致' : '信息一致'}}</span>
+
+                        <span v-if="type_status == 2 && scope.row.result == 1">信息一致</span>
+                        <span v-if="type_status == 2 && scope.row.result == 2">手机号已实名，但是身份证和姓名均与实名信息不一致</span>
+                        <span v-if="type_status == 2 && scope.row.result == 3">手机号已实名，手机号和证件号一致，姓名不一致</span>
+                        <span v-if="type_status == 2 && scope.row.result == 4">手机号已实名，手机号和姓名一致，身份证不一致</span>
+                        <span v-if="type_status == 2 && scope.row.result == 5">其他不一致</span>
+                    </template>
                 </el-table-column>
 
                 <el-table-column align="center" label="查询时间">
@@ -132,21 +144,43 @@ import request from "@/router/axios"
 import { getExcel } from '@/util/auth'
 import { mapState } from "vuex"
 export default {
-    props:['batchId','type_staus'],
+    props:['batchId','type_status'],
     data () {
         return {
             type:this.$route.query.type,             // 1为信息核验    2为历史结果查询
         	list:[],			                     //查询列表
-            resule_list:[
+            resule_list:[                            //核验列表数据
                 {
                     label:'信息一致',
-                    value:1
+                    value:0
                 },
                 {
                     label:'信息不一致',
-                    value:2
+                    value:1
                 }
-            ],                          //核验列表数据
+            ],   
+            resule_list2:[                            //手机三要素核验列表数据
+                {
+                    label:'三要素一致',
+                    value:1
+                },
+                {
+                    label:'手机号已实名，但是身份证和姓名均与实名信息不一致',
+                    value:2
+                },
+                {
+                    label:'手机号已实名，手机号和证件号一致，姓名不一致',
+                    value:3
+                },
+                {
+                    label:'手机号已实名，手机号和姓名一致，身份证不一致',
+                    value:4
+                },
+                {
+                    label:'其他不一致 ',
+                    value:5
+                }
+            ],                 
         	listQuery: {
                 page: 1,                        //当前页数
                 limit: 10                      //一页显示数据量
@@ -219,6 +253,10 @@ export default {
                     this.data_proces(res.data.records)
                 }else{
                     this.list = res.data.records;
+                    if(this.type_status == 1 || this.type_status == 3){
+                        this.resule_list[0].value = 1;
+                        this.resule_list[1].value = 0;
+                    }
                 }
             })
         },
@@ -262,10 +300,32 @@ export default {
             let list = []
             data.forEach((item,index) => {
                 let obj = new Object()
-                if (item.result == 1){
-                    item.result = '信息一致'
-                } else{
-                    item.result = '信息不一致'
+                if(this.type_status == 0){
+                    if(item.result == 0){
+                        item.result = '信息一致'
+                    }else{
+                        item.result = '信息不一致'
+                    }
+                }
+                if(this.type_status == 1 || this.type_status == 3){
+                    if(item.result == 0){
+                        item.result = '信息不一致'
+                    }else{
+                        item.result = '信息一致'
+                    }
+                }
+                if(this.type_status == 2){
+                    if(item.result == 1){
+                        item.result = '信息一致'
+                    }else if(item.result == 2){
+                        item.result = '手机号已实名，但是身份证和姓名均与实名信息不一致'
+                    }else if(item.result == 3){
+                        item.result = '手机号已实名，手机号和证件号一致，姓名不一致'
+                    }else if(item.result == 4){
+                        item.result = '手机号已实名，手机号和姓名一致，身份证不一致'
+                    }else if(item.result == 5){
+                        item.result = '其他不一致'
+                    }
                 }
                 if (item.status == 0){
                     item.status = '正在核验'
@@ -279,7 +339,7 @@ export default {
                 obj.消费批次号 = item.infoNo
                 obj.核验类型 = item.productName
                 obj.姓名 = item.name
-                if(this.type_staus == 2 || this.type_staus == 3){
+                if(this.type_status == 2 || this.type_status == 3){
                     obj.手机号码 = item.phone
                 }
                 obj.身份证号码 = item.idCard

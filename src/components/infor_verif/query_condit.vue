@@ -78,14 +78,14 @@
 
             </el-table>
             <div class="page clearfix mt20 box" v-if="type == 2">
-                <el-col :span="18">
+                <el-col :span="24">
                     <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="listQuery.page" :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total"></el-pagination>
                 </el-col>
-                <el-col :span="6">
+                <!-- <el-col :span="6">
                     <div class="tip pr">
                         <p class="tr"><em class="in_b" ref="title"><i></i>累计查询量：10000条</em></p>
                     </div>
-                </el-col>
+                </el-col> -->
             </div>
         </div>
         <!--没有数据-->
@@ -185,9 +185,7 @@ export default {
     },
     watch:{
         list:function(val){
-            if(this.list.length == 0){
-                this.details = false;
-            }
+            this.details = false;
         },
         excel:function(){
             if(this.excel){

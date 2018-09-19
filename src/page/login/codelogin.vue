@@ -68,12 +68,12 @@ export default {
       if (!this.loginForm.mobile) {
         this.$toast.show({
             text:'请输入手机号码',
-            type:'error'
+            type:'warning'
         })
       } else if (!/^1[34578]\d{9}$/.test(this.loginForm.mobile)) {
         this.$toast.show({
             text:'手机号格式不正确',
-            type:'error'
+            type:'warning'
         })
       } else {
         request({

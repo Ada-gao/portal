@@ -1,7 +1,7 @@
 <template>
 	<div class="alertBox" v-if="show">
 		<div class="alert_mask" v-show="isShowMask"></div>
-		<div class="alert animated fadeIn">
+		<div class="alert animated fadeInDown">
 			<div class="icon" :class="type" :type="type">
 				<i v-if="type == 'success'" class="iconfont icon-chenggong"></i>
 				<i v-if="type == 'error'" class="iconfont icon-shibai"></i>
@@ -62,7 +62,7 @@ export default {
  
 <style scoped>
 .alertBox{ min-width: 1300px; }
-.alert{position: fixed; display: flex; top: 45%; left: 50%; margin-left:-165px; padding: 22px 20px; width: 290px; background-color:#fff; z-index: 20; box-shadow: 0 2px 4px 0 rgba(0,0,0,0.12), 0 0 6px 0 rgba(0,0,0,0.04); border-radius: 2px; -webkit-border-radius: 2px; border: 1px solid #D3DCE6;}
+.alert{position: fixed; display: flex; top: 20px; left: 50%; margin-left:-165px; padding: 22px 20px; width: 290px; background-color:#fff; z-index: 20; box-shadow: 0 2px 4px 0 rgba(0,0,0,0.12), 0 0 6px 0 rgba(0,0,0,0.04); border-radius: 2px; -webkit-border-radius: 2px; border: 1px solid #D3DCE6;}
 .alert .icon{ width: 40px; height: 40px; }
 .alert .icon i{ font-size: 40px; }
 .alert .icon.success i{ color: #13CE66; }
@@ -74,7 +74,7 @@ export default {
 .content .con{ color: #8492A6; font-size: 13px; width: 220px; margin-top: 5px; word-break: break-all; }
 .alert>span{ position: absolute; top: 20px; right: 20px; color: #C0CCDA; font-size: 18px; }
 
-.alert.top{ top: 100px;margin-top: 0;}
+.alert.top{ top: 100px; margin-top: 0;}
 .alert.center{ margin-top: -100px;}
 .alert.bottom{top: auto;bottom: 50px; margin-top: 0;}
 
