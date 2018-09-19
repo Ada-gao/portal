@@ -264,7 +264,6 @@ export default {
         },
         //上传图片
         upload_img(){
-            return;
             var file_obj = this.$refs['img'].files[0]
             let supportedTypes = ['image/jpg', 'image/jpeg', 'image/png'];
             if (!file_obj && supportedTypes.indexOf(file_obj.type) == 0) {
