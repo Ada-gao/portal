@@ -46,7 +46,7 @@
         	</div>
             <!--查询结果-->
         	<div class="query_result">
-        		<query_condit :list="list" :loading="loading" :type_status="type"></query_condit>
+        		<query_condit :list="list" :loading="loading" :type_status="type" @refure="refure_data"></query_condit>
         	</div>
         </div>
         <!--上传文件核验-->
@@ -264,7 +264,11 @@ export default {
                     }
                 }
             })
-        }
+        },
+        //刷新核验批次
+        refure_data(item){
+            this.for_verif_result(item)
+        },
     }
 }
 </script>

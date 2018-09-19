@@ -69,8 +69,9 @@
                     <template slot-scope="scope"><span>{{scope.row.createName}}</span></template>
                 </el-table-column>
 
-                <el-table-column align="center" label="操作">
+                <el-table-column align="center" label="操作" width="120px">
                     <template slot-scope="scope">
+                        <span class="table_primary cursor" @click="refurbish(scope.row)" v-if="type != 2">刷新/</span>
                         <span class="table_primary cursor" @click="get_details(scope.row)">查看详情</span>
                     </template>
                 </el-table-column>
@@ -141,7 +142,10 @@ export default {
                     this.$emit("change",'all')
                 }
             }
-            
+        },
+        //刷新核验批次数据
+        refurbish(item){
+            this.$emit("refure",item)
         },
         //导出数据处理
         data_proces(data){
@@ -153,7 +157,7 @@ export default {
                 } else if (item.status == 1){
                     item.status = '核验成功'
                 } else{
-                    item.status = '充值失败'
+                    item.status = '核验失败'
                 }
                 let date = new Date(item.createTime)
                 item.createTime = date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate() + ' ' +date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
@@ -163,18 +167,20 @@ export default {
                 obj.申请条数 = item.batchCount
                 obj.核验成功 = item.succCount
                 obj.核验失败 = item.failCount
-                obj.消费金额 = item.monetary.toFixed(2)
+                if(item.monetary != null){
+                   obj.消费金额 = item.monetary.toFixed(2) 
+                }
                 obj.核验状态 = item.status
                 obj.消费时间 = item.createTime
                 obj.操作人 = item.createName
                 list[index] = obj
             })
-            this.$emit("changeExcel")
-            if(this.type == 1){
-                getExcel(list,'本次查询结果.xlsx');
-            }else{
+            if(this.type == 2){
                 getExcel(list,'所有消费批次清单.xlsx');
+            }else{
+                getExcel(list,'本次查询结果.xlsx');
             }
+            this.$emit("changeExcel")
         }
     },
     watch:{
