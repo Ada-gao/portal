@@ -62,7 +62,7 @@ export default {
  
 <style scoped>
 .alertBox{ min-width: 1300px; }
-.alert{position: fixed; display: flex; top: 20px; left: 50%; margin-left:-165px; padding: 22px 20px; width: 290px; background-color:#fff; z-index: 20; box-shadow: 0 2px 4px 0 rgba(0,0,0,0.12), 0 0 6px 0 rgba(0,0,0,0.04); border-radius: 2px; -webkit-border-radius: 2px; border: 1px solid #D3DCE6;}
+.alert{position: fixed; display: flex; top: 20px; left: 50%; margin-left:-165px; padding: 22px 20px; width: 290px; background-color:#fff; z-index: 2000; box-shadow: 0 2px 4px 0 rgba(0,0,0,0.12), 0 0 6px 0 rgba(0,0,0,0.04); border-radius: 2px; -webkit-border-radius: 2px; border: 1px solid #D3DCE6;}
 .alert .icon{ width: 40px; height: 40px; }
 .alert .icon i{ font-size: 40px; }
 .alert .icon.success i{ color: #13CE66; }

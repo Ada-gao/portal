@@ -8,7 +8,7 @@
         		<div class="check pt20">
     	    		<span>核验类型</span>
     	    		<el-radio-group v-model="type" @change="check_type">
-    				    <el-radio  v-for="(list,index) in verif_Type" :disabled="list.status == 2" :key="index" :label="index">{{list.productName}}</el-radio>
+    				    <el-radio  v-for="(list,index) in verif_Type" :disabled="list.status == 1" :key="index" :label="index">{{list.productName}}</el-radio>
     				</el-radio-group>
     				<div class="common_btn fr"><button @click="upload_dialog = true"><i class="iconfont icon-xiazai"></i>批量上传</button></div>
     			</div>

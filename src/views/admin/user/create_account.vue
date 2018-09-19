@@ -184,7 +184,7 @@ export default {
                      {required: true, trigger: 'blur', validator: Validate.validNumber}
                 ],
                 expirationDate: [
-                     {required: true, trigger: 'blur', message: '请选择账户到期时间'}
+                     {required: false, trigger: 'blur', message: '请选择账户到期时间'}
                 ],
                 contact: [
                      {required: true, trigger: 'blur', message: '请输入联系人姓名'}
