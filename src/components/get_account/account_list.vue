@@ -2,7 +2,7 @@
     <div class="basic_info common_style box_adorn mt20">
     	<div class="common_head omit1">
             <i class="iconfont icon-gongsi1"></i>
-            <em class="font16">帐号列表</em>
+            <em class="font16">账号列表</em>
         </div>
         <el-form :model="listQuery" :rules="rules" ref="form" class="pt20">
             <el-row :gutter="20">
@@ -13,7 +13,7 @@
                 </el-col>
                 <el-col :span="6">
                     <el-form-item prop="accountId">
-                        <el-input v-model="listQuery.username" placeholder="输入账号ID"></el-input>
+                        <el-input v-model="listQuery.username" placeholder="输入账号名称"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">

@@ -25,7 +25,8 @@
                         <el-checkbox-group v-model="checkList">
                             <el-col :span="6" v-for="(item,index) in product_info" :key="index" v-if="item.productType == plist">
                                 <el-form-item>
-                                    <el-checkbox :label="item.productId" :key="item.productId" @change="change_product(key,index,item)"><span>{{item.productName}}</span><input type="text" :value="item.productPrice" @keyup="validNum(key,index,item)" :disabled="item.status == 0 ? false : true" v-model="item.productPrice"><em>元</em></el-checkbox>
+                                    <el-checkbox :label="item.productId" :key="item.productId" @change="change_product(key,index,item)"></el-checkbox>
+                                    <span>{{item.productName}}</span><input type="text" :value="item.productPrice" @keyup="validNum(key,index,item)" :disabled="item.status == 0 ? false : true" v-model="item.productPrice"><em>元</em>
                                 </el-form-item>
                             </el-col>
                         </el-checkbox-group>

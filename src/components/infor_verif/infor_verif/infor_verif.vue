@@ -20,21 +20,21 @@
     	                        <el-input v-model="form.personName" placeholder="请输入姓名" maxlength="50"></el-input>
     	                    </el-form-item>
     	                </el-col>
-                        <el-col :span="6" v-if="type == 2 || type == 3">
-                            <el-form-item prop="mobile">
-                                <el-input v-model="form.mobile" placeholder="请输入手机号码" maxlength="11"></el-input>
-                            </el-form-item>
-                        </el-col>
                         <el-col :span="6">
                             <el-form-item prop="idNumber">
                                 <el-input v-model="form.idNumber" placeholder="请输入身份证号码"></el-input>
                             </el-form-item>
                         </el-col>
-    	                <el-col :span="6" v-if="type == 1 || type == 3">
-    	                    <el-form-item prop="cardNo">
-    	                        <el-input v-model="form.cardNo" placeholder="请输入银行卡号"></el-input>
-    	                    </el-form-item>
-    	                </el-col>
+                        <el-col :span="6" v-if="type == 1 || type == 3">
+                            <el-form-item prop="cardNo">
+                                <el-input v-model="form.cardNo" placeholder="请输入银行卡号"></el-input>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="6" v-if="type == 2 || type == 3">
+                            <el-form-item prop="mobile">
+                                <el-input v-model="form.mobile" placeholder="请输入手机号码" maxlength="11"></el-input>
+                            </el-form-item>
+                        </el-col>
     	            </el-row>
     	        </el-form>
 

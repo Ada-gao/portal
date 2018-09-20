@@ -266,7 +266,7 @@ export default {
         upload_img(){
             var file_obj = this.$refs['img'].files[0]
             let supportedTypes = ['image/jpg', 'image/jpeg', 'image/png'];
-            if (!file_obj && supportedTypes.indexOf(file_obj.type) == 0) {
+            if (!file_obj || supportedTypes.indexOf(file_obj.type) == -1) {
                 this.$toast.show({
                     text:'图片文件格式只支持：jpg、jpeg和png',
                     type:'error'

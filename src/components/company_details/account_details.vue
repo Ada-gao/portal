@@ -5,13 +5,13 @@
 
             <el-row :gutter="20">
                 <el-col :span="8">
-                    <el-form-item label="用户名：" class="omit1"><span>{{basic_info.username}}</span></el-form-item>
+                    <el-form-item label="账户名称：" class="omit1"><span>{{basic_info.username}}</span></el-form-item>
                 </el-col>
                 <el-col :span="8">
                     <el-form-item label="手机号：" class="omit1"><span>{{basic_info.phone}}</span></el-form-item>
                 </el-col>
                 <el-col :span="8">
-                    <el-form-item label="手机号：" class="omit1"><span>{{basic_info.email}}</span></el-form-item>
+                    <el-form-item label="邮箱：" class="omit1"><span>{{basic_info.email}}</span></el-form-item>
                 </el-col>
             </el-row>
 
@@ -28,27 +28,18 @@
             </el-row>
 
             <el-row :gutter="20">
-                <el-col :span="8">
+                <!-- <el-col :span="8">
                     <el-form-item label="Account Id:" class="omit1">
                         <span>{{userInfo.username}}</span>
                         <em class="ml15 cursor tr none" @click="check_key"><i class="iconfont icon-zhongzhi mr5"></i>重置key</em>
                     </el-form-item>
-                </el-col>
+                </el-col> -->
                 <el-col :span="8">
                     <el-form-item label="账户状态：">
                         <span>{{basic_info.delFlag == 0 ? '启用' : '停用'}}</span>
                         <!-- <el-switch class="status_change" @change="check_restart" v-model="restart" active-color="#1A8CE1" active-text="启用"></el-switch> -->
                     </el-form-item>
                 </el-col>
-                <el-col :span="8">
-                    <el-form-item label="登录账号：">
-                        <span>{{userInfo.username}}</span>
-                        <em class="ml15 cursor none" @click="checkPass = true"><i class="iconfont icon-zhongzhi mr5"></i>修改密码</em>
-                    </el-form-item>
-                </el-col>
-            </el-row>
-
-            <el-row :gutter="20">
                 <el-col :span="8">
                     <el-form-item label="账户余额：">
                         <span>{{userInfo.amount | formatMoney}}元</span>
@@ -59,6 +50,7 @@
                         <span>{{userInfo.warningAmount | formatMoney}}元</span>
                     </el-form-item>
                 </el-col>
+
             </el-row>
         </el-form>
 

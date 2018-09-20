@@ -82,10 +82,10 @@
                         </el-form-item>
                     </el-col>
                 </el-row>
-                <el-row :gutter="20" v-if="type == 'change'">
+                <el-row :gutter="20" v-if="type == 'change' && form.username != userInfo.username">
                     <el-col :span="12">
-                        <el-form-item label="公司状态" prop="delFlag">
-                            <el-select class="filter-item" v-model="form.delFlag" placeholder="请选择公司状态">
+                        <el-form-item label="账号状态" prop="delFlag">
+                            <el-select class="filter-item" v-model="form.delFlag" placeholder="请选择账号状态">
                                 <el-option v-for="item in statusOptions" :key="item.label" :label="item.label" :value="item.value"> </el-option>
                             </el-select>
                         </el-form-item>
@@ -112,7 +112,10 @@
                         <el-checkbox-group v-model="checkList">
                             <el-col :span="6" v-for="(item,index) in plist" :key="index">
                                 <el-form-item>
-                                    <el-checkbox :label="item.productId" :key="item.productId" @change="change_product(key,index,item)"><span>{{item.productName}}</span><input type="text" :value="item.productPrice" @keyup="validNum(key,index,item)" :disabled="item.checked" v-model="item.productPrice"><em>元</em></el-checkbox>
+                                    <el-checkbox :label="item.productId" :key="item.productId" @change="change_product(key,index,item)">
+                                    </el-checkbox>
+                                    <span>{{item.productName}}</span><input type="text" :value="item.productPrice" @keyup="validNum(key,index,item)" :disabled="item.checked" v-model="item.productPrice"><em>元</em>
+                                    
                                 </el-form-item>
                             </el-col>
                         </el-checkbox-group>
@@ -134,9 +137,10 @@
 
 <script>
 import Validate from '@/util/filter_rules'
-import request from "@/router/axios";
-import { addObj,putObj } from "@/api/user";
-import { fetchDeptTree,deptRoleList } from "@/api/role";
+import request from "@/router/axios"
+import { addObj,putObj } from "@/api/user"
+import { fetchDeptTree,deptRoleList } from "@/api/role"
+import { mapState } from "vuex"
 export default {
     data () {
         //验证汉字
@@ -242,6 +246,11 @@ export default {
             },
             dialogStatus: "create",
         }
+    },
+    computed: {
+        ...mapState({
+            userInfo: state => state.user.userInfo
+        }),
     },
     created() {
         this.handleDept();

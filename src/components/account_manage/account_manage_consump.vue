@@ -29,17 +29,23 @@
                     </el-table-column>
 
                     <el-table-column align="center" label="核验成功">
-                        <template slot-scope="scope"><span class="table_success">{{scope.row.succCount}}</span></template>
+                        <template slot-scope="scope">
+                            <span v-if="scope.row.succCount == null">--</span>
+                            <span class="table_success">{{scope.row.succCount}}</span>
+                        </template>
                     </el-table-column>
 
                     <el-table-column align="center" label="核验失败">
-                        <template slot-scope="scope"><span class="table_fail">{{scope.row.failCount | setdefault('--')}}</span></template>
+                        <template slot-scope="scope">
+                            <span v-if="scope.row.failCount == null">--</span>
+                            <span v-else class="table_fail">{{scope.row.failCount}}</span>
+                        </template>
                     </el-table-column>
 
                     <el-table-column align="center" label="消费金额/元">
                         <template slot-scope="scope">
                             <span v-if="scope.row.monetary == null">--</span>
-                            <span class="table_primary" v-else>{{scope.row.monetary | formatMoney}}</span>
+                            <span v-else class="table_primary">{{scope.row.monetary | formatMoney}}</span>
                         </template>
                     </el-table-column>
 
@@ -182,7 +188,11 @@ export default {
                 obj.申请条数 = item.batchCount
                 obj.核验成功 = item.succCount
                 obj.核验失败 = item.failCount
-                obj.消费金额 = item.monetary.toFixed(2)
+                if(item.monetary != null){
+                    obj.消费金额 = item.monetary.toFixed(2)
+                }else{
+                    obj.消费金额 = item.monetary
+                }
                 obj.消费时间 = item.createTime
                 obj.核验状态 = item.status
                 obj.操作人 = item.createName
@@ -192,7 +202,7 @@ export default {
         },
         //查看消费详情
         get_consump_details(item){
-            this.$router.push({path:'/account/handle/consump_details',query: {batchId:item.batchId}});
+            this.$router.push({path:'/account/handle/consump_details',query: {batchId:item.batchId,productName:item.productName}});
         }
     }
 }
