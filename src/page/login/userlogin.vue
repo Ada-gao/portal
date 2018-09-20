@@ -21,7 +21,7 @@
         <el-col :span="10">
           <div class="login-code">
             <span class="login-code-img" @click="refreshCode" v-if="code.type == 'text'">{{code.value}}</span>
-            <img :src="code.src" alt="验证码" class="login-code-img" @click="refreshCode cursor" v-else/>
+            <img :src="code.src" alt="验证码" class="login-code-img cursor" @click="refreshCode" v-else/>
             <!-- <i class="icon-shuaxin login-code-icon" @click="refreshCode"></i> -->
           </div>
         </el-col>
@@ -33,10 +33,8 @@
 </template>
 
 <script>
-import { randomLenNum,initMenu } from "@/util/util";
-import {
-  GetMenu
-} from '@/api/menu'
+import { randomLenNum, initMenu } from "@/util/util";
+import { GetMenu } from '@/api/menu';
 import { mapGetters } from "vuex";
 import { validatenull } from "@/util/validate";
 export default {

@@ -1,5 +1,6 @@
 <template>
   <div class="login-container pull-height" @keyup.enter.native="handleLogin">
+    <img class="pa login_logo" src="../../assets/img/login_logo.png">
     <div class="login-border" v-if="login_status == 1">
       <div class="login-main">
         <h4 class="login-title">登录</h4>
@@ -75,6 +76,7 @@ export default {
   background-image: url("../../assets/img/login.png");
   background-size: 100% 100%;
 }
+.login_logo{ display: block; top: 60px; left: 70px; width: 320px;}
 .login-info {
   padding-left: 60px;
 }

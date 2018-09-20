@@ -309,7 +309,7 @@ export default {
                 method: "get",
             }).then(res => {
                 this.productType_list = res.data;
-            }).catch(() => {})
+            })
         },
         //选择产品类型
         change_product_type(e){
@@ -319,6 +319,7 @@ export default {
                     url: "/admin/product/" + e[i],
                     method: "get",
                 }).then(res => {
+                    if(res.data.length == 0) return
                     this.product_info.push(res.data);
                     //数据处理
                     for(var i in this.product_info){
@@ -333,7 +334,7 @@ export default {
                             }
                         }
                     }
-                }).catch(() => {})
+                })
             }
         },
         clearNoNum(price){ 
