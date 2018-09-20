@@ -8,7 +8,7 @@
     <el-form-item prop="password">
       <el-input size="small" @keyup.enter.native="handleLogin" :type="passwordType" v-model="loginForm.password" auto-complete="off" placeholder="请输入密码">
         <i slot="suffix" class="iconfont  el-input__icon" v-if="loginForm.password" :class="passwordType == 'password' ? 'icon-yanjing_yincang_o' : 'icon-yanjing_xianshi_o'" style="font-size: 24px;"  @click="showPassword"></i>
-        <i slot="prefix" class="icon-mima"></i>
+        <i slot="prefix" class="icon-mima cursor"></i>
       </el-input>
     </el-form-item>
     <el-form-item prop="code">
@@ -21,7 +21,7 @@
         <el-col :span="10">
           <div class="login-code">
             <span class="login-code-img" @click="refreshCode" v-if="code.type == 'text'">{{code.value}}</span>
-            <img :src="code.src" alt="验证码" class="login-code-img" @click="refreshCode" v-else/>
+            <img :src="code.src" alt="验证码" class="login-code-img" @click="refreshCode cursor" v-else/>
             <!-- <i class="icon-shuaxin login-code-icon" @click="refreshCode"></i> -->
           </div>
         </el-col>
