@@ -207,7 +207,6 @@ export default {
                 method: "get",
                 params:this.listQuery
             }).then(response => {
-                console.log(response,'222')
                 this.listLoading = false;
                 if (response.status == 200) {
                     this.total = response.data.total

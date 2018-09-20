@@ -49,7 +49,6 @@ export default {
       })
     },
     currentChange(val) {
-      console.log(val)
       this.getList()
     },
     currentChange(val) {
