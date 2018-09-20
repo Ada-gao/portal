@@ -71,7 +71,7 @@
 
                 <el-table-column align="center" label="操作" width="120px">
                     <template slot-scope="scope">
-                        <span class="table_primary cursor" @click="refurbish(scope.row)" v-if="type != 2">刷新/</span>
+                        <!-- <span class="table_primary cursor" @click="refurbish(scope.row)" v-if="type != 2">刷新/</span> -->
                         <span class="table_primary cursor" @click="get_details(scope.row)">查看详情</span>
                     </template>
                 </el-table-column>
