@@ -152,7 +152,7 @@ export default {
             return price
         },
         validNum(index,key,item){
-            this.product_info[key][index].productPrice = this.clearNoNum(item.productPrice)
+            this.product_info[index][key].productPrice = this.clearNoNum(item.productPrice)
         },
         //修改提交
         updata(){

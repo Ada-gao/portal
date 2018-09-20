@@ -76,7 +76,7 @@
                             <el-select class="filter-item" v-model="form.role" placeholder="请选择" multiple :multipleLimit='1'>
                                 <el-option v-for="item in rolesOptions" :key="item.roleId" :label="item.roleDesc" :value="item.roleId" :disabled="isDisabled[item.delFlag]">
                                     <span style="float: left">{{ item.roleDesc }}</span>
-                                    <span style="float: right; color: #8492a6; font-size: 13px">{{ item.roleCode }}</span>
+                                    <!-- <span style="float: right; color: #8492a6; font-size: 13px">{{ item.roleCode }}</span> -->
                                 </el-option>
                             </el-select>
                         </el-form-item>
@@ -347,7 +347,7 @@ export default {
             return price
         }, 
         validNum(index,key,item){
-            this.product_info[key][index].productPrice = this.clearNoNum(item.productPrice)
+            this.product_info[index][key].productPrice = this.clearNoNum(item.productPrice)
         },
         validWarn(){
             this.form.warningAmount = this.clearNoNum(this.form.warningAmount)

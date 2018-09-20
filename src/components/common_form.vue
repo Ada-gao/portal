@@ -98,49 +98,7 @@
                     </el-form-item>
                 </el-col>
             </el-row>
-
-            <div class="product_set none" v-if="type == 'change1'">产品设定</div>
-
-            <el-row v-if="type == 'change1'">
-                <el-col :span="24">
-                    <el-form-item label="产品类型" label-width="80px" prop="product_type">
-                        <el-select style="width:100%" v-model="form.select_data" multiple filterable allow-create default-first-option placeholder="请选择产品类型" size="medium">
-                            <el-option v-for="item in select_list" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                        </el-select>
-                    </el-form-item>
-                </el-col>
-            </el-row>
-
         </el-form>
-        <div class="select_con none" v-if="type == 'change1'">
-                <p>身份信息核验</p>
-                <el-form class="form-border style"> <!--数据  :model="list"-->
-                    <el-row>
-                        <el-checkbox-group v-model="checkList">
-                            <el-col :span="6">
-                                <el-form-item>
-                                    <el-checkbox label="1" key="1"><span>二要素</span><input type="text" :value="1.2"><em>元</em></el-checkbox>
-                                </el-form-item>
-                            </el-col>
-                            <el-col :span="6">
-                                <el-form-item>
-                                    <el-checkbox label="2" key="2"><span>手机三要素</span><input type="text" :value="1.2"><em>元</em></el-checkbox>
-                                </el-form-item>
-                            </el-col>
-                            <el-col :span="7">
-                                <el-form-item>
-                                    <el-checkbox label="3" key="3"><span>银行卡三要素</span><input type="text" :value="1.2"><em>元</em></el-checkbox>
-                                </el-form-item>
-                            </el-col>
-                            <el-col :span="5">
-                                <el-form-item>
-                                    <el-checkbox label="4" key="4"><span>三要素</span><input type="text" :value="1.2"><em>元</em></el-checkbox>
-                                </el-form-item>
-                            </el-col>
-                        </el-checkbox-group>
-                    </el-row>
-                </el-form>
-            </div>
 
         <el-col :span="24" slot="footer" class="clearfix" style="text-align: center; float: none;">
             <el-button class="search_btn" @click="$router.back()">取 消</el-button>
@@ -361,7 +319,7 @@ export default {
                                 type:'error'
                             })
                         }
-                    }).catch(() => {})
+                    })
                 }
             })
         },
