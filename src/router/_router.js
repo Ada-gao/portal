@@ -15,7 +15,7 @@ export default [
             {path: '/account/handle/company_details',name: '公司详情',component: _import('account/company_details', 'views')},
             {path: '/account/handle/set_product', name: '产品设定',component: _import('account/set_product', 'views')},
             {path: '/account/handle/recharge', name: '账户充值',component: _import('account/recharge', 'views')},
-            {path: '/account/handle/consump_details', name: '消费批次详情',component: _import('account/consump_details', 'views')},
+            {path: '/account/info/consump_details', name: '消费批次详情',component: _import('account/consump_details', 'views')},
         ]
     }, {
         path: '*',

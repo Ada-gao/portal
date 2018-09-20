@@ -202,7 +202,7 @@ export default {
         },
         //查看消费详情
         get_consump_details(item){
-            this.$router.push({path:'/account/handle/consump_details',query: {batchId:item.batchId,productName:item.productName}});
+            this.$router.push({path:'/account/info/consump_details',query: {batchId:item.batchId,productName:item.productName}});
         }
     }
 }
