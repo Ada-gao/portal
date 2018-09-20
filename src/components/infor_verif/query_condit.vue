@@ -152,13 +152,6 @@ export default {
             let list = []
             data.forEach((item,index) => {
                 let obj = new Object()
-                if (item.status == 0){
-                    item.status = '正在核验'
-                } else if (item.status == 1){
-                    item.status = '核验成功'
-                } else{
-                    item.status = '核验失败'
-                }
                 let date = new Date(item.createTime)
                 item.createTime = date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate() + ' ' +date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
                 obj.消费批次号 = item.batchNo
@@ -170,7 +163,13 @@ export default {
                 if(item.monetary != null){
                    obj.消费金额 = item.monetary.toFixed(2) 
                 }
-                obj.核验状态 = item.status
+                if (item.status == 0){
+                    obj.核验状态 = '正在核验'
+                } else if (item.status == 1){
+                    obj.核验状态 = '核验成功'
+                } else{
+                    obj.核验状态 = '核验失败'
+                }
                 obj.消费时间 = item.createTime
                 obj.操作人 = item.createName
                 list[index] = obj

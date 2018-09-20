@@ -155,11 +155,6 @@ export default {
             let list = []
             data.forEach((item,index) => {
                 let obj = new Object()
-                if (item.status){
-                    item.status = '充值成功'
-                } else{
-                    item.status = '充值失败'
-                }
                 let date = new Date(item.createTime)
                 item.createTime = date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate() + ' ' +date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
                 obj.充值流水号 = item.rechargeCode
@@ -168,7 +163,11 @@ export default {
                 obj.充值类型 = item.rechargeName
                 obj.充值金额 = item.rechargeAmount.toFixed(2)
                 obj.充值时间 = item.createTime
-                obj.充值状态 = item.status
+                if (item.status){
+                    obj.充值状态 = '充值成功'
+                } else{
+                    obj.充值状态 = '充值失败'
+                }
                 obj.充值备注 = item.remark
                 obj.操作人 = item.username
                 list[index] = obj

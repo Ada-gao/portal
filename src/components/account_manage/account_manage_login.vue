@@ -129,11 +129,6 @@ export default {
             let list = []
             data.forEach((item,index) => {
                 let obj = new Object()
-                if (item.status == 0){
-                    item.status = '成功'
-                } else{
-                    item.status = '失败'
-                }
                 let date = new Date(item.loginTime)
                 item.loginTime = date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate() + ' ' +date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
                 obj.登录账号 = item.loginName
@@ -141,7 +136,11 @@ export default {
                 obj.登录地点 = item.loginLocation
                 obj.浏览器 = item.browser
                 obj.操作系统 = item.os
-                obj.登录状态 = item.status
+                if (item.status == 0){
+                    obj.登录状态 = '成功'
+                } else{
+                    obj.登录状态 = '失败'
+                }
                 obj.操作信息 = item.message
                 obj.登录时间 = item.loginTime
                 list[index] = obj

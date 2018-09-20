@@ -89,7 +89,6 @@
                     <template slot-scope="scope">
                         <span v-if="type_status == 0">{{scope.row.result == 0 ? '信息一致' : '信息不一致'}}</span>
                         <span v-if="(type_status == 1 || type_status == 3)">{{scope.row.result == 0 ? '信息不一致' : '信息一致'}}</span>
-
                         <span v-if="type_status == 2 && scope.row.result == 1">信息一致</span>
                         <span v-if="type_status == 2 && scope.row.result == 2">手机号已实名，但是身份证和姓名均与实名信息不一致</span>
                         <span v-if="type_status == 2 && scope.row.result == 3">手机号已实名，手机号和证件号一致，姓名不一致</span>
@@ -300,40 +299,6 @@ export default {
             let list = []
             data.forEach((item,index) => {
                 let obj = new Object()
-                if(this.type_status == 0){
-                    if(item.result == 0){
-                        item.result = '信息一致'
-                    }else{
-                        item.result = '信息不一致'
-                    }
-                }
-                if(this.type_status == 1 || this.type_status == 3){
-                    if(item.result == 0){
-                        item.result = '信息不一致'
-                    }else{
-                        item.result = '信息一致'
-                    }
-                }
-                if(this.type_status == 2){
-                    if(item.result == 1){
-                        item.result = '信息一致'
-                    }else if(item.result == 2){
-                        item.result = '手机号已实名，但是身份证和姓名均与实名信息不一致'
-                    }else if(item.result == 3){
-                        item.result = '手机号已实名，手机号和证件号一致，姓名不一致'
-                    }else if(item.result == 4){
-                        item.result = '手机号已实名，手机号和姓名一致，身份证不一致'
-                    }else if(item.result == 5){
-                        item.result = '其他不一致'
-                    }
-                }
-                if (item.status == 0){
-                    item.status = '正在核验'
-                } else if (item.status == 1){
-                    item.status = '核验成功'
-                } else {
-                    item.status = '核验失败'
-                }
                 let date = new Date(item.createTime)
                 item.createTime = date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate() + ' ' +date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
                 obj.消费批次号 = item.infoNo
@@ -343,9 +308,41 @@ export default {
                     obj.手机号码 = item.phone
                 }
                 obj.身份证号码 = item.idCard
-                obj.核验结果 = item.result
+                if(this.type_status == 0){
+                    if(item.result == 0){
+                        obj.核验结果 = '信息一致'
+                    }else{
+                        obj.核验结果 = '信息不一致'
+                    }
+                }
+                if(this.type_status == 1 || this.type_status == 3){
+                    if(item.result == 0){
+                        obj.核验结果 = '信息不一致'
+                    }else{
+                        obj.核验结果 = '信息一致'
+                    }
+                }
+                if(this.type_status == 2){
+                    if(item.result == 1){
+                        obj.核验结果 = '信息一致'
+                    }else if(item.result == 2){
+                        obj.核验结果 = '手机号已实名，但是身份证和姓名均与实名信息不一致'
+                    }else if(item.result == 3){
+                        obj.核验结果 = '手机号已实名，手机号和证件号一致，姓名不一致'
+                    }else if(item.result == 4){
+                        obj.核验结果 = '手机号已实名，手机号和姓名一致，身份证不一致'
+                    }else if(item.result == 5){
+                        obj.核验结果 = '其他不一致'
+                    }
+                }
                 obj.查询时间 = item.createTime
-                obj.核验状态 = item.status
+                if (item.status == 0){
+                    obj.核验状态 = '正在核验'
+                } else if (item.status == 1){
+                    obj.核验状态 = '核验成功'
+                } else {
+                    obj.核验状态 = '核验失败'
+                }
                 obj.核验方式 = item.mode
                 obj.消费金额 = item.amount.toFixed(2)
                 obj.查询人 = item.createBy

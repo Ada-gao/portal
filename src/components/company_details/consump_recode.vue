@@ -76,7 +76,7 @@
         <!--table 结束-->
 
         <!--table 详情-->
-        <consump_details_recode v-if="details" :batchId="batchId"></consump_details_recode>
+        <consump_details_recode v-if="details" :batchId="batchId" :type_status="type_status"></consump_details_recode>
     </div>
 </template>
 
@@ -94,6 +94,7 @@ export default {
                 limit: 10,           //一页显示数据量
                 createBy:this.$route.query.userId
             },
+            type_status:0,            //查看消费批次的类型
             loading:false,
             total:null,
             details:false,            //展示消费详情  false为隐藏
@@ -130,6 +131,15 @@ export default {
         },
         //查看消费详情
         get_consump_details(item){
+            if(item.productName == '二要素'){
+                this.type_status = 0
+            }else if(item.productName == '银行卡三要素'){
+                this.type_status = 1
+            }else if(item.productName == '手机三要素'){
+                this.type_status = 2
+            }else{
+                this.type_status = 3        //四要素
+            }
             this.batchId = item.batchId
             this.details = true;
         },
