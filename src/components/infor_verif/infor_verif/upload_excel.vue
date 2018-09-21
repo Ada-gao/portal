@@ -5,7 +5,7 @@
             <i @click="cancel" class="fr el-icon-close cursor"></i>
         </div>
         <div class="tc">
-            <div class="upload_main cursor pr">
+            <div class="upload_main pr">
                 <i class="iconfont icon-shangchuan-"></i>
                 <p>选择上传文件，<em>点击上传</em>（支持xls、xlsx文件）</p>
                 <upload-excel-component class="pa selected cursor" @on-selected-file='selected'></upload-excel-component>

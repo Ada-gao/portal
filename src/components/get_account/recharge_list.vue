@@ -16,7 +16,7 @@
                 <el-col :span="7">
                     <el-form-item>
                         <el-select style="width: 100%" v-model="listQuery.rechargeType" placeholder="选择充值类型" clearable>
-  		                	<el-option v-for="item in recharge_data" :key="item.label" :label="item.label" :value="item.value"></el-option>
+  		                	<el-option v-for="item in dic.userType" :key="item.label" :label="item.label" :value="item.value"></el-option>
            			   </el-select>
                     </el-form-item>
                 </el-col>
@@ -86,17 +86,7 @@ import request from "@/router/axios"
 import { mapState } from "vuex"
 export default {
     data () {
-        return {
-            recharge_data:[
-                {
-                    label:'充值失败',
-                    value:0
-                },
-                {
-                    label:'充值成功',
-                    value:1
-                }
-            ],           //充值类型数据					
+        return {				
             list:[],                    //账号列表数据
             listQuery: {
                 page: 1,                //当前页数

@@ -32,7 +32,7 @@
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
-                            <el-form-item label="姓名：">
+                            <el-form-item label="联系人：">
                                 <span>{{basic_info.name}}</span>
                             </el-form-item>
                         </el-col>

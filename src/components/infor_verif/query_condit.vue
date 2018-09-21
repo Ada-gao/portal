@@ -91,9 +91,7 @@
         <!--没有数据-->
         <v_no_data v-if="list.length == 0"></v_no_data>
         <!--本批次详细核验日志-->
-        <div v-if="details && list.length">
-            <details_record :batchId="batchId" :type_status="type_status"></details_record>
-        </div>
+        <details_record  v-if="details && list.length" :batchId="batchId" :type_status="type_status"></details_record>
 	</div>
 </template>
 
