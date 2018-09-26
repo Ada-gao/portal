@@ -343,7 +343,11 @@ export default {
                     obj.核验状态 = '核验失败'
                 }
                 obj.核验方式 = item.mode
-                obj.消费金额 = item.amount.toFixed(2)
+                if(item.amount != null){
+                    obj.消费金额 = item.amount.toFixed(2)
+                }else{
+                    obj.消费金额 = item.amount
+                }
                 obj.查询人 = item.createBy
                 obj.所属公司 = item.company
                 list[index] = obj

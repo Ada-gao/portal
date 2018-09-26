@@ -105,7 +105,8 @@ export default {
     data () {
         return {
             type:1,             // 1为信息核验    2为历史结果查询  默认为1
-            details:false       //详情默认不显示为false
+            details:false,       //详情默认不显示为false
+            batchId:''
         }
     },
     created(){
@@ -159,6 +160,8 @@ export default {
                 obj.核验失败 = item.failCount
                 if(item.monetary != null){
                    obj.消费金额 = item.monetary.toFixed(2) 
+                }else{
+                    obj.消费金额 = item.monetary
                 }
                 if (item.status == 0){
                     obj.核验状态 = '正在核验'
