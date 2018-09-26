@@ -100,7 +100,7 @@ import Validate from '@/util/filter_rules'
 import details_record from 'components/infor_verif/details_record'
 import { getExcel } from '@/util/auth'
 export default {
-    props:['list','listQuery','total','loading','type_status','excel','excel_list'],
+    props:['list','listQuery','total','loading','excel','excel_list'],
 	components: { details_record },
     data () {
         return {
@@ -117,6 +117,15 @@ export default {
     methods: {
     	//查看详情
     	get_details(item){
+            if(item.productName == '二要素'){
+                this.type_status = 0
+            }else if(item.productName == '银行卡三要素'){
+                this.type_status = 1
+            }else if(item.productName == '手机三要素'){
+                this.type_status = 2
+            }else{
+                this.type_status = 3        //四要素
+            }
             this.details = true;
             this.batchId = item.batchId
     	},
