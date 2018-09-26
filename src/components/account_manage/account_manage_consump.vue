@@ -173,8 +173,7 @@ export default {
             let list = []
             data.forEach((item,index) => {
                 let obj = new Object()
-                let date = new Date(item.createTime)
-                item.createTime = date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate() + ' ' +date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
+                item.createTime = this.$moment(item.createTime).format("YYYY-MM-DD HH:mm:ss")
                 obj.消费批次号 = item.batchNo
                 obj.消费产品 = item.productType
                 obj.产品名称 = item.productName

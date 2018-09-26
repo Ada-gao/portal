@@ -129,8 +129,7 @@ export default {
             let list = []
             data.forEach((item,index) => {
                 let obj = new Object()
-                let date = new Date(item.loginTime)
-                item.loginTime = date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate() + ' ' +date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
+                item.createTime = this.$moment(item.createTime).format("YYYY-MM-DD HH:mm:ss")
                 obj.登录账号 = item.loginName
                 obj.登录IP地址 = item.ipaddr
                 obj.登录地点 = item.loginLocation

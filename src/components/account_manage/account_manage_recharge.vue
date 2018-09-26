@@ -154,8 +154,7 @@ export default {
             let list = []
             data.forEach((item,index) => {
                 let obj = new Object()
-                let date = new Date(item.createTime)
-                item.createTime = date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDate() + ' ' +date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
+                item.createTime = this.$moment(item.createTime).format("YYYY-MM-DD HH:mm:ss")
                 obj.充值流水号 = item.rechargeCode
                 obj.所属公司 = item.companyName
                 obj.充值账号 = item.username
