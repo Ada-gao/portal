@@ -55,7 +55,7 @@ export default {
 .our_info .spicle{ width: 70px; height: 70px; border-radius: 4px; -webkit-border-radius: 4px; display: flex;}
 .our_info .balance .spicle{ background-color:#1A8CE1; }
 .our_info .consump .spicle{ background-color:#F8C065 ; }
-.our_info .spicle i{ font-size: 40px; color: #fff; margin: auto;}
+.our_info .spicle i{ font-size: 40px; color: #fff; margin: auto; line-height: 70px;}
 .our_info .con{ margin-left: 20px;}
 .our_info .con>div{ text-align: left;}
 .our_info .con{ height: 70px;}

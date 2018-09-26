@@ -40,7 +40,7 @@
       </el-table-column>
       <el-table-column align="center" label="创建时间">
         <template slot-scope="scope">
-          <span>{{ scope.row.createTime | parseTime('{y}-{m}-{d}') }}</span>
+          <span>{{ scope.row.createTime | moment('YYYY-MM-DD') }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="备注信息">
