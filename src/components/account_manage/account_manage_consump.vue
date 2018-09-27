@@ -9,7 +9,7 @@
             <div class="common_btn tr">
                 <button @click="get_excel" :class="{'disable':list.length == 0}"><i class="iconfont icon-xiazai"></i>一键导出</button>
             </div>
-            <div class="table_style">
+            <div class="table_style" v-if="list.length">
                 <el-table id="out-table" :data="list" :key='0' v-loading="loading" element-loading-text="给我一点时间" fit highlight-current-row style="width: 100%">
 
                     <el-table-column align="center" label="消费批次号">
