@@ -222,36 +222,38 @@ export default {
         },
         //上传图片
         upload_img(){
-            var file_obj = this.$refs['img'].files[0]
-            let supportedTypes = ['image/jpg', 'image/jpeg', 'image/png'];
-            if (!file_obj || supportedTypes.indexOf(file_obj.type) == -1) {
-                this.$toast.show({
-                    text:'图片文件格式只支持：jpg、jpeg和png',
-                    type:'error'
-                })
-                return;
-            }
-            if(file_obj.size > 1024000){
-                this.$toast.show({
-                    text:'图片过大',
-                    type:'error'
-                })
-                return;
-            }
-            let formData = new FormData()
-            formData.append('file', file_obj)
-            request({
-                url: "/admin/company/upload",
-                method: "post",
-                data: formData,
-                headers: {
-                    'Content-Type': 'multipart/form-data'
+            var obj = this.$refs['img'].files
+            for(var i=0,len=obj.length;i<len;i++){
+                var file_obj = obj[i]
+                let supportedTypes = ['image/jpg', 'image/jpeg', 'image/png'];
+                if (!file_obj || supportedTypes.indexOf(file_obj.type) == -1) {
+                    this.$toast.show({
+                        text:'图片文件格式只支持：jpg、jpeg和png',
+                        type:'error'
+                    })
+                    return;
                 }
-            }).then(res => {
-                this.img_list.push(res.data)
-                this.form.companyQualification = this.img_list.join(","); 
-            })
-            
+                if(file_obj.size > 1024000){
+                    this.$toast.show({
+                        text:'图片过大',
+                        type:'error'
+                    })
+                    return;
+                }
+                let formData = new FormData()
+                formData.append('file', file_obj)
+                request({
+                    url: "/admin/company/upload",
+                    method: "post",
+                    data: formData,
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }).then(res => {
+                    this.img_list.push(res.data)
+                    this.form.companyQualification = this.img_list.join(","); 
+                })
+            }
         },
         //删除图片
         delete_img(index){
