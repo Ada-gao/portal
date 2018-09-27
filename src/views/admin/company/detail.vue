@@ -79,7 +79,7 @@
                     <a @click="swiper_img = false,index = 0" class="closed" href="javascript:void(0);"><i class="el-icon-close"></i></a>
                     <div class="handle">
                         <a v-if="index != 0" class="prev" @click="switch_index('prev')" href="javascript:void(0);"><i class="el-icon-arrow-left"></i></a>
-                        <a v-if="index != 1 && details_data.companyQualification.length > 1" class="next" @click="switch_index('next')" href="javascript:void(0);"><i class="el-icon-arrow-right"></i></a>
+                        <a v-if="index != (details_data.companyQualification.length-1) && details_data.companyQualification.length > 1" class="next" @click="switch_index('next')" href="javascript:void(0);"><i class="el-icon-arrow-right"></i></a>
                     </div>
                 </div>
             </div>
@@ -151,12 +151,11 @@ export default {
         },
         //轮播图切换
         switch_index:function(type){
+            console.log(this.index,'222')
             if(type == 'prev'){
-                if(this.index == 0) return
                 this.index = this.index - 1;
                 this.setActiveItem(this.index);
             }else{
-                if(this.index == 1) return;
                 this.index = this.index + 1;
                 this.setActiveItem(this.index);
             }
