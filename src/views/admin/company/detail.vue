@@ -151,7 +151,6 @@ export default {
         },
         //轮播图切换
         switch_index:function(type){
-            console.log(this.index,'222')
             if(type == 'prev'){
                 this.index = this.index - 1;
                 this.setActiveItem(this.index);
