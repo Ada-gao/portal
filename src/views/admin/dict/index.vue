@@ -48,7 +48,7 @@
           <span>{{ scope.row.remarks }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="200">
+      <el-table-column align="center" label="操作" width="200">
         <template slot-scope="scope">
           <el-button v-if="sys_dict_upd" size="small" type="success" @click="handleUpdate(scope.row)">编辑
           </el-button>

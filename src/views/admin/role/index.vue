@@ -43,7 +43,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="操作" width="220">
+      <el-table-column align="center" label="操作" width="220">
         <template slot-scope="scope">
           <el-button size="mini" type="success" v-if="roleManager_btn_edit" @click="handleUpdate(scope.row)">编辑
           </el-button>
